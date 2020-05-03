@@ -20,7 +20,52 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8533db2-8aeb-43c8-864f-21761e48eaad" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/ImageStoreServise.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/PostRepositPortImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/PostRepositoryPort.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/PostUseCase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/PostsDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/Tags.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/RegisterUserUseCase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/ResultsDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/UserInfoUseCase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/UserRegisterDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/UserRepositoryPort.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/UserRepositoryPortImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controller/ApiAuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/web/api/user/ApiAuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controller/ApiGeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/web/api/ApiGeneralController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controller/ApiPostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/web/api/post/ApiPostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/controller/DefaultController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/web/config/DefaultController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/CaptchaCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/CaptchaCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/GeneralInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/GeneralInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/GlobalSetting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/GlobalSetting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/PostComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/comment/PostComment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/dao/PostRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/PostVote.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/PostVote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/Tag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/TagToPost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagToPost.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/dao/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/controller/ApiAuthController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/controller/ApiGeneralController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/controller/ApiPostController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/controller/DefaultController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/CaptchaCode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/GeneralInfo$GeneralInfoBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/GeneralInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/GlobalSetting.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/Post$ModerStat.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/Post.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/PostComment.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/PostRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/PostVote.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/Tag.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/TagToPost.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/model/UserRepository.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +86,7 @@
         <entry key="$PROJECT_DIR$/../.." value="master" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1ZkwR1cJPujMmkLI9nF2n4lnhZk" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -62,22 +107,25 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Модуль 11/HibernateF" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Materials\IdeaProjects\SkillboxJava\diploma\blogSpring" />
-      <recent name="D:\Materials\IdeaProjects\Модуль 16\blogSpring" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Materials\IdeaProjects\SkillboxJava\diploma\blogSpring\src\main\resources" />
       <recent name="D:\Materials\IdeaProjects\SkillboxJava\diploma\blogSpring" />
       <recent name="D:\Materials\IdeaProjects\Модуль 16\blogSpring\src\main\resources" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Materials\IdeaProjects\blogSpring\src\main\java\main\domain\user" />
+      <recent name="D:\Materials\IdeaProjects\blogSpring\src\main\java\main\domain\tag" />
+      <recent name="D:\Materials\IdeaProjects\blogSpring\src\main\java\main\domain\comment" />
+      <recent name="D:\Materials\IdeaProjects\SkillboxJava\diploma\blogSpring" />
+      <recent name="D:\Materials\IdeaProjects\Модуль 16\blogSpring" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -201,28 +249,53 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <ignored-roots>
       <path value="$PROJECT_DIR$/../.." />
+      <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
   </component>
   <component name="WindowStateProjectService">
-    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1587496497118">
+    <state x="96" y="37" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587815842000">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1587496497118" />
-    <state width="1323" height="259" key="GridCell.Tab.0.bottom" timestamp="1587247161212">
+    <state x="96" y="37" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1587815842000" />
+    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser" timestamp="1588499689178">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="259" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1587247161212" />
-    <state width="1323" height="259" key="GridCell.Tab.0.center" timestamp="1587247161212">
+    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1588499689178" />
+    <state x="371" y="205" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587815841124">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="259" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1587247161212" />
-    <state width="1323" height="259" key="GridCell.Tab.0.left" timestamp="1587247161212">
+    <state x="371" y="205" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1366.728@0.0.1366.728" timestamp="1587815841124" />
+    <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1588015630539">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="259" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1587247161212" />
-    <state width="1323" height="259" key="GridCell.Tab.0.right" timestamp="1587247161212">
+    <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1588015630539" />
+    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1588276554147">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="259" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1587247161212" />
+    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1588276554147" />
+    <state width="1323" height="243" key="GridCell.Tab.0.bottom" timestamp="1588510492995">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="243" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588510492995" />
+    <state width="1323" height="243" key="GridCell.Tab.0.center" timestamp="1588510492995">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="243" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1588510492995" />
+    <state width="1323" height="243" key="GridCell.Tab.0.left" timestamp="1588510492995">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="243" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1588510492995" />
+    <state width="1323" height="243" key="GridCell.Tab.0.right" timestamp="1588510492995">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="243" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1588510492995" />
+    <state x="184" y="8" key="SettingsEditor" timestamp="1587815730701">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="184" y="8" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1587815730701" />
+    <state x="339" y="162" key="run.anything.popup" timestamp="1588448637424">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1588448637424" />
   </component>
 </project>

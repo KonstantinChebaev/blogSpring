@@ -9,6 +9,7 @@ public interface PostRepositoryPort {
     Optional<Post> findById(int postId);
 
     List<Post> findAll();
+    List<Post> findAllGood();
 
     void addPost(Post post);
     void savePost(Post post);

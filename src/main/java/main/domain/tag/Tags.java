@@ -1,7 +1,5 @@
 package main.domain.tag;
 
-import main.domain.tag.Tag;
-
 import java.util.List;
 
 public class Tags {

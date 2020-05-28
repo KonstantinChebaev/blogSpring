@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import main.domain.post.Post;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -25,10 +23,10 @@ public class User {
     private boolean isModerator;
     @Column(name = "reg_time", nullable = false, columnDefinition = "DATETIME")
     private Date regTime;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
     @Email
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
     private String password;

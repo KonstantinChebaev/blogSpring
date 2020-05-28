@@ -3,10 +3,9 @@ package main.web.api.post;
 import main.domain.post.Post;
 import main.domain.post.PostPostDto;
 import main.domain.post.PostUseCase;
-import main.domain.post.PostsDto;
+import main.domain.post.PostsDtoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,10 +17,10 @@ public class ApiPostController {
     @Autowired
     PostUseCase puc;
 
-    @GetMapping("/api/post/")
-    public PostsDto getAllPosts (@RequestParam int offset,
-                                 @RequestParam int limit,
-                                 @RequestParam String mode){
+    @GetMapping("/api/post")
+    public PostsDtoResponse getAllPosts (@RequestParam int offset,
+                                         @RequestParam int limit,
+                                         @RequestParam String mode){
         return puc.getAll(offset,limit,mode);
     }
 
@@ -33,23 +32,29 @@ public class ApiPostController {
         }
         return new ResponseEntity(opPost.get(),HttpStatus.OK);
     }
-    @PostMapping("/api/post/") //как-то еще надо автора доставать
+    @PostMapping("/api/post") //как-то еще надо автора доставать
     public String postPost (@RequestBody PostPostDto ppDto){
         puc.postPost(ppDto);
         return "{result: true}";
     }
 
-    @GetMapping("/api/post/search/")
-    public PostsDto searchPost (@RequestParam int offset,
-                                      @RequestParam int limit,
-                                      @RequestParam String query) {
+    @GetMapping("/api/post/search")
+    public PostsDtoResponse searchPost (@RequestParam int offset,
+                                        @RequestParam int limit,
+                                        @RequestParam String query) {
         return puc.searchPost(offset, limit, query);
     }
     @GetMapping("/api/post/byDate")
-    public PostsDto getDatePosts (@RequestParam int offset,
-                                @RequestParam int limit,
-                                @RequestParam String date) {
+    public PostsDtoResponse getDatePosts (@RequestParam int offset,
+                                          @RequestParam int limit,
+                                          @RequestParam String date) {
         return puc.getDatePosts(offset, limit, date);
+    }
+    @GetMapping("/api/post/byTag")
+    public PostsDtoResponse getTagPosts (@RequestParam int offset,
+                                          @RequestParam int limit,
+                                          @RequestParam String tag) {
+        return puc.getTagPosts(offset, limit, tag);
     }
 
 }

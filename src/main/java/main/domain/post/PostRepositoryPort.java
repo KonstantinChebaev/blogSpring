@@ -1,6 +1,5 @@
 package main.domain.post;
 
-import main.domain.post.Post;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +9,7 @@ public interface PostRepositoryPort {
 
     List<Post> findAll();
     List<Post> findAllGood();
+    int getCount();
 
     void addPost(Post post);
     void savePost(Post post);

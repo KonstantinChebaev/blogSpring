@@ -12,7 +12,6 @@ public class Tag {
     private int id;
     @Column(nullable = false, unique = true)
     private String name;
-
     public Tag (){
 
     }

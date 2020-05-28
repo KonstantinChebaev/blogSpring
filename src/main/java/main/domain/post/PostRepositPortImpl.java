@@ -51,6 +51,12 @@ public class PostRepositPortImpl implements PostRepositoryPort {
     }
 
     @Override
+    public int getCount() {
+       int x = (int) pr.count();
+        return x;
+    }
+
+    @Override
     public void addPost(Post post) {
         pr.save(post);
     }

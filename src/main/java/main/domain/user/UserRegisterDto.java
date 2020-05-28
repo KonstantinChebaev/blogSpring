@@ -12,12 +12,10 @@ import javax.validation.constraints.Email;
 @AllArgsConstructor
 public class UserRegisterDto {
     @Email
-    @Name("e_mail")
-    private String email;
+    private String e_mail;
     private String name;
     private String password;
     private String captcha;
-    @Name("captcha_secret")
-    private String captchaSecret;
+    private String captcha_secret;
 
 }

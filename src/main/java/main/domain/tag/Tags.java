@@ -1,22 +1,13 @@
 package main.domain.tag;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Tags {
-    private List<Tag> tags;
-
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
-
-    public Tags() {
-    }
-
-    public Tags(List<Tag> tags) {
-        this.tags = tags;
-    }
+    private String name;
+    private Double weight;
 }

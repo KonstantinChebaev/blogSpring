@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostsDto {
+public class PostsDtoResponse {
 
     private int count;
 

@@ -16,25 +16,27 @@
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </expand>
-    <select />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:experiments" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8533db2-8aeb-43c8-864f-21761e48eaad" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/web/config/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/web/config/SecurityUtility.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/web/security/Authority.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/web/security/UserSecurityService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/UserRepositoryPortImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/UserRepositoryPortImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/web/api/user/ApiAuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/web/api/user/ApiAuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/web/config/DefaultController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/web/DefaultController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/RegisterUserUseCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/user/RegisterUserUseCase.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/ResultsDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/user/ResultsDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/web/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/web/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/web/security/UserSecurityService.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/User$UserBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/user/User$UserBuilder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/user/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/UserRepositoryPortImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/user/UserRepositoryPortImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/web/api/user/ApiAuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/web/api/user/ApiAuthController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/web/config/DefaultController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/web/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/web/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/web/security/UserSecurityService.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +78,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SpringProjects/spring-reg-auth-master" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SpringProjects/springsecurity/spring-webmvc-jwt-sample-master" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
@@ -205,7 +207,19 @@
         </entry>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="experiments" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -229,10 +243,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="96" y="37" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1587815842000" />
-    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser" timestamp="1590685763390">
+    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser" timestamp="1591445900500">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1590685763390" />
+    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1591445900500" />
     <state x="371" y="205" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587815841124">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -241,30 +255,30 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1588015630539" />
-    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1591274585887">
+    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1591721893812">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1591274585878" />
-    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1591271844885">
+    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1591721893812" />
+    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1591722853993">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1591271844885" />
-    <state width="1323" height="186" key="GridCell.Tab.0.bottom" timestamp="1591275346356">
+    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1591722853993" />
+    <state width="1323" height="222" key="GridCell.Tab.0.bottom" timestamp="1591721690566">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="186" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1591275346356" />
-    <state width="1323" height="186" key="GridCell.Tab.0.center" timestamp="1591275346356">
+    <state width="1323" height="222" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1591721690566" />
+    <state width="1323" height="222" key="GridCell.Tab.0.center" timestamp="1591721690550">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="186" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1591275346356" />
-    <state width="1323" height="186" key="GridCell.Tab.0.left" timestamp="1591275346356">
+    <state width="1323" height="222" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1591721690550" />
+    <state width="1323" height="222" key="GridCell.Tab.0.left" timestamp="1591721690550">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="186" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1591275346356" />
-    <state width="1323" height="186" key="GridCell.Tab.0.right" timestamp="1591275346356">
+    <state width="1323" height="222" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1591721690550" />
+    <state width="1323" height="222" key="GridCell.Tab.0.right" timestamp="1591721690550">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="186" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1591275346356" />
+    <state width="1323" height="222" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1591721690550" />
     <state x="184" y="8" key="SettingsEditor" timestamp="1587815730701">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

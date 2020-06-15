@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import main.web.security.Authority;
+import main.security.Authority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -45,18 +45,14 @@ public class User implements UserDetails, Serializable {
     //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<Post> posts;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JsonIgnore
-//    private Set<UserRole> userRoles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        // userRoles.forEach(ur -> authorities.add(new Authority(ur.getRole().getName()))); изначальная строчка
-        //Далее моя реализация
-        authorities.add(new Authority("USER"));
         if(isModerator){
             authorities.add(new Authority("ADMIN"));
+        } else {
+            authorities.add(new Authority("USER"));
         }
         return authorities;
     }

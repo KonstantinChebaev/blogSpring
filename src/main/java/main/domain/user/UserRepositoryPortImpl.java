@@ -2,15 +2,12 @@ package main.domain.user;
 
 import main.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-public class UserRepositoryPortImpl implements UserRepositoryPort, UserDetailsService {
+public class UserRepositoryPortImpl implements UserRepositoryPort {
 
     @Autowired
     UserRepository userRepository;
@@ -21,6 +18,7 @@ public class UserRepositoryPortImpl implements UserRepositoryPort, UserDetailsSe
 
     @Override
     public Optional<User> findByName(String name) {
+
         return userRepository.findByName(name);
     }
 
@@ -41,13 +39,4 @@ public class UserRepositoryPortImpl implements UserRepositoryPort, UserDetailsSe
         userRepository.save(user);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByEmail(s);
-        if(user.isEmpty()) {
-            System.out.println("Data recieved. User not found.");
-            throw new UsernameNotFoundException("Username "+s+" not found");
-        }
-        return user.get();
-    }
 }

@@ -1,4 +1,4 @@
-package main.web.security;
+package main.security;
 
 import org.springframework.security.core.GrantedAuthority;
 

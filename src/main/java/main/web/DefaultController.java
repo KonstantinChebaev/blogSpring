@@ -1,4 +1,4 @@
-package main.web.config;
+package main.web;
 
 
 import org.springframework.stereotype.Controller;

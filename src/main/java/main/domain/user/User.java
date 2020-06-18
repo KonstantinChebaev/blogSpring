@@ -4,18 +4,31 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+<<<<<<< HEAD
+=======
+import main.security.Authority;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+>>>>>>> experiments
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+<<<<<<< HEAD
+=======
+import java.util.HashSet;
+import java.util.Set;
+>>>>>>> experiments
 
 @Data
 @Entity
-@Table(name="users")
+@Table(name = "users")
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -31,9 +44,12 @@ public class User {
     @Column(nullable = false)
     private String password;
     private String code;
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String photo;
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//        @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<Post> posts;
+
+
+
+
 }

@@ -16,9 +16,15 @@
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </expand>
-    <select />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="f8533db2-8aeb-43c8-864f-21761e48eaad" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagToPostRepositoryPort.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagToPostRepositoryPortImpl.java" afterDir="false" />
@@ -56,6 +62,9 @@
       <change beforePath="$PROJECT_DIR$/target/classes/main/web/api/post/ApiPostController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/web/api/post/ApiPostController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/web/api/user/ApiAuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/web/api/user/ApiAuthController.class" afterDir="false" />
     </list>
+=======
+    <list default="true" id="f8533db2-8aeb-43c8-864f-21761e48eaad" name="Default Changelist" comment="" />
+>>>>>>> experiments
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -96,13 +105,20 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+<<<<<<< HEAD
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../SpringProjects/gs-securing-web-master" />
+=======
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SpringProjects/skillbox-blog-engine-master" />
+>>>>>>> experiments
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="main.domain.user" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Materials\IdeaProjects\blogSpring\src\main\java\main\domain\user" />
@@ -249,17 +265,45 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="96" y="37" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1587815842000" />
+<<<<<<< HEAD
     <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser" timestamp="1590346340753">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1590346340753" />
+=======
+    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser" timestamp="1592311626272">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1592311626272" />
+>>>>>>> experiments
     <state x="371" y="205" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587815841124">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="371" y="205" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1366.728@0.0.1366.728" timestamp="1587815841124" />
-    <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1588015630539">
+    <state x="351" y="288" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1591727296934">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state x="351" y="288" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1366.728@0.0.1366.728" timestamp="1591727296934" />
+    <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1591727656794">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1591727656794" />
+    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1591905584389">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1591905584389" />
+    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1592314627294">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1592314627294" />
+    <state width="1323" height="43" key="GridCell.Tab.0.bottom" timestamp="1592425290959">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="43" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1592425290959" />
+    <state width="1323" height="43" key="GridCell.Tab.0.center" timestamp="1592425290959">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+<<<<<<< HEAD
     <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1588015630539" />
     <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1590345182192">
       <screen x="0" y="0" width="1366" height="728" />
@@ -285,17 +329,56 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1323" height="204" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1590499511988" />
+=======
+    <state width="1323" height="43" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1592425290959" />
+    <state width="1323" height="43" key="GridCell.Tab.0.left" timestamp="1592425290959">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="43" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1592425290959" />
+    <state width="1323" height="43" key="GridCell.Tab.0.right" timestamp="1592425290959">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="43" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1592425290959" />
+    <state width="1323" height="43" key="GridCell.Tab.1.bottom" timestamp="1592425290960">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="43" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1592425290960" />
+    <state width="1323" height="43" key="GridCell.Tab.1.center" timestamp="1592425290960">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="43" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1592425290960" />
+    <state width="1323" height="43" key="GridCell.Tab.1.left" timestamp="1592425290960">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="43" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1592425290960" />
+    <state width="1323" height="43" key="GridCell.Tab.1.right" timestamp="1592425290960">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="43" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1592425290960" />
+>>>>>>> experiments
     <state x="184" y="8" key="SettingsEditor" timestamp="1587815730701">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="184" y="8" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1587815730701" />
-    <state x="65" y="0" key="new project wizard" timestamp="1589110484783">
+    <state x="492" y="277" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1591297759308">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="65" y="0" key="new project wizard/0.0.1366.728@0.0.1366.728" timestamp="1589110484783" />
+    <state x="492" y="277" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1366.728@0.0.1366.728" timestamp="1591297759308" />
+    <state x="65" y="0" key="new project wizard" timestamp="1590917045287">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="65" y="0" key="new project wizard/0.0.1366.728@0.0.1366.728" timestamp="1590917045287" />
     <state x="339" y="162" key="run.anything.popup" timestamp="1588448637424">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1588448637424" />
+  </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo typeName="org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest" fieldName="response" />
+        <PinnedItemInfo typeName="org.springframework.security.web.servletapi.HttpServlet3RequestFactory$Servlet3SecurityContextHolderAwareRequestWrapper" fieldName="request" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

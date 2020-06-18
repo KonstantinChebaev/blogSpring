@@ -17,6 +17,7 @@
 
     <properties>
         <java.version>13</java.version>
+        <jsonwebtoken.version>0.8.0</jsonwebtoken.version>
     </properties>
 
     <dependencies>
@@ -50,6 +51,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+<<<<<<< HEAD
+=======
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jsonwebtoken.version}</version>
+        </dependency>
+>>>>>>> experiments
     </dependencies>
 
 

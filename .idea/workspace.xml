@@ -20,39 +20,11 @@
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="BRANCH:experiments" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8533db2-8aeb-43c8-864f-21761e48eaad" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/UserLoginDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/security/JwtAuthenticationException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/security/JwtConfigurer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/security/JwtTokenFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/security/JwtTokenProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/security/JwtUserDetailsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/RegisterUserUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/ResultsDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/UserAuthResponceDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/UserRepositoryPortImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/UserRepositoryPortImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/web/api/user/ApiAuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/web/api/user/ApiAuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/web/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/web/config/SecurityUtility.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/web/security/Authority.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/security/Authority.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/RegisterUserUseCase.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/ResultsDto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/user/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/UserRepositoryPortImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/user/UserRepositoryPortImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/web/api/user/ApiAuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/web/api/user/ApiAuthController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/web/config/SecurityConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/web/config/SecurityUtility.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/web/security/Authority.class" beforeDir="false" />
-    </list>
+    <list default="true" id="f8533db2-8aeb-43c8-864f-21761e48eaad" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -93,7 +65,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SpringProjects/springsecurity/spring-webmvc-jwt-sample-master" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SpringProjects/skillbox-blog-engine-master" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
@@ -222,19 +194,7 @@
         </entry>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="experiments" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
+            <State />
           </value>
         </entry>
       </map>
@@ -258,10 +218,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="96" y="37" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1587815842000" />
-    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser" timestamp="1591780767035">
+    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser" timestamp="1592311626272">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1591780767035" />
+    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1592311626272" />
     <state x="371" y="205" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587815841124">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -278,26 +238,42 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1591905584389" />
-    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1591722853993">
+    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1592314627294">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1591722853993" />
-    <state width="1323" height="234" key="GridCell.Tab.0.bottom" timestamp="1592242133259">
+    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1592314627294" />
+    <state width="1323" height="43" key="GridCell.Tab.0.bottom" timestamp="1592425290959">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="234" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1592242133259" />
-    <state width="1323" height="234" key="GridCell.Tab.0.center" timestamp="1592242133259">
+    <state width="1323" height="43" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1592425290959" />
+    <state width="1323" height="43" key="GridCell.Tab.0.center" timestamp="1592425290959">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="234" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1592242133259" />
-    <state width="1323" height="234" key="GridCell.Tab.0.left" timestamp="1592242133259">
+    <state width="1323" height="43" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1592425290959" />
+    <state width="1323" height="43" key="GridCell.Tab.0.left" timestamp="1592425290959">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="234" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1592242133259" />
-    <state width="1323" height="234" key="GridCell.Tab.0.right" timestamp="1592242133259">
+    <state width="1323" height="43" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1592425290959" />
+    <state width="1323" height="43" key="GridCell.Tab.0.right" timestamp="1592425290959">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="234" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1592242133259" />
+    <state width="1323" height="43" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1592425290959" />
+    <state width="1323" height="43" key="GridCell.Tab.1.bottom" timestamp="1592425290960">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="43" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1592425290960" />
+    <state width="1323" height="43" key="GridCell.Tab.1.center" timestamp="1592425290960">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="43" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1592425290960" />
+    <state width="1323" height="43" key="GridCell.Tab.1.left" timestamp="1592425290960">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="43" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1592425290960" />
+    <state width="1323" height="43" key="GridCell.Tab.1.right" timestamp="1592425290960">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="43" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1592425290960" />
     <state x="184" y="8" key="SettingsEditor" timestamp="1587815730701">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -314,5 +290,13 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1588448637424" />
+  </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo typeName="org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest" fieldName="response" />
+        <PinnedItemInfo typeName="org.springframework.security.web.servletapi.HttpServlet3RequestFactory$Servlet3SecurityContextHolderAwareRequestWrapper" fieldName="request" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

@@ -22,9 +22,7 @@ import java.util.Set;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails, Serializable {
-    private static final long serialVersionUID = 902783495L;
-
+public class User  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -42,44 +40,10 @@ public class User implements UserDetails, Serializable {
     private String code;
     @Column(columnDefinition = "TEXT")
     private String photo;
-    //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//        @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<Post> posts;
 
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new HashSet<>();
-        if(isModerator){
-            authorities.add(new Authority("ADMIN"));
-        } else {
-            authorities.add(new Authority("USER"));
-        }
-        return authorities;
-    }
 
-    @Override
-    public String getUsername() {
-        return name;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 
 }

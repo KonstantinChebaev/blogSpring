@@ -1,43 +1,58 @@
 package main.web.api.user;
 
-import main.domain.user.UserLoginDto;
-import main.domain.user.UserServiceImpl;
-import main.domain.user.UserAuthResponceDto;
-import main.domain.user.UserRegisterDto;
+import main.domain.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.authentication.BadCredentialsException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping(value = "/api/auth/")
 public class ApiAuthController {
     @Autowired
-    UserServiceImpl registerUserUseCase;
+    UserServiceImpl userServise;
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    UserRepositoryPort userRepositoryPort;
 
     @PostMapping(value = "register")
     public UserAuthResponceDto apiAuthRegister(@RequestBody UserRegisterDto ur) {
-        return registerUserUseCase.registerUser(ur);
+        return userServise.registerUser(ur);
     }
 
     @PostMapping(value = "login")
     public UserAuthResponceDto apiAuthLogin (@RequestBody UserLoginDto ul) {
-        try {
+        return userServise.loginUser(ul.getEmail(), ul.getPassword());
+    }
 
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(ul.getEmail(), ul.getPassword()));
-
-        } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid username or password");
+    @GetMapping(value = "check")
+    public HashMap<String,Object> apiAuthCheck (HttpServletRequest request) {
+        HashMap<String,Object> responce = new HashMap<>();
+        User user = userServise.getCurrentUser(request);
+        if(user == null){
+            responce.put("result","false");
+        } else {
+            responce.put("result","true");
+            responce.put("user",user);
         }
-        return registerUserUseCase.loginUser(ul.getEmail(), ul.getPassword());
+        return responce;
+    }
+
+    @GetMapping("logout")
+    public HashMap<String,Object> logout(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+        HashMap<String,Object> responseMap = new HashMap<>();
+        responseMap.put("result","true");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return responseMap;
     }
 
 }

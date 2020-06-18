@@ -1,15 +1,15 @@
 package main.domain.user;
 
+import main.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.Optional;
 
 @Component
 public class UserServiceImpl {
@@ -36,21 +36,31 @@ public class UserServiceImpl {
     }
 
     public UserAuthResponceDto loginUser(String email, String password) {
-        Optional<User> userOptional = userRepositoryPort.findByEmail(email);
-        if(userOptional.isEmpty()){
-            System.out.println(email);
+        User user;
+        try {
+            user = userRepositoryPort.findByEmail(email);
+        } catch (Exception e){
             return new UserAuthResponceDto(false,null);
         }
-        User user = userOptional.get();
         if(!passwordEncoder.matches(password, user.getPassword())){
             System.out.println(password);
             return new UserAuthResponceDto(false,null);
         }
-        Authentication auth = new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
+        UserDetailsImpl userDetails = new UserDetailsImpl(user);
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, "", userDetails.getAuthorities());
         if (auth != null) {
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         System.out.println(SecurityContextHolder.getContext());
         return new UserAuthResponceDto(true,user);
+    }
+    public User getCurrentUser (HttpServletRequest request){
+        if(request.isRequestedSessionIdValid()){
+            String principalName = request.getUserPrincipal().getName();
+            String email = principalName.substring(principalName.indexOf(" email=")+7,principalName.indexOf(", password="));
+            return userRepositoryPort.findByEmail(email);
+        } else {
+            return null;
+        }
     }
 }

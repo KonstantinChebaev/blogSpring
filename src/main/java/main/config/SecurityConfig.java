@@ -1,27 +1,22 @@
 package main.config;
 
-import main.security.JwtConfigurer;
-import main.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @Configuration
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    JwtTokenProvider jwtTokenProvider;
-
-//    @Autowired
-//    private UserDetailsService userDetailsService;
-
+    private UserDetailsService userDetailsService;
 
     @Bean
     @Override
@@ -29,15 +24,12 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-
     //https://stackoverflow.com/questions/51026694/spring-security-blocks-post-requests-despite-securityconfig отсюда метод
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/post/moderation/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/post/my/**").hasAnyRole("USER","ADMIN")
@@ -51,8 +43,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/post/dislike/**").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/auth/logout/**").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.PUT, "/api/settings/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/auth/check/**").hasAnyRole("USER","ADMIN")
-                .anyRequest().permitAll()
+                .anyRequest().permitAll();
+                // .antMatchers(HttpMethod.GET, "/api/auth/check/**").hasAnyRole("USER","ADMIN")
 //                .antMatchers(HttpMethod.GET, "/api/init/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/api/post/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/api/post/search/**").permitAll()
@@ -65,15 +57,11 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.POST, "/api/auth/password/**").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/auth/register/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/api/statistics/all/**").permitAll()
-                .and()
-                .apply(new JwtConfigurer(jwtTokenProvider));
-
     }
-
-//    @Override
-//    public void configure(AuthenticationManagerBuilder builder) throws Exception {
-//        builder.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
-//    }
+    @Override
+    public void configure(AuthenticationManagerBuilder builder) throws Exception {
+        builder.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+    }
 
 
 

@@ -5,7 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 import java.io.Serializable;
 
 public class Authority implements GrantedAuthority, Serializable {
-    private static final long serialVersionUID = 123123L;
 
     private final String authority;
 

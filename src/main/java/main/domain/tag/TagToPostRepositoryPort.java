@@ -9,5 +9,7 @@ public interface TagToPostRepositoryPort {
     List<TagToPost> findByTagId (Integer tagId);
     List<TagToPost> findByPostId (Integer postId);
     List<TagToPost> findAll();
-   // HashMap<String, Integer> countPostsByTags (List<Tag> tags);
+
+    void save(TagToPost tagToPost);
+    // HashMap<String, Integer> countPostsByTags (List<Tag> tags);
 }

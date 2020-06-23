@@ -24,47 +24,70 @@
     </select>
   </component>
   <component name="ChangeListManager">
-<<<<<<< HEAD
     <list default="true" id="f8533db2-8aeb-43c8-864f-21761e48eaad" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagToPostRepositoryPort.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagToPostRepositoryPortImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagUseCase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/dao/CommentRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/ResultResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/StorageService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/comment/CommentUseCase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/comment/NewCommentRequestDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/web/api/ApiCommentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/web/api/ApiImageController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/dao/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/dao/PostRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/dao/TagToPostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/dao/TagToPostRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/dao/TagRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/dao/TagRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/comment/PostComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/comment/PostComment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/post/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/post/PostPostDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/PostPostDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/post/PostRepositPortImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/PostRepositPortImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/post/PostRepositoryPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/PostRepositoryPort.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/post/PostUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/PostUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/post/PostsDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/PostsDtoResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/tag/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/Tag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/tag/Tags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/Tags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/RegisterUserUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/RegisterUserUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/ResultsDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/ResultsDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagToPost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagToPost.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagToPostRepositoryPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagToPostRepositoryPort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagToPostRepositoryPortImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagToPostRepositoryPortImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/tag/TagUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/RegisterUserUseCase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/ResultsDto.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/UserRegisterDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/UserRegisterDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/web/api/ApiGeneralController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/web/api/ApiGeneralController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/UserAuthResponceDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/dto/UserAuthResponceDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/UserInfoUseCase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/UserLoginDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/dto/UserLoginDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/UserRegisterDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/dto/UserRegisterDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/UserAuthUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/security/BCryptProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/security/BCryptProvider.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/web/api/post/ApiPostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/web/api/post/ApiPostController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/web/api/user/ApiAuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/web/api/user/ApiAuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/dao/TagToPostRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/dao/TagToPostRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/dao/PostRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/dao/PostRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/dao/TagRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/dao/TagRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/comment/PostComment.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/comment/PostComment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/post/Post$ModerStat.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/post/Post$ModerStat.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/post/Post$PostBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/post/Post$PostBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/post/Post.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/post/Post.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/post/PostPostDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/post/PostPostDto.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/domain/post/PostRepositPortImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/post/PostRepositPortImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/domain/post/PostRepositoryPort.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/post/PostRepositoryPort.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/domain/post/PostUseCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/post/PostUseCase.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/post/PostsDto.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/domain/tag/Tag.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/tag/Tag.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/tag/Tags.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/tag/Tags.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/RegisterUserUseCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/user/RegisterUserUseCase.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/tag/TagToPost.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/tag/TagToPost.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/tag/TagToPostRepositoryPort.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/tag/TagToPostRepositoryPort.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/tag/TagToPostRepositoryPortImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/tag/TagToPostRepositoryPortImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/tag/TagUseCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/tag/TagUseCase.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/RegisterUserUseCase.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/User$UserBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/user/User$UserBuilder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/user/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/UserRegisterDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/user/UserRegisterDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/web/api/ApiGeneralController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/web/api/ApiGeneralController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/UserAuthResponceDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/UserInfoUseCase.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/UserLoginDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/UserRegisterDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/UserServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/security/BCryptProvider.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/security/BCryptProvider.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/security/JwtAuthenticationException.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/web/api/post/ApiPostController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/web/api/post/ApiPostController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/web/api/user/ApiAuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/web/api/user/ApiAuthController.class" afterDir="false" />
     </list>
-=======
-    <list default="true" id="f8533db2-8aeb-43c8-864f-21761e48eaad" name="Default Changelist" comment="" />
->>>>>>> experiments
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,8 +96,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -105,19 +128,21 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-<<<<<<< HEAD
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SpringProjects/gs-securing-web-master" />
-=======
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../SpringProjects/skillbox-blog-engine-master" />
->>>>>>> experiments
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Materials\IdeaProjects\SkillboxJava\diploma\blogSpring\src\main\resources" />
+      <recent name="D:\Materials\IdeaProjects\SkillboxJava\diploma\blogSpring" />
+      <recent name="D:\Materials\IdeaProjects\Модуль 16\blogSpring\src\main\resources" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
     </key>
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="main.web.api.post" />
       <recent name="main.domain.user" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
@@ -126,14 +151,6 @@
       <recent name="D:\Materials\IdeaProjects\blogSpring\src\main\java\main\domain\comment" />
       <recent name="D:\Materials\IdeaProjects\SkillboxJava\diploma\blogSpring" />
       <recent name="D:\Materials\IdeaProjects\Модуль 16\blogSpring" />
-    </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="main.domain.user" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Materials\IdeaProjects\SkillboxJava\diploma\blogSpring\src\main\resources" />
-      <recent name="D:\Materials\IdeaProjects\SkillboxJava\diploma\blogSpring" />
-      <recent name="D:\Materials\IdeaProjects\Модуль 16\blogSpring\src\main\resources" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -265,17 +282,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="96" y="37" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1587815842000" />
-<<<<<<< HEAD
-    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser" timestamp="1590346340753">
+    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser" timestamp="1592774549221">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1590346340753" />
-=======
-    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser" timestamp="1592311626272">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1592311626272" />
->>>>>>> experiments
+    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1592774549221" />
     <state x="371" y="205" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587815841124">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -287,58 +297,31 @@
     <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1591727656794">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1591727656794" />
-    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1591905584389">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1591905584389" />
-    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1592314627294">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1592314627294" />
-    <state width="1323" height="43" key="GridCell.Tab.0.bottom" timestamp="1592425290959">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state width="1323" height="43" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1592425290959" />
-    <state width="1323" height="43" key="GridCell.Tab.0.center" timestamp="1592425290959">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-<<<<<<< HEAD
     <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1588015630539" />
-    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1590345182192">
+    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1592941240798">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1590345182192" />
+    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1592941240798" />
     <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1590611136385">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1590611136385" />
-    <state width="1323" height="204" key="GridCell.Tab.0.bottom" timestamp="1590499511988">
+    <state width="1323" height="480" key="GridCell.Tab.0.bottom" timestamp="1592942776580">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="204" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1590499511988" />
-    <state width="1323" height="204" key="GridCell.Tab.0.center" timestamp="1590499511988">
+    <state width="1323" height="480" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1592942776580" />
+    <state width="1323" height="480" key="GridCell.Tab.0.center" timestamp="1592942776580">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="204" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1590499511988" />
-    <state width="1323" height="204" key="GridCell.Tab.0.left" timestamp="1590499511988">
+    <state width="1323" height="480" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1592942776580" />
+    <state width="1323" height="480" key="GridCell.Tab.0.left" timestamp="1592942776580">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="204" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1590499511988" />
-    <state width="1323" height="204" key="GridCell.Tab.0.right" timestamp="1590499511988">
+    <state width="1323" height="480" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1592942776580" />
+    <state width="1323" height="480" key="GridCell.Tab.0.right" timestamp="1592942776580">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="204" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1590499511988" />
-=======
-    <state width="1323" height="43" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1592425290959" />
-    <state width="1323" height="43" key="GridCell.Tab.0.left" timestamp="1592425290959">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state width="1323" height="43" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1592425290959" />
-    <state width="1323" height="43" key="GridCell.Tab.0.right" timestamp="1592425290959">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state width="1323" height="43" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1592425290959" />
+    <state width="1323" height="480" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1592942776580" />
     <state width="1323" height="43" key="GridCell.Tab.1.bottom" timestamp="1592425290960">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -355,7 +338,6 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1323" height="43" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1592425290960" />
->>>>>>> experiments
     <state x="184" y="8" key="SettingsEditor" timestamp="1587815730701">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -364,6 +346,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="492" y="277" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1366.728@0.0.1366.728" timestamp="1591297759308" />
+    <state x="389" y="0" width="587" height="728" key="find.popup" timestamp="1592942835730">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="389" y="0" width="587" height="728" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1592942835730" />
     <state x="65" y="0" key="new project wizard" timestamp="1590917045287">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -372,6 +358,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1588448637424" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1592911886832">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1592911886832" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

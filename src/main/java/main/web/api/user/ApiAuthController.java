@@ -1,6 +1,9 @@
 package main.web.api.user;
 
 import main.domain.user.*;
+import main.domain.user.dto.UserAuthResponceDto;
+import main.domain.user.dto.UserLoginDto;
+import main.domain.user.dto.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,10 +19,7 @@ import java.util.HashMap;
 @RequestMapping(value = "/api/auth/")
 public class ApiAuthController {
     @Autowired
-    UserServiceImpl userServise;
-
-    @Autowired
-    UserRepositoryPort userRepositoryPort;
+    UserAuthUseCase userServise;
 
     @PostMapping(value = "register")
     public UserAuthResponceDto apiAuthRegister(@RequestBody UserRegisterDto ur) {

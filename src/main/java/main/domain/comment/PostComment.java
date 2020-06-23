@@ -1,27 +1,42 @@
 package main.domain.comment;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import main.domain.post.Post;
+import main.domain.user.User;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 @Data
 @Entity
+@Builder(toBuilder = true)
 @Table(name="post_comments")
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostComment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name = "parent_id")
-    private int parentId;
-    @Column(name = "post_id", nullable = false)
-    private int postId;
-    @Column(name = "user_id", nullable = false)
-    private int userId;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    private PostComment parentPostComment;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Post post;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User user;
+
     @Column(nullable = false, columnDefinition = "DATETIME")
-    private Date time;
+    private LocalDateTime time;
 
-    public PostComment (){
-
-    }
+    @Column(length = 65535, columnDefinition="TEXT", nullable = false)
+    @Type(type="text")
+    private String text;
 }

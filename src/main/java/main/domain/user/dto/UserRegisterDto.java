@@ -1,4 +1,4 @@
-package main.domain.user;
+package main.domain.user.dto;
 
 import jdk.jfr.Name;
 import lombok.AllArgsConstructor;

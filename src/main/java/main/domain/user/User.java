@@ -4,23 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-<<<<<<< HEAD
-=======
-import main.security.Authority;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
->>>>>>> experiments
+import main.domain.post.Post;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
-<<<<<<< HEAD
-=======
-import java.util.HashSet;
-import java.util.Set;
->>>>>>> experiments
+import java.util.*;
 
 @Data
 @Entity
@@ -46,8 +34,8 @@ public class User  {
     private String code;
     @Column(columnDefinition = "TEXT")
     private String photo;
-//        @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<Post> posts;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Post> posts;
 
 
 

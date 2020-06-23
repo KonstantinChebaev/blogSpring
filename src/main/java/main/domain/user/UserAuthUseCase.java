@@ -1,5 +1,7 @@
 package main.domain.user;
 
+import main.domain.user.dto.UserAuthResponceDto;
+import main.domain.user.dto.UserRegisterDto;
 import main.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Component
-public class UserServiceImpl {
+public class UserAuthUseCase {
     @Autowired
     UserRepositoryPort userRepositoryPort;
 

@@ -43,7 +43,10 @@ public class TagUseCase {
         }
         return tags;
     }
-
+    public Tag saveTag(String tagName) {
+        Tag tag = tagRepository.findByNameIgnoreCase(tagName);
+        return (tag != null) ? tag : tagRepository.save(new Tag(tagName));
+    }
 
 
 }

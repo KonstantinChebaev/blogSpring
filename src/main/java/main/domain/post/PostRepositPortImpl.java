@@ -4,8 +4,8 @@ import main.dao.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,13 +16,8 @@ public class PostRepositPortImpl implements PostRepositoryPort {
     PostRepository pr;
 
     @Override
-    public Optional<Post> findByTitle(String title) {
-        return pr.findByTitle(title);
-    }
-
-    @Override
-    public Optional<Post> findById(int postId) {
-        return pr.findById(postId);
+    public Optional <Post> findById(int id) {
+        return pr.findById(id);
     }
 
     @Override
@@ -39,11 +34,10 @@ public class PostRepositPortImpl implements PostRepositoryPort {
     public List<Post> findAllGood() {
         Iterable<Post> postIterable = pr.findAll();
         ArrayList<Post> posts = new ArrayList<>();
-        Date currentD = new Date(System.currentTimeMillis());
         for (Post post : postIterable) {
             if (post.isActive()
                     && post.getModerStat().equals(Post.ModerStat.ACCEPTED)
-                    && post.getTime().before(currentD)) {
+                    && post.getTime().isBefore(LocalDateTime.now())) {
                 posts.add(post);
             }
         }
@@ -51,14 +45,14 @@ public class PostRepositPortImpl implements PostRepositoryPort {
     }
 
     @Override
-    public int getCount() {
-       int x = (int) pr.count();
-        return x;
+    public List<Post> findByModerStat(String moderStat) {
+        return pr.findByModerStat(moderStat);
     }
 
     @Override
-    public void addPost(Post post) {
-        pr.save(post);
+    public int getCount() {
+       int x = (int) pr.count();
+        return x;
     }
 
     @Override

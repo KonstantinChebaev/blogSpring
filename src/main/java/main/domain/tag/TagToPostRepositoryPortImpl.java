@@ -30,6 +30,11 @@ public class TagToPostRepositoryPortImpl implements TagToPostRepositoryPort{
         return this.revert(all);
     }
 
+    @Override
+    public void save(TagToPost tagToPost) {
+        ttpRepository.save(tagToPost);
+    }
+
     private ArrayList<TagToPost> revert (Iterable<TagToPost> tags){
         ArrayList<TagToPost> andAll = new ArrayList<>();
         for (TagToPost tag : tags) {

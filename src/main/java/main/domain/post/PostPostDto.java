@@ -1,13 +1,18 @@
 package main.domain.post;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 public class PostPostDto {
-    private String time;
-    private byte active;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime time;
+    private Boolean active;
     private String title;
     private String text;
-    private String tags;
+    private Set<String> tags;
 
 }

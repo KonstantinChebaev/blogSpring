@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostRepositoryPort {
-    Optional<Post> findByTitle(String title);
-    Optional<Post> findById(int postId);
+    Optional <Post>  findById(int postId) ;
 
     List<Post> findAll();
     List<Post> findAllGood();
+    List<Post> findByModerStat (String moderStat);
     int getCount();
 
-    void addPost(Post post);
     void savePost(Post post);
 
 }

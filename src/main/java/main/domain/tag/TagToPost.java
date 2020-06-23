@@ -19,5 +19,9 @@ public class TagToPost {
     public TagToPost (){
 
     }
+    public TagToPost(int postId,int tagId){
+        this.postId = postId;
+        this.tagId = tagId;
+    }
 
 }

@@ -1,5 +1,6 @@
 package main.web.api.post;
 
+import main.domain.ResultResponse;
 import main.domain.post.Post;
 import main.domain.post.PostPostDto;
 import main.domain.post.PostUseCase;
@@ -39,11 +40,10 @@ public class ApiPostController {
 
     //need tests
     @PutMapping("/{id}")
-    public HashMap<String,Object> putPost(@PathVariable int id,
-                                          HttpServletRequest request,
-                                          @RequestBody PostPostDto postPostDto) {
-         HashMap <String, Object> response = puc.editPost(id,request, postPostDto);
-        return response;
+    public ResponseEntity<ResultResponse> putPost(@PathVariable int id,
+                                                  HttpServletRequest request,
+                                                  @RequestBody PostPostDto postPostDto) {
+        return puc.editPost(id,request, postPostDto);
     }
 
     @PostMapping("") //need tests
@@ -66,7 +66,7 @@ public class ApiPostController {
     }
 
     @GetMapping("/byTag")
-    public PostsDtoResponse getTagPosts(@RequestParam int offset,
+    public  ResponseEntity<?>  getTagPosts(@RequestParam int offset,
                                         @RequestParam int limit,
                                         @RequestParam String tag) {
         return puc.getTagPosts(offset, limit, tag);
@@ -80,6 +80,8 @@ public class ApiPostController {
                                                HttpServletRequest request) {
         return puc.getModerationPosts(offset, limit, status, request);
     }
+
+
 
     //need tests
     @GetMapping("/my")

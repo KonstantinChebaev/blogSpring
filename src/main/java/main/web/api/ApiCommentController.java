@@ -17,7 +17,7 @@ public class ApiCommentController {
     CommentUseCase commentUseCase;
 
     @PostMapping ("")
-    public ResponseEntity<ResultResponse> getAllPosts(@RequestBody NewCommentRequestDto newCommentRequestDto,
+    public ResponseEntity<?> getAllPosts(@RequestBody NewCommentRequestDto newCommentRequestDto,
                                                       HttpServletRequest request) {
         return commentUseCase.createComment(newCommentRequestDto, request);
 

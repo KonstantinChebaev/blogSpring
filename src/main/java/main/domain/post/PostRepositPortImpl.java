@@ -45,9 +45,23 @@ public class PostRepositPortImpl implements PostRepositoryPort {
     }
 
     @Override
+    public List<Post> findAllGood(List<Post> posts) {
+        ArrayList<Post> goodPosts = new ArrayList<>();
+        for (Post post : posts) {
+            if (post.isActive()
+                    && post.getModerStat().equals(Post.ModerStat.ACCEPTED)
+                    && post.getTime().isBefore(LocalDateTime.now())) {
+                goodPosts.add(post);
+            }
+        }
+        return goodPosts;
+    }
+
+    @Override
     public List<Post> findByModerStat(String moderStat) {
         return pr.findByModerStat(moderStat);
     }
+
 
     @Override
     public int getCount() {

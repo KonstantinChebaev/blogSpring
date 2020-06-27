@@ -1,8 +1,5 @@
 package main.domain.user;
 
-import main.domain.user.User;
-
-import java.util.Optional;
 
 public interface UserRepositoryPort {
     User findByEmail(String email);

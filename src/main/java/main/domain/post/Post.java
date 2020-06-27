@@ -61,10 +61,8 @@ public class Post {
 
 //    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, orphanRemoval = true)
 //    private List<PostVote> postVotes;
-//
 
-//
-//    public void incrementViewCount() {
-//        this.viewCount++;
-//    }
+    public void incrementViewCount() {
+        this.viewCount++;
+    }
 }

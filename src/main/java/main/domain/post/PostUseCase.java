@@ -1,9 +1,9 @@
 package main.domain.post;
 
-import main.dao.TagRepository;
+import main.domain.CalendarResponseDto;
+import main.domain.ModerationRequestDto;
+import main.domain.ResultResponse;
 import main.domain.tag.Tag;
-import main.domain.tag.TagToPost;
-import main.domain.tag.TagToPostRepositoryPort;
 import main.domain.tag.TagUseCase;
 import main.domain.user.User;
 import main.domain.user.UserAuthUseCase;
@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -24,19 +26,10 @@ public class PostUseCase {
     PostRepositoryPort postRepositoryPort;
 
     @Autowired
-    TagToPostRepositoryPort tagToPostRP;
-
-    @Autowired
-    TagRepository tagRepository;
-
-    @Autowired
     UserAuthUseCase userServise;
 
     @Autowired
     TagUseCase tagUseCase;
-
-    private static ArrayList<Post> lastQueryPosts;
-    private static String lastQuery;
 
     public PostsDtoResponse getAll(int offset, int limit, String mode) {
         List<Post> posts = postRepositoryPort.findAll();
@@ -52,7 +45,6 @@ public class PostUseCase {
         }
          return optionalPost.get();
     }
-
 
 
     public PostsDtoResponse searchPost(int offset, int limit, String query) {
@@ -72,29 +64,18 @@ public class PostUseCase {
     }
 
 
-    public PostsDtoResponse getTagPosts(int offset, int limit, String tagName) {
-        List<Post> allPosts = postRepositoryPort.findAllGood();
-        Tag justTag;
-        Optional<Tag> tag = tagRepository.findByName(tagName);
-        if (tag.isPresent()) {
-            justTag = tag.get();
-        } else {
-            return null; //переделать чтобы возвращалось сообщение о несуществующем теге
+    public ResponseEntity<?> getTagPosts(int offset, int limit, String tagName) {
+        List<Tag> tags = tagUseCase.getQueryTag(tagName);
+        if (tags == null){
+            return getErrorResponce("tag", "Такого тега не существует");
         }
-        List<TagToPost> someTTPs = tagToPostRP.findByTagId(justTag.getId());
-        ArrayList<Post> posts = new ArrayList<>();
-        for (TagToPost ttp : someTTPs) {
-            for (Post post : allPosts) {
-                if (ttp.getPostId() == post.getId()) {
-                    posts.add(post);
-                }
-            }
-        }
+        List<Post> posts = tags.get(0).getPosts();
+        posts = postRepositoryPort.findAllGood(posts);
         PostsDtoResponse pdr = new PostsDtoResponse();
         pdr.setCount(posts.size());
         posts = this.cutArray(offset, limit, posts);
         pdr.setPosts(posts);
-        return pdr;
+        return new ResponseEntity<>(pdr, HttpStatus.OK);
 
     }
 
@@ -106,19 +87,6 @@ public class PostUseCase {
         posts = cutArray(offset, limit, posts);
         return new PostsDtoResponse(count, posts);
     }
-
-
-    private ArrayList<Post> cutArray(int offset, int limit, List<Post> list) {
-        ArrayList<Post> finalList = new ArrayList<>();
-        if (limit > list.size()) {
-            limit = list.size();
-        }
-        for (int i = offset; i < limit; i++) {
-            finalList.add(list.get(i));
-        }
-        return finalList;
-    }
-
 
     public PostsDtoResponse getUserPosts(int offset, int limit, String status, HttpServletRequest request) {
         User user = userServise.getCurrentUser(request);
@@ -151,6 +119,17 @@ public class PostUseCase {
         return new PostsDtoResponse(count,finalPosts);
     }
 
+    private ArrayList<Post> cutArray(int offset, int limit, List<Post> list) {
+        ArrayList<Post> finalList = new ArrayList<>();
+        if (limit > list.size()) {
+            limit = list.size();
+        }
+        for (int i = offset; i < limit; i++) {
+            finalList.add(list.get(i));
+        }
+        return finalList;
+    }
+
 
     //Методы для создания или редактирования постов
 
@@ -170,29 +149,86 @@ public class PostUseCase {
         return response;
     }
 
-    public HashMap<String, Object> editPost(int id, HttpServletRequest request, PostPostDto postPostDto) {
+    public ResponseEntity<ResultResponse> editPost(int id, HttpServletRequest request, PostPostDto postPostDto) {
+        ResultResponse resultResponse = new ResultResponse();
         HashMap<String, Object> response = new HashMap<>();
         User user = userServise.getCurrentUser(request);
         Optional <Post> optionalPost = postRepositoryPort.findById(id);
         if(optionalPost.isEmpty()){
-            response.put("result", false);
-            response.put("errors",new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
-            return response;
+            resultResponse.setResult(false);
+            response.put("errors", "Пост с id " + id + " не найден");
+            resultResponse.setErrors(response);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
         Post post = optionalPost.get();
 
         if(user.getId()!=post.getUser().getId()){
-            response.put("result", false);
-            response.put("errors",new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
-            return response;
+            resultResponse.setResult(false);
+            response.put("errors", "У вас нет прав редактировать пост");
+            resultResponse.setErrors(response);
+            return new ResponseEntity<>(resultResponse, HttpStatus.FORBIDDEN);
         }
         response = checkPostInput(postPostDto);
         if (response.get("result").equals(false)){
-            return response;
+            resultResponse.setResult(false);
+            resultResponse.setErrors(response);
+            return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
         }
+        resultResponse.setResult(true);
         savePost(postPostDto,post);
-        return response;
+        return new ResponseEntity<>(resultResponse, HttpStatus.OK);
     }
+
+
+    public void savePost(PostPostDto postPostDto, Post post) {
+        post.setActive(postPostDto.getActive());
+        post.setText(postPostDto.getText());
+        post.setTitle(postPostDto.getTitle());
+        post.setModerStat(Post.ModerStat.NEW);
+        LocalDateTime date = postPostDto.getTime();
+        if (date.isBefore(LocalDateTime.now())) {
+            date = LocalDateTime.now();
+        }
+        post.setTime(date);
+        if (postPostDto.getTags() != null) {
+            postPostDto.getTags().forEach(tag -> post.getTags().add(tagUseCase.saveTag(tag)));
+        }
+        postRepositoryPort.savePost(post);
+    }
+
+    public ResponseEntity<?>  moderate(ModerationRequestDto moderationRequestDto, HttpServletRequest request) {
+        Optional <Post> optpost = postRepositoryPort.findById(moderationRequestDto.getPostId());
+        if (optpost.isEmpty()){
+            return getErrorResponce("badId", "Post with this id does not found");
+        }
+        Post post = optpost.get();
+        int userId = userServise.getCurrentUser(request).getId();
+        if (moderationRequestDto.getDecision().equals("DECLINE")){
+            post.setModerStat(Post.ModerStat.DECLINED);
+        } else if (moderationRequestDto.getDecision().equals("ACCEPT")){
+            post.setModerStat(Post.ModerStat.ACCEPTED);
+        }
+        post.setModeratorId(userId);
+        return new ResponseEntity<>(new ResultResponse(true,null),HttpStatus.OK);
+
+    }
+
+    //аргументы по два передаются ключ - значение
+    private ResponseEntity<?> getErrorResponce (String ... messages){
+        ResultResponse resultResponse = new ResultResponse();
+        resultResponse.setResult(false);
+        HashMap <String, Object> errors = new HashMap<>();
+        if (messages.length>0){
+            for (int x = 0; x < messages.length; x++){
+                if(x%2!=0) continue;
+                errors.put(messages[x],messages[x+1]);
+            }
+        }
+        resultResponse.setErrors(errors);
+        return  new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
+
+    }
+
 
     public HashMap <String, Object> checkPostInput (PostPostDto postPostDto){
         HashMap<String, Object> response = new HashMap<>();
@@ -212,19 +248,34 @@ public class PostUseCase {
         return response;
     }
 
-    public void savePost(PostPostDto postPostDto, Post post) {
-        post.setActive(postPostDto.getActive());
-        post.setText(postPostDto.getText());
-        post.setTitle(postPostDto.getTitle());
-        post.setModerStat(Post.ModerStat.NEW);
-        LocalDateTime date = postPostDto.getTime();
-        if (date.isBefore(LocalDateTime.now())) {
-            date = LocalDateTime.now();
+    public ResponseEntity<CalendarResponseDto> getCalend(String year) {
+        Integer searchingYear = LocalDate.now().getYear();
+        if (year != null) {
+            int inputYear = Integer.parseInt(year);
+            if (inputYear<searchingYear){
+                searchingYear = inputYear;
+            }
         }
-        post.setTime(date);
-        if (postPostDto.getTags() != null) {
-            postPostDto.getTags().forEach(tag -> post.getTags().add(tagUseCase.saveTag(tag)));
+
+        Set<Integer> allYears = new TreeSet<>();
+        Map<String, Long> posts = new HashMap<>();
+        int postYear;
+        String day;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        for (Post post : postRepositoryPort.findAll()){
+            postYear = post.getTime().getYear();
+            allYears.add(postYear);
+            if (searchingYear == postYear){
+                day = post.getTime().format(formatter);
+                if(posts.containsKey(day)){
+                    long count = posts.get(day)+1;
+                    posts.replace(day, count);
+                } else {
+                    posts.put(day,1L);
+                }
+            }
         }
-        postRepositoryPort.savePost(post);
-    }
+        return new ResponseEntity<>(new CalendarResponseDto(allYears,posts), HttpStatus.OK);
+       }
 }

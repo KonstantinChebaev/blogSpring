@@ -5,11 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
+import java.util.Set;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ResultResponse {
-    private Boolean result;
-    private Map<String, Object> errors;
+@NoArgsConstructor
+public class CalendarResponseDto {
+    private Set<Integer> allYears;
+    private Map<String, Long> posts;
 }

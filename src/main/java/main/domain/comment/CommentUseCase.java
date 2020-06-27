@@ -28,7 +28,7 @@ public class CommentUseCase {
     @Autowired
     private CommentRepository commentsRepository;
 
-    public ResponseEntity<ResultResponse> createComment (NewCommentRequestDto newCommentRequestDto,
+    public ResponseEntity<?> createComment (NewCommentRequestDto newCommentRequestDto,
                                                          HttpServletRequest request){
         ResultResponse response = new ResultResponse();
         User user = userAuthUseCase.getCurrentUser(request);
@@ -45,17 +45,15 @@ public class CommentUseCase {
             response.setErrors(errors);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
-        final PostComment newPostComment = PostComment.builder()
+        PostComment newPostComment = PostComment.builder()
                 .parentPostComment(optionalPostComment.get())
                 .post(optionalPost.get())
                 .user(user)
                 .time(LocalDateTime.now())
                 .text(newCommentRequestDto.getText())
                 .build();
-        commentsRepository.save(newPostComment);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-
-
+        newPostComment = commentsRepository.save(newPostComment);
+        return new ResponseEntity<>(newPostComment.getId(), HttpStatus.OK);
     }
 
 

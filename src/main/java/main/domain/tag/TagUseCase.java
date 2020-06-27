@@ -5,48 +5,63 @@ import main.domain.post.PostRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Component
 public class TagUseCase {
     @Autowired
-    PostRepositoryPort postRP;
-
-    @Autowired
     TagRepository tagRepository;
 
     @Autowired
-    TagToPostRepositoryPort tagToPostRP;
+    PostRepositoryPort postRepositoryPort;
 
-
-    //В случае с этим методом можно пойти двумя путями
-    //1 выгрузить все записи TagToPost и работать с ними здесь (реализовано)
-    //2 за количеством постов по каждому тегу обращаться с запросом в БД
-    //Открытый вопрос что быстрее
-    public List<Tags> getQueryTags (String query){
-        ArrayList <Tags> tags = new ArrayList<>();
-        ArrayList<TagToPost> allTagToPosts = (ArrayList<TagToPost>) tagToPostRP.findAll();
-        double postsCount = postRP.getCount();
+    public List<Tag> getQueryTag (String query){
+        ArrayList <Tag> tags = new ArrayList<>();
         Iterable<Tag> tagIterable = tagRepository.findAll();
-        double count= 0;
         for (Tag tag : tagIterable) {
-            if(tag.getName().contains(query)||query.equals("")){
-                for(TagToPost ttp : allTagToPosts){
-                    if(ttp.getTagId()==tag.getId()){
-                        count++;
-                    }
-                }
-                tags.add(new Tags(tag.getName(),count/postsCount));
-                count = 0;
+            if(tag.getName().toLowerCase().contains(query)){
+                tags.add(tag);
             }
+        }
+        if(tags.isEmpty()){
+            return null;
         }
         return tags;
     }
+
     public Tag saveTag(String tagName) {
         Tag tag = tagRepository.findByNameIgnoreCase(tagName);
-        return (tag != null) ? tag : tagRepository.save(new Tag(tagName));
+        return (tag != null) ? tag : tagRepository.save(new Tag(tagName.toLowerCase()));
     }
 
 
+    public HashMap <String, Object> getTagsWeights(String query) {
+        List <Tag> tags;
+        HashMap <String, Object> result = new HashMap<>();
+        if(query == null){
+            tags = new ArrayList<>();
+           for (Tag tag : tagRepository.findAll()){
+               tags.add(tag);
+           }
+        } else {
+            tags = getQueryTag(query);
+            if (tags == null){
+                result.put("errors", "Tag with "+query+" not found");
+                return result;
+            }
+        }
+        int postsTotalCount = postRepositoryPort.findAllGood().size();
+        double weight = 0;
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setRoundingMode(RoundingMode.CEILING);
+        for (Tag tag : tags){
+            weight = tag.getPostsAmount()/postsTotalCount;
+            result.put(tag.getName(), df.format(weight));
+        }
+        return result;
+    }
 }

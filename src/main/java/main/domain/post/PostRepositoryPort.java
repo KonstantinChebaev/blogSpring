@@ -8,9 +8,11 @@ public interface PostRepositoryPort {
 
     List<Post> findAll();
     List<Post> findAllGood();
+    List<Post> findAllGood(List<Post> posts);
     List<Post> findByModerStat (String moderStat);
     int getCount();
 
     void savePost(Post post);
+
 
 }

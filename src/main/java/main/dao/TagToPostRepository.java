@@ -1,6 +1,5 @@
 package main.dao;
 
-import main.domain.tag.TagToPost;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

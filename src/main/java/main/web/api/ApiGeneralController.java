@@ -1,24 +1,29 @@
 package main.web.api;
 
 
+import main.domain.CalendarResponseDto;
 import main.domain.GeneralInfo;
+import main.domain.ModerationRequestDto;
+import main.domain.post.PostUseCase;
 import main.domain.tag.TagUseCase;
-import main.domain.tag.Tags;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 @RestController
+@RequestMapping("/api")
 public class ApiGeneralController {
 
     @Autowired
     TagUseCase tuc;
 
-    @GetMapping("/api/init")
+    @Autowired
+    PostUseCase puc;
+
+    @GetMapping("/init")
     public GeneralInfo getGeneral (){
         GeneralInfo gi = GeneralInfo.builder()
                 .title("DevPub")
@@ -31,8 +36,23 @@ public class ApiGeneralController {
         return gi;
     }
 
-    @GetMapping("/api/tags")
-    public List<Tags> getTags (@RequestParam String query){
-        return tuc.getQueryTags(query);
+    //need tests
+    @GetMapping("/tags")
+    public HashMap<String, Object> getTags (@RequestParam String query){
+        return tuc.getTagsWeights(query);
+    }
+
+    //need tests
+    @PostMapping("/moderation")
+    public ResponseEntity<?> postModeration(@RequestBody ModerationRequestDto moderationRequestDto,
+                                         HttpServletRequest request) {
+        return puc.moderate(moderationRequestDto, request);
+    }
+
+    //need tests
+    @GetMapping("/calendar")
+    public ResponseEntity<CalendarResponseDto> getCalendar(
+            @RequestParam(required = false) String year) {
+        return puc.getCalend(year);
     }
 }

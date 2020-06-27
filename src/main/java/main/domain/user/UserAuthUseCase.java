@@ -11,7 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class UserAuthUseCase {
@@ -64,5 +66,17 @@ public class UserAuthUseCase {
         } else {
             return null;
         }
+    }
+
+    public Boolean restoreUserPassword(String email) {
+        User user = userRepositoryPort.findByEmail(email);
+        final String code = UUID.randomUUID().toString();
+        if (user == null) {
+            return false;
+        }
+        user.setCode(code);
+        return null;
+
+
     }
 }

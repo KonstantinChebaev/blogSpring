@@ -1,10 +1,13 @@
 package main.web.api.user;
 
+import main.domain.ResultResponse;
 import main.domain.user.*;
 import main.domain.user.dto.UserAuthResponceDto;
 import main.domain.user.dto.UserLoginDto;
 import main.domain.user.dto.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -53,6 +56,13 @@ public class ApiAuthController {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return responseMap;
+    }
+
+    @PostMapping("/restore")
+    public ResponseEntity<ResultResponse> restore(@RequestParam String email) {
+        ResultResponse response = new ResultResponse();
+        response.setResult(userServise.restoreUserPassword(email));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

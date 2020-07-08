@@ -2,6 +2,7 @@ package main.domain.user;
 
 import main.domain.user.dto.UserAuthResponceDto;
 import main.domain.user.dto.UserRegisterDto;
+import main.security.EmailSender;
 import main.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,17 +12,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
-import java.util.Date;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Component
-public class UserAuthUseCase {
+public class UserAuthServise {
     @Autowired
     UserRepositoryPort userRepositoryPort;
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    EmailSender emailSender;
 
     public UserAuthResponceDto registerUser(UserRegisterDto urd){
         //проверки всякие разные
@@ -31,7 +33,7 @@ public class UserAuthUseCase {
                 .code(urd.getCaptcha())
                 .password(urd.getPassword())
                 .isModerator(false)
-                .regTime(new Date(System.currentTimeMillis()))
+                .regTime(LocalDateTime.now())
                 .build();
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userRepositoryPort.save(newUser);
@@ -69,13 +71,13 @@ public class UserAuthUseCase {
     }
 
     public Boolean restoreUserPassword(String email) {
-        User user = userRepositoryPort.findByEmail(email);
-        final String code = UUID.randomUUID().toString();
-        if (user == null) {
-            return false;
-        }
-        user.setCode(code);
-        return null;
+//        User userFromDB = userRepositoryPort.findByEmail(email);
+//        if (userFromDB == null) {
+//            return false;
+//        }
+            emailSender.sendEmail(email,"ty Pidor");
+
+        return true;
 
 
     }

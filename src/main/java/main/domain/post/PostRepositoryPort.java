@@ -1,5 +1,7 @@
 package main.domain.post;
 
+import main.domain.user.User;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,4 +17,9 @@ public interface PostRepositoryPort {
     void savePost(Post post);
 
 
+    long countByUser(User user);
+
+    long countViewsByUser(User user);
+
+    String getFirstPostDate(User user);
 }

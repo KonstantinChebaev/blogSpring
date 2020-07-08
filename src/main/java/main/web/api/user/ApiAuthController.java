@@ -22,7 +22,7 @@ import java.util.HashMap;
 @RequestMapping(value = "/api/auth/")
 public class ApiAuthController {
     @Autowired
-    UserAuthUseCase userServise;
+    UserAuthServise userServise;
 
     @PostMapping(value = "register")
     public UserAuthResponceDto apiAuthRegister(@RequestBody UserRegisterDto ur) {
@@ -58,6 +58,7 @@ public class ApiAuthController {
         return responseMap;
     }
 
+    // https://mailtrap.io/inboxes
     @PostMapping("/restore")
     public ResponseEntity<ResultResponse> restore(@RequestParam String email) {
         ResultResponse response = new ResultResponse();

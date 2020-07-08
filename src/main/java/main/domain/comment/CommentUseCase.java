@@ -5,7 +5,7 @@ import main.domain.ResultResponse;
 import main.domain.post.Post;
 import main.domain.post.PostRepositoryPort;
 import main.domain.user.User;
-import main.domain.user.UserAuthUseCase;
+import main.domain.user.UserAuthServise;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class CommentUseCase {
     PostRepositoryPort postRepositoryPort;
 
     @Autowired
-    UserAuthUseCase userAuthUseCase;
+    UserAuthServise userAuthUseCase;
 
     @Autowired
     private CommentRepository commentsRepository;

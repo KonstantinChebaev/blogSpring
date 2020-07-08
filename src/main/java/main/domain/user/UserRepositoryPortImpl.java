@@ -35,7 +35,7 @@ public class UserRepositoryPortImpl implements UserRepositoryPort {
     public User findById(int userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if(optionalUser.isEmpty()){
-            throw new RuntimeException("User witn id:"+userId+" not found");
+            return null;
         }
         return optionalUser.get();
     }

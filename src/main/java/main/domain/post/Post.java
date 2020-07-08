@@ -59,8 +59,8 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<PostComment> postComments;
 
-//    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, orphanRemoval = true)
-//    private List<PostVote> postVotes;
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<PostVote> postVotes;
 
     public void incrementViewCount() {
         this.viewCount++;

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/post")
@@ -90,6 +91,12 @@ public class ApiPostController {
                                                @RequestParam String status,
                                                HttpServletRequest request) {
         return puc.getUserPosts(offset, limit, status, request);
+    }
+
+    //need tests
+    @PostMapping("/{vote}")
+    public ResponseEntity<ResultResponse> votePost(@PathVariable String vote, @RequestBody Map<String, Integer> body, HttpServletRequest request) {
+        return puc.votePost(vote,  body.getOrDefault("post_id", 0), request);
     }
 
 }

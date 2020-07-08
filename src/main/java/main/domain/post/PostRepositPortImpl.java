@@ -1,6 +1,7 @@
 package main.domain.post;
 
 import main.dao.PostRepository;
+import main.domain.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -72,5 +73,20 @@ public class PostRepositPortImpl implements PostRepositoryPort {
     @Override
     public void savePost(Post post) {
         pr.save(post);
+    }
+
+    @Override
+    public long countByUser(User user) {
+        return pr.countByUser(user);
+    }
+
+    @Override
+    public long countViewsByUser(User user) {
+        return pr.getViewsByUser(user);
+    }
+
+    @Override
+    public String getFirstPostDate(User user) {
+        return pr.getFirstPostDateByUser(user);
     }
 }

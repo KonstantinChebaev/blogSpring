@@ -6,7 +6,7 @@ import main.domain.ResultResponse;
 import main.domain.tag.Tag;
 import main.domain.tag.TagUseCase;
 import main.domain.user.User;
-import main.domain.user.UserAuthUseCase;
+import main.domain.user.UserAuthServise;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -26,10 +25,13 @@ public class PostUseCase {
     PostRepositoryPort postRepositoryPort;
 
     @Autowired
-    UserAuthUseCase userServise;
+    UserAuthServise userServise;
 
     @Autowired
     TagUseCase tagUseCase;
+
+    @Autowired
+    VotesService votesService;
 
     public PostsDtoResponse getAll(int offset, int limit, String mode) {
         List<Post> posts = postRepositoryPort.findAll();
@@ -278,4 +280,18 @@ public class PostUseCase {
         }
         return new ResponseEntity<>(new CalendarResponseDto(allYears,posts), HttpStatus.OK);
        }
+
+    public ResponseEntity<ResultResponse> votePost(String vote, Integer postId, HttpServletRequest request) {
+        User user = userServise.getCurrentUser(request);
+        if (postId <= 0) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        Post post = postRepositoryPort.findById(postId).orElse(null);
+        if (post == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        ResultResponse result = new ResultResponse();
+        result.setResult(votesService.vote(vote, user, post));
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

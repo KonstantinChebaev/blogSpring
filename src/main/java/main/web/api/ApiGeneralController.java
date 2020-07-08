@@ -1,17 +1,20 @@
 package main.web.api;
 
 
-import main.domain.CalendarResponseDto;
-import main.domain.GeneralInfo;
-import main.domain.ModerationRequestDto;
+import lombok.AllArgsConstructor;
+import main.domain.*;
+import main.domain.globallSettings.GSettingsDto;
+import main.domain.globallSettings.SettingsService;
 import main.domain.post.PostUseCase;
 import main.domain.tag.TagUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -22,6 +25,12 @@ public class ApiGeneralController {
 
     @Autowired
     PostUseCase puc;
+
+    @Autowired
+    SettingsService settingsService;
+
+    @Autowired
+    StatisticServise statisticsServise;
 
     @GetMapping("/init")
     public GeneralInfo getGeneral (){
@@ -55,4 +64,24 @@ public class ApiGeneralController {
             @RequestParam(required = false) String year) {
         return puc.getCalend(year);
     }
+
+    @GetMapping("/settings")
+    public ResponseEntity<GSettingsDto> getSettings() {
+        return new ResponseEntity<>(settingsService.getSettings(), HttpStatus.OK);
+    }
+
+    //need tests
+    @PutMapping("/settings")
+    public ResponseEntity<Boolean> updateSettings(@RequestBody GSettingsDto settings) {
+        boolean result = settingsService.putSettings(settings);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    //need tests
+    @GetMapping("/statistics/{statisticsType}")
+    public ResponseEntity<StatisticsDto> getStatistics(@PathVariable String statisticsType, HttpServletRequest request) {
+        return new ResponseEntity<>(statisticsServise.getStatistics(statisticsType,request), HttpStatus.OK);
+    }
+
+
 }

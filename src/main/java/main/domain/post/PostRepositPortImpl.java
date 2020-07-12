@@ -5,6 +5,7 @@ import main.domain.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,21 +33,7 @@ public class PostRepositPortImpl implements PostRepositoryPort {
     }
 
     @Override
-    public List<Post> findAllGood() {
-        Iterable<Post> postIterable = pr.findAll();
-        ArrayList<Post> posts = new ArrayList<>();
-        for (Post post : postIterable) {
-            if (post.isActive()
-                    && post.getModerStat().equals(Post.ModerStat.ACCEPTED)
-                    && post.getTime().isBefore(LocalDateTime.now())) {
-                posts.add(post);
-            }
-        }
-        return posts;
-    }
-
-    @Override
-    public List<Post> findAllGood(List<Post> posts) {
+    public List<Post> getAllGood(List<Post> posts) {
         ArrayList<Post> goodPosts = new ArrayList<>();
         for (Post post : posts) {
             if (post.isActive()
@@ -61,6 +48,39 @@ public class PostRepositPortImpl implements PostRepositoryPort {
     @Override
     public List<Post> findByModerStat(String moderStat) {
         return pr.findByModerStat(moderStat);
+    }
+
+    @Override
+    public List<Post> findByQuery(String query) {
+        Iterable<Post> postIterable = pr.findAll();
+        ArrayList<Post> posts = new ArrayList<>();
+        for (Post post : postIterable) {
+            if((post.getText().contains(query) || post.getTitle().contains(query))){
+                if (post.isActive()
+                        && post.getModerStat().equals(Post.ModerStat.ACCEPTED)
+                        && post.getTime().isBefore(LocalDateTime.now())) {
+                    posts.add(post);
+                }
+            }
+        }
+        return posts;
+    }
+
+    @Override
+    public List<Post> findByDate(LocalDate date) {
+        Iterable<Post> postIterable = pr.findAll();
+        ArrayList<Post> posts = new ArrayList<>();
+        for (Post post : postIterable) {
+            LocalDate localDate = post.getTime().toLocalDate();
+            if(localDate.isEqual(date)){
+                if (post.isActive()
+                        && post.getModerStat().equals(Post.ModerStat.ACCEPTED)
+                        && post.getTime().isBefore(LocalDateTime.now())) {
+                    posts.add(post);
+                }
+            }
+        }
+        return posts;
     }
 
 
@@ -89,4 +109,5 @@ public class PostRepositPortImpl implements PostRepositoryPort {
     public String getFirstPostDate(User user) {
         return pr.getFirstPostDateByUser(user);
     }
+
 }

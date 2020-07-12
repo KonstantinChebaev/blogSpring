@@ -1,12 +1,17 @@
 package main.domain.post;
 
+import org.jsoup.Jsoup;
 import main.domain.CalendarResponseDto;
 import main.domain.ModerationRequestDto;
 import main.domain.ResultResponse;
+import main.domain.post.dto.AllPostsResponseDto;
+import main.domain.post.dto.PostPostDto;
+import main.domain.post.dto.PostPlainDto;
+import main.domain.post.dto.PostUserDto;
 import main.domain.tag.Tag;
-import main.domain.tag.TagUseCase;
+import main.domain.tag.TagServise;
 import main.domain.user.User;
-import main.domain.user.UserAuthServise;
+import main.domain.user.UserServise;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,24 +25,69 @@ import java.util.*;
 
 
 @Component
-public class PostUseCase {
+public class PostServise {
     @Autowired
     PostRepositoryPort postRepositoryPort;
 
     @Autowired
-    UserAuthServise userServise;
+    UserServise userServise;
 
     @Autowired
-    TagUseCase tagUseCase;
+    TagServise tagServise;
 
     @Autowired
     VotesService votesService;
 
-    public PostsDtoResponse getAll(int offset, int limit, String mode) {
+    public AllPostsResponseDto getAll(int offset, int limit, String mode) {
         List<Post> posts = postRepositoryPort.findAll();
         int count = posts.size();
-        posts = this.cutArray(offset, limit,posts);
-        return new PostsDtoResponse(count, posts);
+        List<PostPlainDto> plainPosts = getPlainPosts(posts);
+
+        if(plainPosts.size()<limit){
+            limit = plainPosts.size()-1;
+        }
+        plainPosts.subList(offset,limit);
+        sortPlainPostsByMode(plainPosts, mode);
+        return new AllPostsResponseDto(count, plainPosts);
+    }
+
+    private List<PostPlainDto> getPlainPosts (List <Post> posts){
+        List<PostPlainDto> postPlainDtos = new ArrayList<>();
+        for (Post p: posts) {
+            String postText = Jsoup.parse(p.getText()).text();
+            String announce = postText.length() > 150 ? postText.substring(0, 150) + "..." : postText;
+            PostPlainDto ppd = PostPlainDto.builder()
+                    .commentCount(p.getPostComments().size())
+                    .id(p.getId())
+                    .title(p.getTitle())
+                    .viewCount(p.getViewCount())
+                    .time(p.getTime())
+                    .user(new PostUserDto(p.getUser().getId(),p.getUser().getName()))
+                    .announce(announce)
+                    .dislikeCount(p.getPostVotes().stream().filter(item -> item.getValue() < 0).count())
+                    .likeCount(p.getPostVotes().stream().filter(item -> item.getValue() > 0).count())
+                    .build();
+            postPlainDtos.add(ppd);
+        }
+        return postPlainDtos;
+    }
+
+    private List<PostPlainDto> sortPlainPostsByMode(List<PostPlainDto> list, String mode) {
+        switch (mode) {
+            case "BEST":
+                list.sort(Comparator.comparing(PostPlainDto::getLikeCount).reversed());
+                break;
+            case "EARLY":
+                list.sort(Comparator.comparing(PostPlainDto::getTime));
+                break;
+            case "RECENT":
+                list.sort(Comparator.comparing(PostPlainDto::getTime).reversed());
+                break;
+            case "POPULAR":
+                list.sort(Comparator.comparing(PostPlainDto::getCommentCount).reversed());
+                break;
+        }
+        return list;
     }
 
     public Post findById(int id) {
@@ -48,49 +98,59 @@ public class PostUseCase {
          return optionalPost.get();
     }
 
-
-    public PostsDtoResponse searchPost(int offset, int limit, String query) {
-        List<Post> allGoodPosts = postRepositoryPort.findAllGood();
-        allGoodPosts.removeIf(post -> !(post.getText().contains(query) || post.getTitle().contains(query)));
-        ArrayList<Post> posts = this.cutArray(offset, limit, allGoodPosts);
-        return new PostsDtoResponse(allGoodPosts.size(), posts);
+    public AllPostsResponseDto searchPost(int offset, int limit, String query) {
+        List<Post> posts = postRepositoryPort.findByQuery(query);
+        if(posts.size()<limit){
+            limit = posts.size()-1;
+        }
+        posts.subList(offset,limit);
+        return new AllPostsResponseDto(posts.size(), getPlainPosts(posts));
     }
 
-    public PostsDtoResponse getDatePosts(int offset, int limit, String time) {
+    public AllPostsResponseDto getDatePosts(int offset, int limit, String time) {
         LocalDate ldate = LocalDate.parse(time);
-        Date date = java.sql.Date.valueOf(ldate);
-        List<Post> allGoodPosts = postRepositoryPort.findAllGood();
-        allGoodPosts.removeIf(post -> !post.getTime().equals(date));
-        ArrayList<Post> posts = this.cutArray(offset, limit, allGoodPosts);
-        return new PostsDtoResponse(allGoodPosts.size(), posts);
+        List<Post> posts = postRepositoryPort.findByDate(ldate);
+        int size = posts.size();
+        if(size<limit){
+            limit = size-1;
+        }
+        posts.subList(offset, limit);
+        return new AllPostsResponseDto(size, getPlainPosts(posts));
     }
 
 
     public ResponseEntity<?> getTagPosts(int offset, int limit, String tagName) {
-        List<Tag> tags = tagUseCase.getQueryTag(tagName);
-        if (tags == null){
+        List<Tag> tags = tagServise.getQueryTag(tagName);
+        if (tags == null || tags.isEmpty()){
             return getErrorResponce("tag", "Такого тега не существует");
         }
         List<Post> posts = tags.get(0).getPosts();
-        posts = postRepositoryPort.findAllGood(posts);
-        PostsDtoResponse pdr = new PostsDtoResponse();
-        pdr.setCount(posts.size());
-        posts = this.cutArray(offset, limit, posts);
-        pdr.setPosts(posts);
-        return new ResponseEntity<>(pdr, HttpStatus.OK);
+        posts = postRepositoryPort.getAllGood(posts);
+        int size = posts.size();
+        if(size<limit){
+            limit = size-1;
+        }
+        posts.subList(offset,limit);
 
+        AllPostsResponseDto pdr = new AllPostsResponseDto();
+        pdr.setCount(size);
+        pdr.setPosts(getPlainPosts(posts));
+        return new ResponseEntity<>(pdr, HttpStatus.OK);
     }
 
-    public PostsDtoResponse getModerationPosts(int offset, int limit, String status, HttpServletRequest request) {
+    public AllPostsResponseDto getModerationPosts(int offset, int limit, String status, HttpServletRequest request) {
         int moderId = userServise.getCurrentUser(request).getId();
         List<Post> posts = postRepositoryPort.findByModerStat(status);
         posts.removeIf(post -> !(post.isActive() && (post.getModeratorId() == moderId || status.equals("NEW"))));
         int count = posts.size();
-        posts = cutArray(offset, limit, posts);
-        return new PostsDtoResponse(count, posts);
+        if(count<limit){
+            limit = count-1;
+        }
+        posts.subList(offset,limit);
+        return new AllPostsResponseDto(count, getPlainPosts(posts));
     }
 
-    public PostsDtoResponse getUserPosts(int offset, int limit, String status, HttpServletRequest request) {
+    public AllPostsResponseDto getUserPosts(int offset, int limit, String status, HttpServletRequest request) {
         User user = userServise.getCurrentUser(request);
         List <Post> posts = user.getPosts();
         List <Post> finalPosts = new ArrayList<>();
@@ -117,21 +177,12 @@ public class PostUseCase {
             }
         }
         int count = finalPosts.size();
-        finalPosts = cutArray(offset,limit,finalPosts);
-        return new PostsDtoResponse(count,finalPosts);
-    }
-
-    private ArrayList<Post> cutArray(int offset, int limit, List<Post> list) {
-        ArrayList<Post> finalList = new ArrayList<>();
-        if (limit > list.size()) {
-            limit = list.size();
+        if(count<limit){
+            limit = count-1;
         }
-        for (int i = offset; i < limit; i++) {
-            finalList.add(list.get(i));
-        }
-        return finalList;
+        finalPosts.subList(offset,limit);
+        return new AllPostsResponseDto(count,getPlainPosts(finalPosts));
     }
-
 
     //Методы для создания или редактирования постов
 
@@ -192,11 +243,22 @@ public class PostUseCase {
             date = LocalDateTime.now();
         }
         post.setTime(date);
+
         if (postPostDto.getTags() != null) {
-            postPostDto.getTags().forEach(tag -> post.getTags().add(tagUseCase.saveTag(tag)));
+            List <Tag> postTags = post.getTags();
+            if (postTags == null){
+                postTags = new ArrayList<>();
+            }
+            for (String tagName :  postPostDto.getTags() ){
+                Tag tag = tagServise.saveTag(tagName, post);
+                postTags.add(tag);
+            }
+            post.setTags(postTags);
         }
+
         postRepositoryPort.savePost(post);
     }
+
 
     public ResponseEntity<?>  moderate(ModerationRequestDto moderationRequestDto, HttpServletRequest request) {
         Optional <Post> optpost = postRepositoryPort.findById(moderationRequestDto.getPostId());
@@ -293,5 +355,21 @@ public class PostUseCase {
         ResultResponse result = new ResultResponse();
         result.setResult(votesService.vote(vote, user, post));
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> setModeration(int postId, String desision, HttpServletRequest request) {
+        Optional <Post> optpost = postRepositoryPort.findById(postId);
+        if (optpost.isEmpty()){
+            return getErrorResponce("badId", "Post with this id does not found");
+        }
+        Post post = optpost.get();
+        if (desision.equals("ACCEPT")){
+            post.setModerStat(Post.ModerStat.ACCEPTED);
+        } else {
+            post.setModerStat(Post.ModerStat.DECLINED);
+        }
+        post.setModeratorId(userServise.getCurrentUser(request).getId());
+        postRepositoryPort.savePost(post);
+        return new ResponseEntity<>(new ResultResponse(true,null), HttpStatus.OK);
     }
 }

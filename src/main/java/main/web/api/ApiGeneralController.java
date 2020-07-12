@@ -1,12 +1,11 @@
 package main.web.api;
 
 
-import lombok.AllArgsConstructor;
 import main.domain.*;
 import main.domain.globallSettings.GSettingsDto;
 import main.domain.globallSettings.SettingsService;
-import main.domain.post.PostUseCase;
-import main.domain.tag.TagUseCase;
+import main.domain.post.PostServise;
+import main.domain.tag.TagServise;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +13,16 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
 public class ApiGeneralController {
 
     @Autowired
-    TagUseCase tuc;
+    TagServise tuc;
 
     @Autowired
-    PostUseCase puc;
+    PostServise puc;
 
     @Autowired
     SettingsService settingsService;
@@ -70,7 +68,6 @@ public class ApiGeneralController {
         return new ResponseEntity<>(settingsService.getSettings(), HttpStatus.OK);
     }
 
-    //need tests
     @PutMapping("/settings")
     public ResponseEntity<Boolean> updateSettings(@RequestBody GSettingsDto settings) {
         boolean result = settingsService.putSettings(settings);

@@ -25,4 +25,11 @@ public class GlobalSetting {
     @Column(length = 3, nullable = false)
     private String value;
 
+    public GlobalSetting (String code, String name, String value){
+        this.code = code;
+        this.name = name;
+        this.value = value;
+
+    }
+
 }

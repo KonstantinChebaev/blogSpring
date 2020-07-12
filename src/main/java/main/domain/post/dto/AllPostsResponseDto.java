@@ -1,4 +1,4 @@
-package main.domain.post;
+package main.domain.post.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -10,11 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostsDtoResponse {
-
+public class AllPostsResponseDto {
     private int count;
-
-    private List<Post> posts;
-
-
+    private List<PostPlainDto> posts;
 }

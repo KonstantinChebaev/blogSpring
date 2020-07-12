@@ -1,4 +1,4 @@
-package main.web.api;
+package main.web.api.user;
 
 import main.domain.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;

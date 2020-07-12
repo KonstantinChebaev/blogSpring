@@ -1,5 +1,6 @@
 package main.domain.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jdk.jfr.Name;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,10 +13,13 @@ import javax.validation.constraints.Email;
 @AllArgsConstructor
 public class UserRegisterDto {
     @Email
-    private String e_mail;
+    @JsonProperty(value = "e_mail")
+    private String email;
     private String name;
     private String password;
     private String captcha;
-    private String captcha_secret;
+
+    @JsonProperty(value = "captcha_secret")
+    private String captchaSecret;
 
 }

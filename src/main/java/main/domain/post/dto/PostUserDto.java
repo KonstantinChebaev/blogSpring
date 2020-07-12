@@ -1,13 +1,13 @@
-package main.domain.tag;
+package main.domain.post.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Tags {
+@NoArgsConstructor
+public class PostUserDto {
+    private Integer id;
     private String name;
-    private Double weight;
 }

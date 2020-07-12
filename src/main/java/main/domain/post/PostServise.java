@@ -42,7 +42,6 @@ public class PostServise {
         List<Post> posts = postRepositoryPort.findAll();
         int count = posts.size();
         List<PostPlainDto> plainPosts = getPlainPosts(posts);
-
         if(plainPosts.size()<limit){
             limit = plainPosts.size()-1;
         }

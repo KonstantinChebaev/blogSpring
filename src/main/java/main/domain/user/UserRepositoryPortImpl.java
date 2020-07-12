@@ -11,30 +11,30 @@ public class UserRepositoryPortImpl implements UserRepositoryPort {
 
     @Autowired
     UserRepository userRepository;
+
     @Override
     public User findByEmail(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
-        if(optionalUser.isEmpty()){
-            throw new RuntimeException("User witn email:"+email+" not found");
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User witn email:" + email + " not found");
         }
         return optionalUser.get();
     }
 
     @Override
-    public User findByName(String name) {
-        Optional<User> optionalUser = userRepository.findByName(name);
-        if(optionalUser.isEmpty()){
-            throw new RuntimeException("User witn name:"+name+" not found");
+    public User findByCode(String code) {
+        Optional<User> optionalUser = userRepository.findByCode(code);
+        if (optionalUser.isEmpty()) {
+            return null;
         }
         return optionalUser.get();
     }
-
 
 
     @Override
     public User findById(int userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
-        if(optionalUser.isEmpty()){
+        if (optionalUser.isEmpty()) {
             return null;
         }
         return optionalUser.get();
@@ -48,6 +48,15 @@ public class UserRepositoryPortImpl implements UserRepositoryPort {
     @Override
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            return null;
+        }
+        return optionalUser.get();
     }
 
 }

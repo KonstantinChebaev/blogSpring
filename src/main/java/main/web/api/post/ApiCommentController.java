@@ -1,4 +1,4 @@
-package main.web.api;
+package main.web.api.post;
 
 import main.domain.ResultResponse;
 import main.domain.comment.CommentUseCase;

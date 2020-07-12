@@ -3,9 +3,9 @@ package main.domain;
 import main.domain.post.PostRepositoryPort;
 import main.domain.post.VotesService;
 import main.domain.user.User;
-import main.domain.user.UserAuthServise;
+import main.domain.user.UserServise;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springfraьmework.stereotype.Service;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,13 +19,13 @@ public class StatisticServise {
     VotesService votesService;
 
     @Autowired
-    UserAuthServise userAuthServise;
+    UserServise userServise;
 
 
     public StatisticsDto getStatistics(String statType, HttpServletRequest request) {
         User user = null;
         if(statType.equals("my")){
-            user = userAuthServise.getCurrentUser(request);
+            user = userServise.getCurrentUser(request);
         }
         StatisticsDto statisticsDto = new StatisticsDto();
         statisticsDto.setPostsCount(postRepositoryPort.countByUser(user));

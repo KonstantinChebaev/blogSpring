@@ -1,6 +1,7 @@
 package main.domain.tag;
 
 import main.dao.TagRepository;
+import main.domain.post.Post;
 import main.domain.post.PostRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Component
-public class TagUseCase {
+public class TagServise {
     @Autowired
     TagRepository tagRepository;
 
@@ -38,6 +39,20 @@ public class TagUseCase {
         return (tag != null) ? tag : tagRepository.save(new Tag(tagName.toLowerCase()));
     }
 
+    public Tag saveTag(String tagName, Post post) {
+        List<Post> tagPosts;
+        Tag tag = tagRepository.findByNameIgnoreCase(tagName);
+        if (tag == null){
+            tag = new Tag(tagName.toLowerCase());
+            tagPosts = new ArrayList<>();
+        } else {
+            tagPosts  = tag.getPosts();
+        }
+        tagPosts.add(post);
+        tag.setPosts(tagPosts);
+        return tagRepository.save(tag);
+    }
+
 
     public HashMap <String, Object> getTagsWeights(String query) {
         List <Tag> tags;
@@ -54,7 +69,7 @@ public class TagUseCase {
                 return result;
             }
         }
-        int postsTotalCount = postRepositoryPort.findAllGood().size();
+        int postsTotalCount = postRepositoryPort.getAllGood(postRepositoryPort.findAll()).size();
         double weight = 0;
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.CEILING);

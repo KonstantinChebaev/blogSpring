@@ -1,13 +1,10 @@
 package main.domain.post;
 
-import org.jsoup.Jsoup;
+import main.domain.DtoConverter;
 import main.domain.CalendarResponseDto;
 import main.domain.ModerationRequestDto;
 import main.domain.ResultResponse;
-import main.domain.post.dto.AllPostsResponseDto;
-import main.domain.post.dto.PostPostDto;
-import main.domain.post.dto.PostPlainDto;
-import main.domain.post.dto.PostUserDto;
+import main.domain.post.dto.*;
 import main.domain.tag.Tag;
 import main.domain.tag.TagServise;
 import main.domain.user.User;
@@ -38,63 +35,46 @@ public class PostServise {
     @Autowired
     VotesService votesService;
 
-    public AllPostsResponseDto getAll(int offset, int limit, String mode) {
+    @Autowired
+    DtoConverter dtoConverter;
+
+    public AllPostsResponseDto getAll(int offset, int limit, SortMode mode) {
         List<Post> posts = postRepositoryPort.findAll();
         int count = posts.size();
-        List<PostPlainDto> plainPosts = getPlainPosts(posts);
+        List<PostPlainDto> plainPosts = dtoConverter.listPostToDtoList(posts);
         if(plainPosts.size()<limit){
             limit = plainPosts.size()-1;
         }
-        plainPosts.subList(offset,limit);
         sortPlainPostsByMode(plainPosts, mode);
+        plainPosts = plainPosts.subList(offset,limit);
         return new AllPostsResponseDto(count, plainPosts);
     }
 
-    private List<PostPlainDto> getPlainPosts (List <Post> posts){
-        List<PostPlainDto> postPlainDtos = new ArrayList<>();
-        for (Post p: posts) {
-            String postText = Jsoup.parse(p.getText()).text();
-            String announce = postText.length() > 150 ? postText.substring(0, 150) + "..." : postText;
-            PostPlainDto ppd = PostPlainDto.builder()
-                    .commentCount(p.getPostComments().size())
-                    .id(p.getId())
-                    .title(p.getTitle())
-                    .viewCount(p.getViewCount())
-                    .time(p.getTime())
-                    .user(new PostUserDto(p.getUser().getId(),p.getUser().getName()))
-                    .announce(announce)
-                    .dislikeCount(p.getPostVotes().stream().filter(item -> item.getValue() < 0).count())
-                    .likeCount(p.getPostVotes().stream().filter(item -> item.getValue() > 0).count())
-                    .build();
-            postPlainDtos.add(ppd);
-        }
-        return postPlainDtos;
-    }
-
-    private List<PostPlainDto> sortPlainPostsByMode(List<PostPlainDto> list, String mode) {
+    private List<PostPlainDto> sortPlainPostsByMode(List<PostPlainDto> list, SortMode mode) {
         switch (mode) {
-            case "BEST":
+            case BEST:
                 list.sort(Comparator.comparing(PostPlainDto::getLikeCount).reversed());
                 break;
-            case "EARLY":
+            case EARLY:
                 list.sort(Comparator.comparing(PostPlainDto::getTime));
                 break;
-            case "RECENT":
+            case RECENT:
                 list.sort(Comparator.comparing(PostPlainDto::getTime).reversed());
                 break;
-            case "POPULAR":
+            case POPULAR:
                 list.sort(Comparator.comparing(PostPlainDto::getCommentCount).reversed());
                 break;
         }
         return list;
     }
 
-    public Post findById(int id) {
+    public PostWithCommentsDto findById(int id) {
         Optional <Post> optionalPost = postRepositoryPort.findById(id);
         if (optionalPost.isEmpty()){
             return null;
         }
-         return optionalPost.get();
+        Post post = optionalPost.get();
+        return dtoConverter.postToPostWithComments(post);
     }
 
     public AllPostsResponseDto searchPost(int offset, int limit, String query) {
@@ -103,7 +83,7 @@ public class PostServise {
             limit = posts.size()-1;
         }
         posts.subList(offset,limit);
-        return new AllPostsResponseDto(posts.size(), getPlainPosts(posts));
+        return new AllPostsResponseDto(posts.size(), dtoConverter.listPostToDtoList(posts));
     }
 
     public AllPostsResponseDto getDatePosts(int offset, int limit, String time) {
@@ -113,8 +93,8 @@ public class PostServise {
         if(size<limit){
             limit = size-1;
         }
-        posts.subList(offset, limit);
-        return new AllPostsResponseDto(size, getPlainPosts(posts));
+        posts = posts.subList(offset, limit);
+        return new AllPostsResponseDto(size, dtoConverter.listPostToDtoList(posts));
     }
 
 
@@ -129,11 +109,11 @@ public class PostServise {
         if(size<limit){
             limit = size-1;
         }
-        posts.subList(offset,limit);
+        posts = posts.subList(offset,limit);
 
         AllPostsResponseDto pdr = new AllPostsResponseDto();
         pdr.setCount(size);
-        pdr.setPosts(getPlainPosts(posts));
+        pdr.setPosts(dtoConverter.listPostToDtoList(posts));
         return new ResponseEntity<>(pdr, HttpStatus.OK);
     }
 
@@ -145,8 +125,8 @@ public class PostServise {
         if(count<limit){
             limit = count-1;
         }
-        posts.subList(offset,limit);
-        return new AllPostsResponseDto(count, getPlainPosts(posts));
+        posts = posts.subList(offset,limit);
+        return new AllPostsResponseDto(count, dtoConverter.listPostToDtoList(posts));
     }
 
     public AllPostsResponseDto getUserPosts(int offset, int limit, String status, HttpServletRequest request) {
@@ -179,8 +159,8 @@ public class PostServise {
         if(count<limit){
             limit = count-1;
         }
-        finalPosts.subList(offset,limit);
-        return new AllPostsResponseDto(count,getPlainPosts(finalPosts));
+        finalPosts = finalPosts.subList(offset,limit);
+        return new AllPostsResponseDto(count, dtoConverter.listPostToDtoList(posts));
     }
 
     //Методы для создания или редактирования постов
@@ -292,7 +272,7 @@ public class PostServise {
 
     }
 
-
+    //исправить чтобы возращал объект ResultResponse или только ошибки в мапе
     public HashMap <String, Object> checkPostInput (PostPostDto postPostDto){
         HashMap<String, Object> response = new HashMap<>();
         HashMap <String, Object> errors = new HashMap<>();

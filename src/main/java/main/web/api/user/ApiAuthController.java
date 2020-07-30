@@ -39,9 +39,6 @@ public class ApiAuthController {
     @GetMapping(value = "check/")
     public HashMap<String,Object> apiAuthCheck (HttpServletRequest request) {
         HashMap<String,Object> responce = new HashMap<>();
-        System.out.println(userServise);
-        System.out.println(request);
-        System.out.println(userServise.getCurrentUser(request));
         User user = userServise.getCurrentUser(request);
         if(user == null){
             responce.put("result","false");

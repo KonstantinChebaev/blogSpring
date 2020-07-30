@@ -38,7 +38,7 @@ public class PostServise {
     @Autowired
     DtoConverter dtoConverter;
 
-    public AllPostsResponseDto getAll(int offset, int limit, SortMode mode) {
+    public AllPostsResponseDto getAll(int offset, int limit, String mode) {
         List<Post> posts = postRepositoryPort.findAll();
         int count = posts.size();
         List<PostPlainDto> plainPosts = dtoConverter.listPostToDtoList(posts);
@@ -50,18 +50,18 @@ public class PostServise {
         return new AllPostsResponseDto(count, plainPosts);
     }
 
-    private List<PostPlainDto> sortPlainPostsByMode(List<PostPlainDto> list, SortMode mode) {
+    private List<PostPlainDto> sortPlainPostsByMode(List<PostPlainDto> list, String mode) {
         switch (mode) {
-            case BEST:
+            case "best":
                 list.sort(Comparator.comparing(PostPlainDto::getLikeCount).reversed());
                 break;
-            case EARLY:
+            case "early":
                 list.sort(Comparator.comparing(PostPlainDto::getTime));
                 break;
-            case RECENT:
+            case "recent":
                 list.sort(Comparator.comparing(PostPlainDto::getTime).reversed());
                 break;
-            case POPULAR:
+            case "popular":
                 list.sort(Comparator.comparing(PostPlainDto::getCommentCount).reversed());
                 break;
         }

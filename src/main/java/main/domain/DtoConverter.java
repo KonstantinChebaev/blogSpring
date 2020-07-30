@@ -5,6 +5,7 @@ import main.domain.post.Post;
 import main.domain.post.dto.*;
 import main.domain.tag.Tag;
 import main.domain.user.User;
+import main.domain.user.dto.LoggedInUserDto;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +71,20 @@ public class DtoConverter {
             commentDtoList.add(commentDto);
         }
         return commentDtoList;
+    }
+
+    //узнать что такое settings и как доставать modCount
+    public LoggedInUserDto userToLoggedInUser (User u){
+        LoggedInUserDto loggedInUserDto = LoggedInUserDto.builder()
+                .id(u.getId())
+                .email(u.getEmail())
+                .moderation(u.isModerator())
+                .name(u.getName())
+                .photo(u.getPhoto())
+                .settings(true)
+                .moderationCount(0)
+                .build();
+        return loggedInUserDto;
     }
 
 

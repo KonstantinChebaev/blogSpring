@@ -25,17 +25,175 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8533db2-8aeb-43c8-864f-21761e48eaad" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/DtoConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/dto/CommentDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/dto/PostWithCommentsDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/dto/SortMode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/dto/UserWithPhotoDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/dto/LoggedInUserDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/security/CustomAuthenticationHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/security/JsonUsernamePasswordAuthenticationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/app.6d94fd6d.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/baseArticle.d9180b48.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/comment.2e97f697.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/loginRegistrationSuccess.a879d2f2.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/addComment.1a090a40.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/addComment.1a090a40.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/addText.1f3e8252.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/addText.1f3e8252.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/app.89c13281.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/app.89c13281.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/article.19ceebf5.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/article.19ceebf5.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/articles.2460eb57.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/articles.2460eb57.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/baseArticle.4035e7b2.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/baseArticle.4035e7b2.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/calendar.17240d28.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/calendar.17240d28.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/calendarMonth.42d16f7a.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/calendarMonth.42d16f7a.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/chunk-vendors.fcd3af42.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/chunk-vendors.fcd3af42.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/comment.48215f55.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/comment.48215f55.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/editPost.edb1f2ee.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/editPost.edb1f2ee.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/errorModal.9623bd70.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/errorModal.9623bd70.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/login.eb37bac4.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/login.eb37bac4.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginChange.d805e5b5.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginChange.d805e5b5.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginRegistration.83f4a87e.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginRegistration.83f4a87e.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginRegistrationSuccess.9bf79f1a.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginRegistrationSuccess.9bf79f1a.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginRestore.5607dcd4.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginRestore.5607dcd4.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginSignIn.5bcebfa7.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginSignIn.5bcebfa7.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/profile.8e902ef6.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/profile.8e902ef6.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/stat.d201c0b8.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/stat.d201c0b8.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/userSection.92923d39.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/userSection.92923d39.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/DtoConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/DtoConverter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/post/PostServise.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/post/PostServise.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/post/dto/SortMode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/UserServise.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/UserServise.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/domain/user/dto/UserAuthResponceDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/domain/user/dto/UserAuthResponceDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/security/Authority.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/security/UserDetailsImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/security/UserDetailsImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/security/UserDetailsServiceImpl.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/web/api/post/ApiPostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/web/api/post/ApiPostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/web/api/user/ApiAuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/web/api/user/ApiAuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/app.1c6d4039.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/baseArticle.57abede2.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/comment.4819c008.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/avatar+.535fb023.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/avatar.087cb69a.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/avatar.d97449b5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/default.c66f8640.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/addComment.d2599662.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/addComment.d2599662.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/addText.c5cda83a.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/addText.c5cda83a.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/app.8da01b06.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/app.8da01b06.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/article.59ad4565.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/article.59ad4565.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/articles.214fa06e.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/articles.214fa06e.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/baseArticle.82b078ce.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/baseArticle.82b078ce.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/calendar.dcfe1a81.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/calendar.dcfe1a81.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/calendarMonth.b4aa5790.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/calendarMonth.b4aa5790.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/chunk-vendors.78ca2341.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/chunk-vendors.78ca2341.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/comment.8973e9b6.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/comment.8973e9b6.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/editPost.830a16f3.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/editPost.830a16f3.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/errorModal.c489c42d.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/errorModal.c489c42d.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/login.9429a293.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/login.9429a293.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/loginChange.d7227947.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/loginChange.d7227947.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/loginRegistration.4f5eb299.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/loginRegistration.4f5eb299.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/loginRestore.37c89f4c.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/loginRestore.37c89f4c.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/loginSignIn.6392cd33.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/loginSignIn.6392cd33.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/profile.7dcc2aaa.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/profile.7dcc2aaa.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/stat.cd73373f.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/stat.cd73373f.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/userSection.b4013afb.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/userSection.b4013afb.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/DtoConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/DtoConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/post/PostServise$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/domain/post/PostServise.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/post/PostServise.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/post/dto/SortMode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/UserServise.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/user/UserServise.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/domain/user/dto/UserAuthResponceDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/domain/user/dto/UserAuthResponceDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/security/Authority.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/security/UserDetailsImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/security/UserDetailsImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/security/UserDetailsServiceImpl.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/web/api/post/ApiPostController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/web/api/post/ApiPostController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/web/api/user/ApiAuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/web/api/user/ApiAuthController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/css/app.1c6d4039.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/css/baseArticle.57abede2.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/css/comment.4819c008.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/img/avatar+.535fb023.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/img/avatar.087cb69a.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/img/avatar.d97449b5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/img/default.c66f8640.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/addComment.d2599662.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/addComment.d2599662.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/addText.c5cda83a.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/addText.c5cda83a.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/app.8da01b06.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/app.8da01b06.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/article.59ad4565.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/article.59ad4565.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/articles.214fa06e.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/articles.214fa06e.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/baseArticle.82b078ce.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/baseArticle.82b078ce.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/calendar.dcfe1a81.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/calendar.dcfe1a81.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/calendarMonth.b4aa5790.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/calendarMonth.b4aa5790.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/chunk-vendors.78ca2341.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/chunk-vendors.78ca2341.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/comment.8973e9b6.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/comment.8973e9b6.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/editPost.830a16f3.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/editPost.830a16f3.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/errorModal.c489c42d.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/errorModal.c489c42d.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/login.9429a293.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/login.9429a293.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/loginChange.d7227947.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/loginChange.d7227947.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/loginRegistration.4f5eb299.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/loginRegistration.4f5eb299.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/loginRestore.37c89f4c.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/loginRestore.37c89f4c.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/loginSignIn.6392cd33.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/loginSignIn.6392cd33.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/profile.7dcc2aaa.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/profile.7dcc2aaa.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/stat.cd73373f.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/stat.cd73373f.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/userSection.b4013afb.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/userSection.b4013afb.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,8 +204,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -232,10 +390,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="96" y="37" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1587815842000" />
-    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser" timestamp="1594582888046">
+    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser" timestamp="1595448677159">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1594582888046" />
+    <state x="488" y="70" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1595448677159" />
     <state x="371" y="205" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587815841124">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -248,10 +406,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="466" y="258" width="433" height="218" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1366.728@0.0.1366.728" timestamp="1594413671060" />
-    <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1594548298874">
+    <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1595531881244">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1594548298874" />
+    <state x="212" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1595531881244" />
     <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1593795554178">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -260,22 +418,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1590611136385" />
-    <state width="1323" height="183" key="GridCell.Tab.0.bottom" timestamp="1595362522585">
+    <state width="1323" height="272" key="GridCell.Tab.0.bottom" timestamp="1596123584877">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="183" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1595362522585" />
-    <state width="1323" height="183" key="GridCell.Tab.0.center" timestamp="1595362522585">
+    <state width="1323" height="272" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1596123584877" />
+    <state width="1323" height="272" key="GridCell.Tab.0.center" timestamp="1596123584876">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="183" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1595362522585" />
-    <state width="1323" height="183" key="GridCell.Tab.0.left" timestamp="1595362522585">
+    <state width="1323" height="272" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1596123584876" />
+    <state width="1323" height="272" key="GridCell.Tab.0.left" timestamp="1596123584876">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="183" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1595362522585" />
-    <state width="1323" height="183" key="GridCell.Tab.0.right" timestamp="1595362522585">
+    <state width="1323" height="272" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1596123584876" />
+    <state width="1323" height="272" key="GridCell.Tab.0.right" timestamp="1596123584876">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="183" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1595362522585" />
+    <state width="1323" height="272" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1596123584876" />
     <state width="1323" height="228" key="GridCell.Tab.1.bottom" timestamp="1594558783685">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

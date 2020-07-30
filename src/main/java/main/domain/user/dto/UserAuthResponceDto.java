@@ -10,5 +10,5 @@ import main.domain.user.User;
 @Data
 public class UserAuthResponceDto {
     private boolean result;
-    private User user;
+    private LoggedInUserDto loggedInUserDto;
 }

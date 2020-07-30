@@ -1,12 +1,10 @@
 package main.domain.user;
 
 import main.domain.CaptchaServise;
+import main.domain.DtoConverter;
 import main.domain.ResultResponse;
 import main.domain.StorageService;
-import main.domain.user.dto.PasswordResetRequestDto;
-import main.domain.user.dto.ProfileDto;
-import main.domain.user.dto.UserAuthResponceDto;
-import main.domain.user.dto.UserRegisterDto;
+import main.domain.user.dto.*;
 import main.security.EmailService;
 import main.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +40,13 @@ public class UserServise {
     CaptchaServise captchaServise;
 
     @Autowired
-    private StorageService storageService;
+    private DtoConverter dtoConverter;
 
     @Autowired
-    private Environment environment;
+    Environment environment;
+
+    @Autowired
+    StorageService storageService;
 
 //    @PostConstruct
 //    private void cteateDefaultUser (){
@@ -83,7 +84,8 @@ public class UserServise {
                 .regTime(LocalDateTime.now())
                 .build();
         userRepositoryPort.save(newUser);
-        return new ResponseEntity<>(new UserAuthResponceDto(true, newUser), HttpStatus.OK);
+        LoggedInUserDto loggedInUserDto = dtoConverter.userToLoggedInUser(newUser);
+        return new ResponseEntity<>(new UserAuthResponceDto(true, loggedInUserDto), HttpStatus.OK);
     }
 
     public ResultResponse resetUserPassword(PasswordResetRequestDto request) {
@@ -116,24 +118,28 @@ public class UserServise {
     }
 
     public UserAuthResponceDto loginUser(String email, String password) {
-        User user;
-        try {
-            user = userRepositoryPort.findByEmail(email);
-        } catch (Exception e){
-            return new UserAuthResponceDto(false,null);
-        }
-        if(!passwordEncoder.matches(password, user.getPassword())){
-            System.out.println(password);
-            return new UserAuthResponceDto(false,null);
-        }
-        UserDetailsImpl userDetails = new UserDetailsImpl(user);
-        Authentication auth = new UsernamePasswordAuthenticationToken(user, "", userDetails.getAuthorities());
-        if (auth != null) {
-            SecurityContextHolder.getContext().setAuthentication(auth);
-        }
-        System.out.println(SecurityContextHolder.getContext());
-        return new UserAuthResponceDto(true,user);
+//        User user;
+//        try {
+//            user = userRepositoryPort.findByEmail(email);
+//        } catch (Exception e){
+//            return new UserAuthResponceDto(false,null);
+//        }
+//        if(!passwordEncoder.matches(password, user.getPassword())){
+//            System.out.println(password);
+//            return new UserAuthResponceDto(false,null);
+//        }
+//        UserDetailsImpl userDetails = new UserDetailsImpl(user);
+//        Authentication auth = new UsernamePasswordAuthenticationToken(user, "", userDetails.getAuthorities());
+//        if (auth != null) {
+//            SecurityContextHolder.getContext().setAuthentication(auth);
+//        }
+//        System.out.println(SecurityContextHolder.getContext());
+//        LoggedInUserDto loggedInUserDto = dtoConverter.userToLoggedInUser(user);
+//        return new UserAuthResponceDto(true,loggedInUserDto);
+        return null;
     }
+
+
     public User getCurrentUser (HttpServletRequest request){
         if(request.isRequestedSessionIdValid() && request.getUserPrincipal()!=null){
             String principalName = request.getUserPrincipal().getName();
@@ -211,5 +217,10 @@ public class UserServise {
         } else {
             return  new ResponseEntity<>(new ResultResponse(true, null), HttpStatus.OK);
         }
+    }
+
+    public LoggedInUserDto getLoggedInUser(int id) {
+        User user = userRepositoryPort.findById(id);
+        return dtoConverter.userToLoggedInUser(user);
     }
 }

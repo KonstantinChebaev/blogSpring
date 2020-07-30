@@ -1,12 +1,10 @@
 package main.web.api.post;
 
 import main.domain.ResultResponse;
-import main.domain.post.Post;
 import main.domain.post.dto.PostPostDto;
 import main.domain.post.PostServise;
 import main.domain.post.dto.AllPostsResponseDto;
 import main.domain.post.dto.PostWithCommentsDto;
-import main.domain.post.dto.SortMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +25,7 @@ public class ApiPostController {
     @GetMapping("")
     public AllPostsResponseDto getAllPosts(@RequestParam int offset,
                                            @RequestParam int limit,
-                                           @RequestParam SortMode mode) {
+                                           @RequestParam String mode) {
         return puc.getAll(offset, limit, mode);
     }
 

@@ -50,13 +50,6 @@ public class ApiGeneralController {
     }
 
     //need tests
-    @PostMapping("/moderation")
-    public ResponseEntity<?> postModeration(@RequestBody ModerationRequestDto moderationRequestDto,
-                                         HttpServletRequest request) {
-        return puc.moderate(moderationRequestDto, request);
-    }
-
-    //need tests
     @GetMapping("/calendar")
     public ResponseEntity<CalendarResponseDto> getCalendar(
             @RequestParam(required = false) String year) {

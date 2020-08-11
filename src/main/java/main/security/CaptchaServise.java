@@ -1,10 +1,11 @@
-package main.domain;
+package main.security;
 
 import com.github.cage.Cage;
 import com.github.cage.GCage;
 import main.config.CaptchaCfg;
 import main.dao.CaptchaCodeRepository;
 import main.domain.user.dto.CaptchaResponseDto;
+import main.security.CaptchaCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

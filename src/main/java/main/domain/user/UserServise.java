@@ -1,6 +1,6 @@
 package main.domain.user;
 
-import main.domain.CaptchaServise;
+import main.security.CaptchaServise;
 import main.domain.DtoConverter;
 import main.domain.ResultResponse;
 import main.domain.StorageService;
@@ -17,7 +17,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.time.LocalDateTime;
@@ -47,21 +46,6 @@ public class UserServise {
 
     @Autowired
     StorageService storageService;
-
-//    @PostConstruct
-//    private void cteateDefaultUser (){
-//        User user = User.builder()
-//                .email("user@user.com")
-//                .isModerator(true)
-//                .name("user")
-//                .password(passwordEncoder.encode("user@user.com"))
-//                .regTime(LocalDateTime.now())
-//                .id(1)
-//                .build();
-//        userRepositoryPort.save(user);
-//    }
-
-
 
     public ResponseEntity<?> registerUser(UserRegisterDto urd){
         HashMap <String, Object> errors = new HashMap<>();
@@ -150,6 +134,17 @@ public class UserServise {
         }
     }
 
+    public int getCurrentUserId (HttpServletRequest request){
+        if(request.isRequestedSessionIdValid() && request.getUserPrincipal()!=null){
+            String principalName = request.getUserPrincipal().getName();
+            String idString = principalName.substring(principalName.indexOf("(id=")+4,principalName.indexOf(", isModer"));
+            int id = Integer.parseInt(idString);
+            return id;
+        } else {
+            return -1;
+        }
+    }
+
     public Boolean restoreUserPassword(String email) {
         User userFromDB = userRepositoryPort.findByEmail(email);
         if (userFromDB == null) {
@@ -174,9 +169,6 @@ public class UserServise {
         emailService.sendSimpleMessage(email,"Восстановление пароля", text.toString());
         return true;
     }
-
-
-
 
     public ResponseEntity<ResultResponse> updateProfile(ProfileDto profile, HttpServletRequest request) {
         HashMap<String, Object> errors = new HashMap<>();

@@ -14,14 +14,16 @@ public class SettingsService {
     @Autowired
     private GlobalSettingsRepository settingsRepository;
 
-//    @PostConstruct
-//    private void cteateDefaultSettings (){
-//        List<GlobalSetting> gsList = new ArrayList<GlobalSetting>();
-//        gsList.add(new GlobalSetting( "MULTIUSER_MODE", "Многопользовательский режим", "NO"));
-//        gsList.add(new GlobalSetting( "POST_PREMODERATION", "Премодерация постов", "NO"));
-//        gsList.add(new GlobalSetting( "STATISTICS_IS_PUBLIC", "Показывать всем статистику блога", "NO"));
-//        settingsRepository.saveAll(gsList);
-//    }
+    @PostConstruct
+    private void cteateDefaultSettings (){
+        if(settingsRepository.count()==0) {
+            List<GlobalSetting> gsList = new ArrayList<GlobalSetting>();
+            gsList.add(new GlobalSetting("MULTIUSER_MODE", "Многопользовательский режим", "NO"));
+            gsList.add(new GlobalSetting("POST_PREMODERATION", "Премодерация постов", "NO"));
+            gsList.add(new GlobalSetting("STATISTICS_IS_PUBLIC", "Показывать всем статистику блога", "NO"));
+            settingsRepository.saveAll(gsList);
+        }
+    }
 
 
     public GSettingsDto getSettings() {
@@ -65,9 +67,4 @@ public class SettingsService {
         });
         return true;
     }
-
-
-
-
-
 }

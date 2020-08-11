@@ -4,6 +4,8 @@ import main.domain.DtoConverter;
 import main.domain.CalendarResponseDto;
 import main.domain.ModerationRequestDto;
 import main.domain.ResultResponse;
+import main.domain.globallSettings.GSettingsDto;
+import main.domain.globallSettings.SettingsService;
 import main.domain.post.dto.*;
 import main.domain.tag.Tag;
 import main.domain.tag.TagServise;
@@ -38,6 +40,9 @@ public class PostServise {
     @Autowired
     DtoConverter dtoConverter;
 
+    @Autowired
+    SettingsService settingsService;
+
     public AllPostsResponseDto getAll(int offset, int limit, String mode) {
         List<Post> posts = postRepositoryPort.findAll();
         int count = posts.size();
@@ -68,13 +73,22 @@ public class PostServise {
         return list;
     }
 
-    public PostWithCommentsDto findById(int id) {
+    public ResponseEntity<PostWithCommentsDto> findById(int id, HttpServletRequest request) {
         Optional <Post> optionalPost = postRepositoryPort.findById(id);
         if (optionalPost.isEmpty()){
-            return null;
+            Boolean result = false;
+            return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         }
         Post post = optionalPost.get();
-        return dtoConverter.postToPostWithComments(post);
+
+        User currentUser = userServise.getCurrentUser(request);
+        if(!currentUser.isModerator() && currentUser.getId() != post.getUser().getId()){
+            post.incrementViewCount();
+            postRepositoryPort.savePost(post);
+        }
+
+        PostWithCommentsDto pwcd = dtoConverter.postToPostWithComments(post);
+        return new ResponseEntity(pwcd, HttpStatus.OK);
     }
 
     public AllPostsResponseDto searchPost(int offset, int limit, String query) {
@@ -216,7 +230,10 @@ public class PostServise {
         post.setActive(postPostDto.getActive());
         post.setText(postPostDto.getText());
         post.setTitle(postPostDto.getTitle());
-        post.setModerStat(Post.ModerStat.NEW);
+
+        Post.ModerStat moderStat = getModerStatus(post.getUser().isModerator());
+        post.setModerStat(moderStat);
+
         LocalDateTime date = postPostDto.getTime();
         if (date.isBefore(LocalDateTime.now())) {
             date = LocalDateTime.now();
@@ -234,8 +251,21 @@ public class PostServise {
             }
             post.setTags(postTags);
         }
-
         postRepositoryPort.savePost(post);
+    }
+
+    // модерационные методы
+
+    private Post.ModerStat getModerStatus(boolean moderator) {
+        if(moderator){
+            return Post.ModerStat.ACCEPTED;
+        }
+        GSettingsDto settings = settingsService.getSettings();
+        if(settings.getPostPremoderation()){
+            return Post.ModerStat.NEW;
+        } else {
+            return Post.ModerStat.ACCEPTED;
+        }
     }
 
 
@@ -336,19 +366,5 @@ public class PostServise {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> setModeration(int postId, String desision, HttpServletRequest request) {
-        Optional <Post> optpost = postRepositoryPort.findById(postId);
-        if (optpost.isEmpty()){
-            return getErrorResponce("badId", "Post with this id does not found");
-        }
-        Post post = optpost.get();
-        if (desision.equals("ACCEPT")){
-            post.setModerStat(Post.ModerStat.ACCEPTED);
-        } else {
-            post.setModerStat(Post.ModerStat.DECLINED);
-        }
-        post.setModeratorId(userServise.getCurrentUser(request).getId());
-        postRepositoryPort.savePost(post);
-        return new ResponseEntity<>(new ResultResponse(true,null), HttpStatus.OK);
-    }
+
 }

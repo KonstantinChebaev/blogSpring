@@ -1,4 +1,4 @@
-package main.domain;
+package main.security;
 
 
 import lombok.Data;

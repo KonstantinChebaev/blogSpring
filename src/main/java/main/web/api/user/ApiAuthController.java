@@ -1,6 +1,6 @@
 package main.web.api.user;
 
-import main.domain.CaptchaServise;
+import main.security.CaptchaServise;
 import main.domain.ResultResponse;
 import main.domain.user.*;
 import main.domain.user.dto.*;
@@ -39,12 +39,12 @@ public class ApiAuthController {
     @GetMapping(value = "check/")
     public HashMap<String,Object> apiAuthCheck (HttpServletRequest request) {
         HashMap<String,Object> responce = new HashMap<>();
-        User user = userServise.getCurrentUser(request);
-        if(user == null){
+        int userId = userServise.getCurrentUserId(request);
+        if(userId < 0){
             responce.put("result","false");
         } else {
             responce.put("result","true");
-            responce.put("user",user);
+            responce.put("user", userServise.getLoggedInUser(userId));
         }
         return responce;
     }

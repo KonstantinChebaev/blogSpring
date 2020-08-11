@@ -73,7 +73,7 @@ public class DtoConverter {
         return commentDtoList;
     }
 
-    //узнать что такое settings и как доставать modCount
+    //узнать как доставать modCount
     public LoggedInUserDto userToLoggedInUser (User u){
         LoggedInUserDto loggedInUserDto = LoggedInUserDto.builder()
                 .id(u.getId())
@@ -81,7 +81,7 @@ public class DtoConverter {
                 .moderation(u.isModerator())
                 .name(u.getName())
                 .photo(u.getPhoto())
-                .settings(true)
+                .settings(u.isModerator())
                 .moderationCount(0)
                 .build();
         return loggedInUserDto;

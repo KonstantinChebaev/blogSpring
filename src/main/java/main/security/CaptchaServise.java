@@ -23,27 +23,27 @@ public class CaptchaServise {
     private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static SecureRandom rnd = new SecureRandom();
 
-    public static String getRandomString( int len ){
-        StringBuilder sb = new StringBuilder( len );
-        for( int i = 0; i < len; i++ )
-            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+    public static String getRandomString(int len) {
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++)
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
         return sb.toString();
     }
 
 
-    public CaptchaResponseDto getCaptchaResponse () {
+    public CaptchaResponseDto getCaptchaResponse() {
         deleteOutdatedCaptchas(CaptchaCfg.CAPTCHA_UPDATE_HOURS);
         CaptchaCode cc = createCaptchaEntity();
         byte[] fileContent = CAGE.draw(cc.getCode());
         String encodedString = "data:image/png;base64, " + Base64.getEncoder().encodeToString(fileContent);
-        return new CaptchaResponseDto(cc.getSecretCode(),encodedString);
+        return new CaptchaResponseDto(cc.getSecretCode(), encodedString);
     }
 
 
-    private CaptchaCode createCaptchaEntity (){
+    private CaptchaCode createCaptchaEntity() {
         CaptchaCode captchaCode = new CaptchaCode();
         captchaCode.setTime(LocalDateTime.now());
-        captchaCode.setCode(getRandomString(CaptchaCfg.CAPTCHA_CODE_LENGTH));
+        captchaCode.setCode(getRandomString(CaptchaCfg.CAPTCHA_CODE_LENGTH).toLowerCase());
         captchaCode.setSecretCode(getRandomString(16));
         return captchaCodeRepository.save(captchaCode);
     }
@@ -53,12 +53,13 @@ public class CaptchaServise {
         captchaCodeRepository.deleteByTime(expirationTime);
     }
 
-    public boolean isValidCaptcha(String captcha, String captchaSecretCode) {
-            CaptchaCode cc = captchaCodeRepository.findBySecretCode(captchaSecretCode);
-            if (cc == null || !cc.getCode().equals(captcha)){
-                return false;
-            } else {
-                return true;
-            }
+    public boolean isValidCaptcha(String rawCaptcha, String captchaSecretCode) {
+        String captcha = rawCaptcha.toLowerCase();
+        CaptchaCode cc = captchaCodeRepository.findBySecretCode(captchaSecretCode);
+        if (cc == null || !cc.getCode().equals(captcha)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

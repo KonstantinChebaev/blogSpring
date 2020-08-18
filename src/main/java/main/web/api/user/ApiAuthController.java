@@ -26,17 +26,17 @@ public class ApiAuthController {
     @Autowired
     CaptchaServise captchaServise;
 
-    @PostMapping(value = "register/")
+    @PostMapping(value = "register")
     public ResponseEntity<?> apiAuthRegister(@RequestBody UserRegisterDto ur) {
         return userServise.registerUser(ur);
     }
 
-    @PostMapping(value = "login/")
+    @PostMapping(value = "login")
     public UserAuthResponceDto apiAuthLogin (@RequestBody UserLoginDto ul) {
         return userServise.loginUser(ul.getEmail(), ul.getPassword());
     }
 
-    @GetMapping(value = "check/")
+    @GetMapping(value = "check")
     public HashMap<String,Object> apiAuthCheck (HttpServletRequest request) {
         HashMap<String,Object> responce = new HashMap<>();
         int userId = userServise.getCurrentUserId(request);
@@ -49,7 +49,7 @@ public class ApiAuthController {
         return responce;
     }
 
-    @GetMapping("logout/")
+    @GetMapping("logout")
     public HashMap<String,Object> logout(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         HashMap<String,Object> responseMap = new HashMap<>();
         responseMap.put("result","true");
@@ -61,7 +61,7 @@ public class ApiAuthController {
     }
 
     // https://mailtrap.io/inboxes
-    @PostMapping("/restore/")
+    @PostMapping("/restore")
     public ResponseEntity<ResultResponse> restore(@RequestParam String email) {
         ResultResponse response = new ResultResponse();
         response.setResult(userServise.restoreUserPassword(email));
@@ -69,13 +69,13 @@ public class ApiAuthController {
     }
 
     //need tests
-    @PostMapping("/password/")
+    @PostMapping("/password")
     public ResponseEntity<ResultResponse> resetPassword(@RequestBody PasswordResetRequestDto request) {
         return new ResponseEntity<>(userServise.resetUserPassword(request), HttpStatus.OK);
     }
 
     //need tests
-    @GetMapping(value = "/captcha/")
+    @GetMapping(value = "/captcha")
     public ResponseEntity<CaptchaResponseDto> apiAuthCaptcha () {
         return new ResponseEntity<>(captchaServise.getCaptchaResponse(), HttpStatus.OK);
     }

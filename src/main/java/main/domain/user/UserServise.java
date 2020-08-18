@@ -17,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.time.LocalDateTime;
@@ -46,6 +47,26 @@ public class UserServise {
 
     @Autowired
     StorageService storageService;
+
+//    @PostConstruct
+//    public void createDefaultUsers (){
+//        User justUser = User.builder()
+//                .name("user")
+//                .email("user@user.com")
+//                .password("user@user.com")
+//                .isModerator(false)
+//                .regTime(LocalDateTime.now())
+//                .build();
+//        userRepositoryPort.save(justUser);
+//        User admUser = User.builder()
+//                .name("admin")
+//                .email("admin@admin.com")
+//                .password(passwordEncoder.encode("admin@admin.com"))
+//                .isModerator(true)
+//                .regTime(LocalDateTime.now())
+//                .build();
+//        userRepositoryPort.save(admUser);
+//    }
 
     public ResponseEntity<?> registerUser(UserRegisterDto urd){
         HashMap <String, Object> errors = new HashMap<>();

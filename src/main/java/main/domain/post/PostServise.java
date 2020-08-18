@@ -45,6 +45,9 @@ public class PostServise {
 
     public AllPostsResponseDto getAll(int offset, int limit, String mode) {
         List<Post> posts = postRepositoryPort.findAll();
+        if(posts.isEmpty()){
+            return null;
+        }
         int count = posts.size();
         List<PostPlainDto> plainPosts = dtoConverter.listPostToDtoList(posts);
         if(plainPosts.size()<limit){
@@ -61,10 +64,10 @@ public class PostServise {
                 list.sort(Comparator.comparing(PostPlainDto::getLikeCount).reversed());
                 break;
             case "early":
-                list.sort(Comparator.comparing(PostPlainDto::getTime));
+                list.sort(Comparator.comparing(PostPlainDto::getTimestamp));
                 break;
             case "recent":
-                list.sort(Comparator.comparing(PostPlainDto::getTime).reversed());
+                list.sort(Comparator.comparing(PostPlainDto::getTimestamp).reversed());
                 break;
             case "popular":
                 list.sort(Comparator.comparing(PostPlainDto::getCommentCount).reversed());
@@ -234,7 +237,7 @@ public class PostServise {
         Post.ModerStat moderStat = getModerStatus(post.getUser().isModerator());
         post.setModerStat(moderStat);
 
-        LocalDateTime date = postPostDto.getTime();
+        LocalDateTime date = LocalDateTime.ofEpochSecond(postPostDto.getTimestamp(),0, java.time.ZoneOffset.UTC);
         if (date.isBefore(LocalDateTime.now())) {
             date = LocalDateTime.now();
         }

@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 public class PostWithCommentsDto {
     private Integer id;
-    private LocalDateTime time;
+    private long timestamp;
     private PostUserDto user;
     private String title;
     private String text;

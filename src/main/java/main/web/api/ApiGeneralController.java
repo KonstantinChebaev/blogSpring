@@ -67,7 +67,7 @@ public class ApiGeneralController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    //need tests
+
     @GetMapping("/statistics/{statisticsType}")
     public ResponseEntity<StatisticsDto> getStatistics(@PathVariable String statisticsType, HttpServletRequest request) {
         return new ResponseEntity<>(statisticsServise.getStatistics(statisticsType,request), HttpStatus.OK);

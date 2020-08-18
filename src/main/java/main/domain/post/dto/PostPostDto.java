@@ -8,8 +8,7 @@ import java.util.Set;
 
 @Data
 public class PostPostDto {
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime time;
+    private long timestamp;
     private Boolean active;
     private String title;
     private String text;

@@ -1,5 +1,6 @@
 package main.security;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import main.domain.user.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +13,10 @@ import java.util.Set;
 
 public class UserDetailsImpl implements UserDetails {
     private int id;
+
+
     private String email;
+
     private String password;
     private boolean isModerator;
 

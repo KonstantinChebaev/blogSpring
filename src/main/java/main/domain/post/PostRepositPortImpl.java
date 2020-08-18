@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -106,8 +108,11 @@ public class PostRepositPortImpl implements PostRepositoryPort {
     }
 
     @Override
-    public String getFirstPostDate(User user) {
-        return pr.getFirstPostDateByUser(user);
+    public long getFirstPostDate(User user) {
+        String str = pr.getFirstPostDateByUser(user);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+        return dateTime.toEpochSecond(ZoneOffset.UTC);
     }
 
 }

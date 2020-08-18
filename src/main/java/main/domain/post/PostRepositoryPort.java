@@ -25,6 +25,6 @@ public interface PostRepositoryPort {
 
     long countViewsByUser(User user);
 
-    String getFirstPostDate(User user);
+    long getFirstPostDate(User user);
 
 }

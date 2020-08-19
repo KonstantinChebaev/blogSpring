@@ -30,8 +30,8 @@ public class UserServise {
     @Autowired
     UserRepositoryPort userRepositoryPort;
 
-    @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+//    @Autowired
+//    BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     EmailService emailService;
@@ -84,7 +84,7 @@ public class UserServise {
         User newUser = User.builder()
                 .name(urd.getName())
                 .email(urd.getEmail())
-                .password(passwordEncoder.encode(urd.getPassword()))
+ //               .password(passwordEncoder.encode(urd.getPassword()))
                 .isModerator(false)
                 .regTime(LocalDateTime.now())
                 .build();
@@ -104,7 +104,7 @@ public class UserServise {
             return new ResultResponse(false, errors);
         }
         userFromDB.setCode(null);
-        userFromDB.setPassword(passwordEncoder.encode(request.getPassword()));
+   //     userFromDB.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepositoryPort.save(userFromDB);
         return new ResultResponse(true, null);
     }
@@ -148,8 +148,8 @@ public class UserServise {
     public User getCurrentUser (HttpServletRequest request){
         if(request.isRequestedSessionIdValid() && request.getUserPrincipal()!=null){
             String principalName = request.getUserPrincipal().getName();
-            String email = principalName.substring(principalName.indexOf(" email=")+7,principalName.indexOf(", password="));
-            return userRepositoryPort.findByEmail(email);
+        //    String email = principalName.substring(principalName.indexOf(" email=")+7,principalName.indexOf(", password="));
+            return userRepositoryPort.findByEmail(principalName);
         } else {
             return null;
         }
@@ -158,9 +158,11 @@ public class UserServise {
     public int getCurrentUserId (HttpServletRequest request){
         if(request.isRequestedSessionIdValid() && request.getUserPrincipal()!=null){
             String principalName = request.getUserPrincipal().getName();
-            String idString = principalName.substring(principalName.indexOf("(id=")+4,principalName.indexOf(", isModer"));
-            int id = Integer.parseInt(idString);
-            return id;
+            System.out.println(principalName);
+           // String idString = principalName.substring(principalName.indexOf("(id=")+4,principalName.indexOf(", isModer"));
+//            int id = Integer.parseInt(idString);
+//            return id;
+            return 1;
         } else {
             return -1;
         }
@@ -216,7 +218,7 @@ public class UserServise {
         if (password == null || password.length() < 6) {
             errors.put("password", "Пароль короче 6 символов");
         } else {
-            user.setPassword(passwordEncoder.encode(password));
+ //           user.setPassword(passwordEncoder.encode(password));
         }
 
         String name = profile.getName();

@@ -44,8 +44,8 @@ public class ApiGeneralController {
     }
 
     //need tests
-    @GetMapping("/tags")
-    public HashMap<String, Object> getTags (@RequestParam String query){
+    @GetMapping("/tag")
+    public HashMap<String, Object> getTags (@RequestParam(value = "query", required = false)String query){
         return tuc.getTagsWeights(query);
     }
 

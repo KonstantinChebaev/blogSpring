@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -30,8 +31,8 @@ public class UserServise {
     @Autowired
     UserRepositoryPort userRepositoryPort;
 
-//    @Autowired
-//    BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     EmailService emailService;
@@ -84,7 +85,7 @@ public class UserServise {
         User newUser = User.builder()
                 .name(urd.getName())
                 .email(urd.getEmail())
- //               .password(passwordEncoder.encode(urd.getPassword()))
+                .password(passwordEncoder.encode(urd.getPassword()))
                 .isModerator(false)
                 .regTime(LocalDateTime.now())
                 .build();
@@ -104,12 +105,10 @@ public class UserServise {
             return new ResultResponse(false, errors);
         }
         userFromDB.setCode(null);
-   //     userFromDB.setPassword(passwordEncoder.encode(request.getPassword()));
+        userFromDB.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepositoryPort.save(userFromDB);
         return new ResultResponse(true, null);
     }
-
-
 
     private HashMap<String, Object> validateUserInputAndGetErrors(String password, String captcha, String captchaSecret) {
         HashMap<String, Object> errors = new HashMap<>();
@@ -122,47 +121,42 @@ public class UserServise {
         return errors;
     }
 
-    public UserAuthResponceDto loginUser(String email, String password) {
-//        User user;
-//        try {
-//            user = userRepositoryPort.findByEmail(email);
-//        } catch (Exception e){
-//            return new UserAuthResponceDto(false,null);
-//        }
-//        if(!passwordEncoder.matches(password, user.getPassword())){
-//            System.out.println(password);
-//            return new UserAuthResponceDto(false,null);
-//        }
-//        UserDetailsImpl userDetails = new UserDetailsImpl(user);
-//        Authentication auth = new UsernamePasswordAuthenticationToken(user, "", userDetails.getAuthorities());
-//        if (auth != null) {
-//            SecurityContextHolder.getContext().setAuthentication(auth);
-//        }
-//        System.out.println(SecurityContextHolder.getContext());
-//        LoggedInUserDto loggedInUserDto = dtoConverter.userToLoggedInUser(user);
-//        return new UserAuthResponceDto(true,loggedInUserDto);
-        return null;
+    public UserAuthResponceDto loginUser(String email, String password, HttpServletRequest request, HttpServletResponse response) {
+        User user;
+        try {
+            user = userRepositoryPort.findByEmail(email);
+        } catch (Exception e){
+            return new UserAuthResponceDto(false,null);
+        }
+        if(!passwordEncoder.matches(password, user.getPassword())){
+            System.out.println(password);
+            return new UserAuthResponceDto(false,null);
+        }
+        UserDetailsImpl userDetails = new UserDetailsImpl(user);
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, "", userDetails.getAuthorities());
+        if(getCurrentUser(request)==null) {
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+        System.out.println(SecurityContextHolder.getContext());
+        LoggedInUserDto loggedInUserDto = dtoConverter.userToLoggedInUser(user);
+        return new UserAuthResponceDto(true,loggedInUserDto);
     }
 
 
     public User getCurrentUser (HttpServletRequest request){
-        if(request.isRequestedSessionIdValid() && request.getUserPrincipal()!=null){
-            String principalName = request.getUserPrincipal().getName();
-        //    String email = principalName.substring(principalName.indexOf(" email=")+7,principalName.indexOf(", password="));
-            return userRepositoryPort.findByEmail(principalName);
-        } else {
+        int id = getCurrentUserId(request);
+        if(id<0){
             return null;
         }
+        return userRepositoryPort.findById(id);
     }
 
     public int getCurrentUserId (HttpServletRequest request){
         if(request.isRequestedSessionIdValid() && request.getUserPrincipal()!=null){
             String principalName = request.getUserPrincipal().getName();
-            System.out.println(principalName);
-           // String idString = principalName.substring(principalName.indexOf("(id=")+4,principalName.indexOf(", isModer"));
-//            int id = Integer.parseInt(idString);
-//            return id;
-            return 1;
+            String idString = principalName.substring(principalName.indexOf("id")+2,principalName.indexOf("isModer"));
+            int id = Integer.parseInt(idString);
+            return id;
         } else {
             return -1;
         }
@@ -218,7 +212,7 @@ public class UserServise {
         if (password == null || password.length() < 6) {
             errors.put("password", "Пароль короче 6 символов");
         } else {
- //           user.setPassword(passwordEncoder.encode(password));
+            user.setPassword(passwordEncoder.encode(password));
         }
 
         String name = profile.getName();

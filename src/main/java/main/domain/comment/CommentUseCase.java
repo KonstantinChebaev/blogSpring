@@ -33,10 +33,16 @@ public class CommentUseCase {
         ResultResponse response = new ResultResponse();
         User user = userAuthUseCase.getCurrentUser(request);
         Optional<Post> optionalPost = postRepositoryPort.findById(newCommentRequestDto.getPostId());
-        Optional<PostComment> optionalPostComment = commentsRepository.findById(newCommentRequestDto.getParentId());
-        if(optionalPostComment.isEmpty()||optionalPost.isEmpty()){
+        if(optionalPost.isEmpty()){
             response.setResult(false);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        PostComment parentComment = null;
+        if(newCommentRequestDto.getParentId()!=null){
+            Optional<PostComment> optionalPostComment = commentsRepository.findById(newCommentRequestDto.getParentId());
+            if(optionalPostComment.isPresent()){
+                parentComment = optionalPostComment.get();
+            }
         }
         if (newCommentRequestDto.getText().length()<6){
             response.setResult(false);
@@ -46,7 +52,7 @@ public class CommentUseCase {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         PostComment newPostComment = PostComment.builder()
-                .parentPostComment(optionalPostComment.get())
+                .parentPostComment(parentComment)
                 .post(optionalPost.get())
                 .user(user)
                 .time(LocalDateTime.now())

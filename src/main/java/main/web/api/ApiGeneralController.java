@@ -43,13 +43,12 @@ public class ApiGeneralController {
         return gi;
     }
 
-    //need tests
+
     @GetMapping("/tag")
     public HashMap<String, Object> getTags (@RequestParam(value = "query", required = false)String query){
         return tuc.getTagsWeights(query);
     }
 
-    //need tests
     @GetMapping("/calendar")
     public ResponseEntity<CalendarResponseDto> getCalendar(
             @RequestParam(required = false) String year) {

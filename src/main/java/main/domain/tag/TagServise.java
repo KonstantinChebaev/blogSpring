@@ -20,23 +20,15 @@ public class TagServise {
     @Autowired
     PostRepositoryPort postRepositoryPort;
 
-    public List<Tag> getQueryTag (String query){
-        ArrayList <Tag> tags = new ArrayList<>();
-        Iterable<Tag> tagIterable = tagRepository.findAll();
-        for (Tag tag : tagIterable) {
-            if(tag.getName().toLowerCase().contains(query)){
-                tags.add(tag);
-            }
-        }
-        if(tags.isEmpty()){
-            return null;
-        }
-        return tags;
-    }
+
 
     public Tag saveTag(String tagName) {
         Tag tag = tagRepository.findByNameIgnoreCase(tagName);
         return (tag != null) ? tag : tagRepository.save(new Tag(tagName.toLowerCase()));
+    }
+
+    public Tag findTag(String tagName) {
+        return tagRepository.findByNameIgnoreCase(tagName);
     }
 
     public Tag saveTag(String tagName, Post post) {
@@ -69,14 +61,31 @@ public class TagServise {
                 return result;
             }
         }
-        int postsTotalCount = postRepositoryPort.getAllGood(postRepositoryPort.findAll()).size();
+        double postsTotalCount = postRepositoryPort.findAllGood().size();
         double weight = 0;
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.CEILING);
         for (Tag tag : tags){
-            weight = tag.getPostsAmount()/postsTotalCount;
+            weight = tag.getGoodPostsAmount()/postsTotalCount;
             result.put(tag.getName(), df.format(weight));
         }
         return result;
+    }
+
+    private List<Tag> getQueryTag (String query){
+        if(query == null){
+            return null;
+        }
+        ArrayList <Tag> tags = new ArrayList<>();
+        Iterable<Tag> tagIterable = tagRepository.findAll();
+        for (Tag tag : tagIterable) {
+            if(tag.getName().toLowerCase().contains(query)){
+                tags.add(tag);
+            }
+        }
+        if(tags.isEmpty()){
+            return null;
+        }
+        return tags;
     }
 }

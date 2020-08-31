@@ -11,7 +11,7 @@ public interface PostRepositoryPort {
     Optional <Post>  findById(int postId) ;
 
     List<Post> findAll();
-    List<Post> getAllGood(List<Post> posts);
+    List<Post> findAllGood();
     List<Post> findByModerStat (String moderStat);
 
     List<Post> findByQuery (String query);

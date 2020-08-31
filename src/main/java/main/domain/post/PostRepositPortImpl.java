@@ -35,15 +35,14 @@ public class PostRepositPortImpl implements PostRepositoryPort {
     }
 
     @Override
-    public List<Post> getAllGood(List<Post> posts) {
+    public List<Post> findAllGood() {
+        List<Post> posts = findAll();
         ArrayList<Post> goodPosts = new ArrayList<>();
-        for (Post post : posts) {
-            if (post.isActive()
-                    && post.getModerStat().equals(Post.ModerStat.ACCEPTED)
-                    && post.getTime().isBefore(LocalDateTime.now())) {
-                goodPosts.add(post);
-            }
-        }
+        posts.stream()
+                .filter(p -> p.isActive()
+                && p.getModerStat().equals(Post.ModerStat.ACCEPTED)
+                && p.getTime().isBefore(LocalDateTime.now()))
+                .forEach(goodPosts::add);
         return goodPosts;
     }
 
@@ -54,35 +53,25 @@ public class PostRepositPortImpl implements PostRepositoryPort {
 
     @Override
     public List<Post> findByQuery(String query) {
-        Iterable<Post> postIterable = pr.findAll();
-        ArrayList<Post> posts = new ArrayList<>();
-        for (Post post : postIterable) {
-            if((post.getText().contains(query) || post.getTitle().contains(query))){
-                if (post.isActive()
-                        && post.getModerStat().equals(Post.ModerStat.ACCEPTED)
-                        && post.getTime().isBefore(LocalDateTime.now())) {
-                    posts.add(post);
-                }
-            }
+        List<Post> posts = findAllGood();
+        if(query == null){
+            return posts;
         }
+        posts.removeIf(p -> !containsIgnoreCase(p.getText(), query));
         return posts;
     }
 
     @Override
     public List<Post> findByDate(LocalDate date) {
-        Iterable<Post> postIterable = pr.findAll();
-        ArrayList<Post> posts = new ArrayList<>();
-        for (Post post : postIterable) {
+        List<Post> posts = findAllGood();
+        List<Post> finalPosts = new ArrayList<>();
+        for (Post post : posts) {
             LocalDate localDate = post.getTime().toLocalDate();
             if(localDate.isEqual(date)){
-                if (post.isActive()
-                        && post.getModerStat().equals(Post.ModerStat.ACCEPTED)
-                        && post.getTime().isBefore(LocalDateTime.now())) {
-                    posts.add(post);
-                }
+                finalPosts.add(post);
             }
         }
-        return posts;
+        return finalPosts;
     }
 
 
@@ -113,6 +102,26 @@ public class PostRepositPortImpl implements PostRepositoryPort {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
         return dateTime.toEpochSecond(ZoneOffset.UTC);
+    }
+
+    private boolean containsIgnoreCase(String src, String what) {
+        final int length = what.length();
+        if (length == 0)
+            return true; // Empty string is contained
+
+        final char firstLo = Character.toLowerCase(what.charAt(0));
+        final char firstUp = Character.toUpperCase(what.charAt(0));
+
+        for (int i = src.length() - length; i >= 0; i--) {
+            // Quick check before calling the more expensive regionMatches() method:
+            final char ch = src.charAt(i);
+            if (ch != firstLo && ch != firstUp)
+                continue;
+
+            if (src.regionMatches(true, i, what, 0, length))
+                return true;
+        }
+        return false;
     }
 
 }

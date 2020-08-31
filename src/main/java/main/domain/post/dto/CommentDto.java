@@ -9,6 +9,6 @@ import lombok.Data;
 public class CommentDto {
     private Integer id;
     private long timestamp;
-    private UserWithPhotoDto user;
     private String text;
+    private UserWithPhotoDto user;
 }

@@ -46,6 +46,19 @@ public class User  {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
     private final List<PostVote> votes = new ArrayList<>();
 
+    @Override
+    public String toString (){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("User").append(this.hashCode())
+                .append("id").append(id)
+                .append("isModer").append(isModerator)
+                .append("regTime").append(regTime.toString())
+                .append("name").append(name)
+                .append("email").append(email)
+                .append(".");
+        return stringBuilder.toString();
+    }
+
 
 
 

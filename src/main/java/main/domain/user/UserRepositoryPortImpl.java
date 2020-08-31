@@ -16,7 +16,7 @@ public class UserRepositoryPortImpl implements UserRepositoryPort {
     public User findByEmail(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isEmpty()) {
-            throw new RuntimeException("User witn email:" + email + " not found");
+            return null;
         }
         return optionalUser.get();
     }

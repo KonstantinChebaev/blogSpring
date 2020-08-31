@@ -1,40 +1,30 @@
 package main.security;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import main.domain.user.User;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class UserDetailsImpl implements UserDetails {
-    private int id;
-
-
-    private String email;
-
-    private String password;
-    private boolean isModerator;
+public class UserDetailsImpl implements UserDetails, Serializable {
+    private final String password;
+    private final String email;
+    private final boolean isModer;
 
     public UserDetailsImpl(User user) {
-        this.id = user.getId();
-        this.password = user.getPassword();
-        this.email = user.getEmail();
-        this.isModerator = user.isModerator();
-    }
-
-    public static UserDetailsImpl fromAuth(Authentication authentication) {
-        return (UserDetailsImpl) authentication.getPrincipal();
+        password = user.getPassword();
+        email = user.getEmail();
+        isModer = user.isModerator();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        if(isModerator){
+        if(isModer){
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         } else {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
@@ -44,16 +34,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "{noop}" + password;
+       return password;
     }
 
     @Override
     public String getUsername() {
         return email;
-    }
-
-    public int getId() {
-        return id;
     }
 
     @Override

@@ -44,10 +44,11 @@ public class DtoConverter {
     }
 
     public PostWithCommentsDto postToPostWithComments (Post p){
-        PostWithCommentsDto postWithCom = PostWithCommentsDto.builder()
+        return PostWithCommentsDto.builder()
                 .id(p.getId())
                 .text(p.getText())
                 .timestamp(p.getTime().toEpochSecond(ZoneOffset.UTC))
+                .active(p.isActive())
                 .title(p.getTitle())
                 .viewCount(p.getViewCount())
                 .user(new PostUserDto(p.getUser().getId(), p.getUser().getName()))
@@ -56,7 +57,6 @@ public class DtoConverter {
                 .dislikeCount(p.getPostVotes().stream().filter(item -> item.getValue() < 0).count())
                 .likeCount(p.getPostVotes().stream().filter(item -> item.getValue() > 0).count())
                 .build();
-        return postWithCom;
     }
 
     public List <CommentDto> commentListToCommentDtoList (List <PostComment> postCommentList) {
@@ -76,7 +76,7 @@ public class DtoConverter {
 
     //узнать как доставать modCount
     public LoggedInUserDto userToLoggedInUser (User u){
-        LoggedInUserDto loggedInUserDto = LoggedInUserDto.builder()
+        return LoggedInUserDto.builder()
                 .id(u.getId())
                 .email(u.getEmail())
                 .moderation(u.isModerator())
@@ -85,7 +85,6 @@ public class DtoConverter {
                 .settings(u.isModerator())
                 .moderationCount(0)
                 .build();
-        return loggedInUserDto;
     }
 
 

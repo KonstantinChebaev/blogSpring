@@ -11,6 +11,7 @@ import java.util.List;
 public class PostWithCommentsDto {
     private Integer id;
     private long timestamp;
+    private boolean active;
     private PostUserDto user;
     private String title;
     private String text;

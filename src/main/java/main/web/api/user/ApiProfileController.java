@@ -19,11 +19,8 @@ public class ApiProfileController {
     @Autowired
     UserServise userServise;
 
-
     @PostMapping(value = "api/profile/my")
     public ResponseEntity<ResultResponse> updateProfile(@RequestBody ProfileDto profile, HttpServletRequest request) {
         return userServise.updateProfile(profile, request);
     }
-
-
 }

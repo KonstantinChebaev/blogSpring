@@ -30,7 +30,6 @@ public class ApiPostController {
         return puc.getAll(offset, limit, mode);
     }
 
-    //need tests
     @GetMapping("/post/{id}")
     public ResponseEntity <PostWithCommentsDto> getPost(@PathVariable int id, HttpServletRequest request) {
         return puc.findById(id, request);

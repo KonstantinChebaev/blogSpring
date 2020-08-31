@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import main.domain.post.Post;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -31,8 +32,10 @@ public class Tag {
         this.name = tagName;
     }
 
-    public int getPostsAmount (){
-        return posts.size();
+    public double getGoodPostsAmount (){
+        return (double) posts.stream().filter(p -> p.isActive()
+                && p.getModerStat().equals(Post.ModerStat.ACCEPTED)
+                && p.getTime().isBefore(LocalDateTime.now())).count();
     }
 
 

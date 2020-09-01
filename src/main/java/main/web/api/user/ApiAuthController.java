@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.security.Principal;
 import java.util.HashMap;
 
 @RestController
@@ -32,23 +31,24 @@ public class ApiAuthController {
         return userServise.registerUser(ur);
     }
 
+
+    //сделать еще так чтобы, при авторизации в течении одной сессии нескольких разных
+    //пользователей одного за другим, предыдущий разлогинивался а авторизованным оставался последний
     @PostMapping(value = "login")
     public UserAuthResponceDto apiAuthLogin(@RequestBody UserLoginDto ul
-                                            , HttpServletRequest request
-                                            , HttpServletResponse response) {
-        return userServise.loginUser(ul.getEmail(), ul.getPassword(), request, response);
+                                            , HttpServletRequest request) {
+        return userServise.loginUser(ul.getEmail(), ul.getPassword(), request);
     }
 
     @GetMapping(value = "check")
-    public HashMap<String, Object> apiAuthCheck(HttpServletRequest request,
-                                                Principal principal) {
+    public HashMap<String, Object> apiAuthCheck(HttpServletRequest request) {
         HashMap<String, Object> responce = new HashMap<>();
-        int userId = userServise.getCurrentUserId(request);
-        if (userId < 0) {
+        User user = userServise.getCurrentUser(request);
+        if (user == null) {
             responce.put("result", "false");
         } else {
             responce.put("result", "true");
-            responce.put("user", userServise.getLoggedInUser(userId));
+            responce.put("user", userServise.getLoggedInUser(user));
         }
         return responce;
     }

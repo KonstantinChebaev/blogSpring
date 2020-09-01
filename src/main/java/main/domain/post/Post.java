@@ -27,8 +27,7 @@ public class Post {
     @Column(name = "moderation_status", nullable = false)
 
     @Enumerated(EnumType.STRING)
-    private ModerStat moderStat;
-    public enum ModerStat {NEW, ACCEPTED, DECLINED}
+    private ModerationStatus moderStat;
 
     @Column(name = "moderator_id", nullable = false)
     private int moderatorId;

@@ -3,6 +3,7 @@ package main.domain.tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import main.domain.post.ModerationStatus;
 import main.domain.post.Post;
 
 import javax.persistence.*;
@@ -34,7 +35,7 @@ public class Tag {
 
     public double getGoodPostsAmount (){
         return (double) posts.stream().filter(p -> p.isActive()
-                && p.getModerStat().equals(Post.ModerStat.ACCEPTED)
+                && p.getModerStat().equals(ModerationStatus.ACCEPTED)
                 && p.getTime().isBefore(LocalDateTime.now())).count();
     }
 

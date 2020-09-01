@@ -2,6 +2,7 @@ package main.web.api.post;
 
 import main.domain.ModerationRequestDto;
 import main.domain.ResultResponse;
+import main.domain.post.ModerationStatus;
 import main.domain.post.dto.PostPostDto;
 import main.domain.post.PostServise;
 import main.domain.post.dto.AllPostsResponseDto;
@@ -35,7 +36,6 @@ public class ApiPostController {
         return puc.findById(id, request);
     }
 
-    //need tests
     @PutMapping("/post/{id}")
     public ResponseEntity<ResultResponse> putPost(@PathVariable int id,
                                                   HttpServletRequest request,
@@ -69,24 +69,28 @@ public class ApiPostController {
         return puc.getTagPosts(offset, limit, tag);
     }
 
-    //need tests
     @GetMapping("/post/moderation")
     public AllPostsResponseDto getModerationPosts(@RequestParam int offset,
                                                   @RequestParam int limit,
                                                   @RequestParam String status,
                                                   HttpServletRequest request) {
-        return puc.getModerationPosts(offset, limit, status, request);
+        ModerationStatus ms;
+        switch (status){
+            case "new": ms = ModerationStatus.NEW; break;
+            case "accepted": ms = ModerationStatus.ACCEPTED; break;
+            case "declined": ms = ModerationStatus.DECLINED; break;
+            default: return new AllPostsResponseDto();
+        }
+        return puc.getModerationPosts(offset, limit, ms, request);
     }
 
     //need tests
     @PostMapping("/moderation")
-    public ResponseEntity<?> postModeration(@RequestBody ModerationRequestDto moderationRequestDto,
+    public boolean postModeration(@RequestBody ModerationRequestDto moderationRequestDto,
                                             HttpServletRequest request) {
-        return puc.moderate(moderationRequestDto, request);
+         return puc.moderate(moderationRequestDto, request);
     }
 
-
-    //need tests
     @GetMapping("/post/my")
     public AllPostsResponseDto getMyPosts(@RequestParam int offset,
                                           @RequestParam int limit,

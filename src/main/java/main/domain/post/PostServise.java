@@ -127,7 +127,7 @@ public class PostServise {
         List<Post> finalPosts = new ArrayList<>();
         posts.stream()
                 .filter(p -> p.isActive()
-                        && p.getModerStat().equals(Post.ModerStat.ACCEPTED)
+                        && p.getModerStat().equals(ModerationStatus.ACCEPTED)
                         && p.getTime().isBefore(LocalDateTime.now()))
                 .forEach(finalPosts::add);
         int size = finalPosts.size();
@@ -142,10 +142,12 @@ public class PostServise {
         return new ResponseEntity<>(pdr, HttpStatus.OK);
     }
 
-    public AllPostsResponseDto getModerationPosts(int offset, int limit, String status, HttpServletRequest request) {
+    public AllPostsResponseDto getModerationPosts(int offset, int limit, ModerationStatus status, HttpServletRequest request) {
         int moderId = userServise.getCurrentUser(request).getId();
         List<Post> posts = postRepositoryPort.findByModerStat(status);
-        posts.removeIf(post -> !(post.isActive() && (post.getModeratorId() == moderId || status.equals("NEW"))));
+        if (!status.equals(ModerationStatus.NEW)){
+            posts.removeIf(post -> post.getModeratorId() != moderId );
+        }
         int count = posts.size();
         if (count < limit) {
             limit = count;
@@ -163,19 +165,19 @@ public class PostServise {
             finalPosts = posts;
         } else if (status.equals("pending")) {
             for (Post post : posts) {
-                if (post.isActive() && post.getModerStat().equals(Post.ModerStat.NEW)) {
+                if (post.isActive() && post.getModerStat().equals(ModerationStatus.NEW)) {
                     finalPosts.add(post);
                 }
             }
         } else if (status.equals("declined")) {
             for (Post post : posts) {
-                if (post.isActive() && post.getModerStat().equals(Post.ModerStat.DECLINED)) {
+                if (post.isActive() && post.getModerStat().equals(ModerationStatus.DECLINED)) {
                     finalPosts.add(post);
                 }
             }
         } else if (status.equals("published")) {
             for (Post post : posts) {
-                if (post.isActive() && post.getModerStat().equals(Post.ModerStat.ACCEPTED)) {
+                if (post.isActive() && post.getModerStat().equals(ModerationStatus.ACCEPTED)) {
                     finalPosts.add(post);
                 }
             }
@@ -185,18 +187,17 @@ public class PostServise {
             return new AllPostsResponseDto(count, new ArrayList<PostPlainDto>());
         }
         if (count < limit) {
-            limit = count - 1;
+            limit = count;
         }
         finalPosts = finalPosts.subList(offset, limit);
-        return new AllPostsResponseDto(count, dtoConverter.listPostToDtoList(posts));
+        return new AllPostsResponseDto(count, dtoConverter.listPostToDtoList(finalPosts));
     }
 
     //Методы для создания или редактирования постов
 
     public HashMap<String, Object> createPost(PostPostDto postPostDto, HttpServletRequest request) {
         User user = userServise.getCurrentUser(request);
-        HashMap<String, Object> response = new HashMap<>();
-        response = checkPostInput(postPostDto);
+        HashMap<String, Object> response = checkPostInput(postPostDto);
         if (response.get("result").equals(false)) {
             return response;
         }
@@ -244,9 +245,8 @@ public class PostServise {
         post.setActive(postPostDto.getActive());
         post.setText(postPostDto.getText());
         post.setTitle(postPostDto.getTitle());
-
-        Post.ModerStat moderStat = getModerStatus(post.getUser().isModerator());
-        post.setModerStat(moderStat);
+        post.setModerStat(ModerationStatus.NEW);
+        post.setViewCount(0);
 
         LocalDateTime date = LocalDateTime.ofEpochSecond(postPostDto.getTimestamp(), 0, java.time.ZoneOffset.UTC);
         if (date.isBefore(LocalDateTime.now())) {
@@ -270,33 +270,21 @@ public class PostServise {
 
     // модерационные методы
 
-    private Post.ModerStat getModerStatus(boolean moderator) {
-        if (moderator) {
-            return Post.ModerStat.ACCEPTED;
-        }
-        GSettingsDto settings = settingsService.getSettings();
-        if (settings.getPostPremoderation()) {
-            return Post.ModerStat.NEW;
-        } else {
-            return Post.ModerStat.ACCEPTED;
-        }
-    }
-
-
-    public ResponseEntity<?> moderate(ModerationRequestDto moderationRequestDto, HttpServletRequest request) {
+    public boolean moderate(ModerationRequestDto moderationRequestDto, HttpServletRequest request) {
         Optional<Post> optpost = postRepositoryPort.findById(moderationRequestDto.getPostId());
         if (optpost.isEmpty()) {
-            return getErrorResponce("badId", "Post with this id does not found");
+            return false;
         }
         Post post = optpost.get();
         int userId = userServise.getCurrentUser(request).getId();
-        if (moderationRequestDto.getDecision().equals("DECLINE")) {
-            post.setModerStat(Post.ModerStat.DECLINED);
-        } else if (moderationRequestDto.getDecision().equals("ACCEPT")) {
-            post.setModerStat(Post.ModerStat.ACCEPTED);
+        if (moderationRequestDto.getDecision().equals("decline")) {
+            post.setModerStat(ModerationStatus.DECLINED);
+        } else if (moderationRequestDto.getDecision().equals("accept")) {
+            post.setModerStat(ModerationStatus.ACCEPTED);
         }
         post.setModeratorId(userId);
-        return new ResponseEntity<>(new ResultResponse(true, null), HttpStatus.OK);
+        postRepositoryPort.savePost(post);
+        return true;
 
     }
 
@@ -320,10 +308,10 @@ public class PostServise {
     public HashMap<String, Object> checkPostInput(PostPostDto postPostDto) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> errors = new HashMap<>();
-        if (postPostDto.getText() == null || postPostDto.getText().length() < 500) {
+        if (postPostDto.getText() == null || postPostDto.getText().length() < 50) {
             errors.put("text", "Текст публикации слишком короткий");
         }
-        if (postPostDto.getTitle() == null || postPostDto.getTitle().length() < 10) {
+        if (postPostDto.getTitle() == null || postPostDto.getTitle().length() < 3) {
             errors.put("title", "Заголовок слишком короткий");
         }
         if (!errors.isEmpty()) {

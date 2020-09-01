@@ -12,8 +12,6 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends CrudRepository<Post, Integer> {
-    List<Post> findByModerStat (String moderStat);
-
     @Query("SELECT COUNT(*) FROM Post p WHERE (:user IS NULL OR p.user = :user)")
     Integer countByUser(@Param("user") User user);
 

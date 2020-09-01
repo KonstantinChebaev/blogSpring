@@ -12,7 +12,7 @@ public interface PostRepositoryPort {
 
     List<Post> findAll();
     List<Post> findAllGood();
-    List<Post> findByModerStat (String moderStat);
+    List<Post> findByModerStat (ModerationStatus ms);
 
     List<Post> findByQuery (String query);
     List<Post> findByDate (LocalDate date);

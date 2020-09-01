@@ -21,11 +21,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if(userOptional.isEmpty()) {
-            System.out.println("Data recieved. User not found.");
+            System.out.println("Data received. User not found by UserDetailsServiceImpl");
             throw new UsernameNotFoundException("Username with email"+email+" not found");
         }
         return new UserDetailsImpl(userOptional.get());
     }
 }
-
-//jwt.token.secret=damniloveanime

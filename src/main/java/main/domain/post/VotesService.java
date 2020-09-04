@@ -42,8 +42,6 @@ public class VotesService {
         Integer voteIntValue = voteValue.equals("LIKE") ? 1 : -1;
         return votesRepository.countByUserAndValue(user, voteIntValue);
     }
-
-
     public long countByValue(String value) {
         Integer voteIntValue = value.equals("LIKE") ? 1 : -1;
         return votesRepository.countByValue(voteIntValue);

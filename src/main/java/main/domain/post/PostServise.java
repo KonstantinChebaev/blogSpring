@@ -4,7 +4,6 @@ import main.domain.DtoConverter;
 import main.domain.CalendarResponseDto;
 import main.domain.ModerationRequestDto;
 import main.domain.ResultResponse;
-import main.domain.globallSettings.GSettingsDto;
 import main.domain.globallSettings.SettingsService;
 import main.domain.post.dto.*;
 import main.domain.tag.Tag;
@@ -79,14 +78,13 @@ public class PostServise {
     public ResponseEntity<PostWithCommentsDto> findById(int id, HttpServletRequest request) {
         Optional<Post> optionalPost = postRepositoryPort.findById(id);
         if (optionalPost.isEmpty()) {
-            Boolean result = false;
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         Post post = optionalPost.get();
 
         User currentUser = userServise.getCurrentUser(request);
-        if (currentUser == null || !currentUser.isModerator() ||
-                currentUser.getId() != post.getUser().getId()) {
+
+        if (!currentUser.isModerator() && currentUser.getId() != post.getUser().getId()) {
             post.incrementViewCount();
             postRepositoryPort.savePost(post);
         }
@@ -115,10 +113,10 @@ public class PostServise {
     }
 
 
-    public ResponseEntity<?> getTagPosts(int offset, int limit, String tagName) {
+    public ResponseEntity<AllPostsResponseDto> getTagPosts(int offset, int limit, String tagName) {
         Tag tag = tagServise.findTag(tagName);
         if (tag == null) {
-            return getErrorResponce("tag", "Такого тега не существует");
+            return new ResponseEntity<>(new AllPostsResponseDto(0, null), HttpStatus.OK);
         }
         List<Post> posts = tag.getPosts();
         if (posts == null || posts.isEmpty()) {
@@ -195,11 +193,11 @@ public class PostServise {
 
     //Методы для создания или редактирования постов
 
-    public HashMap<String, Object> createPost(PostPostDto postPostDto, HttpServletRequest request) {
+    public ResponseEntity<ResultResponse> createPost(PostPostDto postPostDto, HttpServletRequest request) {
         User user = userServise.getCurrentUser(request);
-        HashMap<String, Object> response = checkPostInput(postPostDto);
-        if (response.get("result").equals(false)) {
-            return response;
+        ResultResponse response = checkPostInput(postPostDto);
+        if (!response.isResult()) {
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
         }
         final Post newPost = Post.builder()
                 .viewCount(0)
@@ -207,35 +205,24 @@ public class PostServise {
                 .moderatorId(0)
                 .build();
         savePost(postPostDto, newPost);
-        return response;
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     public ResponseEntity<ResultResponse> editPost(int id, HttpServletRequest request, PostPostDto postPostDto) {
-        ResultResponse resultResponse = new ResultResponse();
-        HashMap<String, Object> response = new HashMap<>();
         User user = userServise.getCurrentUser(request);
         Optional<Post> optionalPost = postRepositoryPort.findById(id);
         if (optionalPost.isEmpty()) {
-            resultResponse.setResult(false);
-            response.put("errors", "Пост с id " + id + " не найден");
-            resultResponse.setErrors(response);
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ResultResponse.getBadResultResponse("errors", "Пост с id " + id + " не найден"), HttpStatus.BAD_REQUEST);
         }
         Post post = optionalPost.get();
 
         if (user.getId() != post.getUser().getId()) {
-            resultResponse.setResult(false);
-            response.put("errors", "У вас нет прав редактировать пост");
-            resultResponse.setErrors(response);
-            return new ResponseEntity<>(resultResponse, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(ResultResponse.getBadResultResponse("errors", "У вас нет прав редактировать пост"), HttpStatus.FORBIDDEN);
         }
-        response = checkPostInput(postPostDto);
-        if (response.get("result").equals(false)) {
-            resultResponse.setResult(false);
-            resultResponse.setErrors(response);
+        ResultResponse resultResponse = checkPostInput(postPostDto);
+        if (resultResponse.isResult()) {
             return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
         }
-        resultResponse.setResult(true);
         savePost(postPostDto, post);
         return new ResponseEntity<>(resultResponse, HttpStatus.OK);
     }
@@ -288,39 +275,15 @@ public class PostServise {
 
     }
 
-    //аргументы по два передаются ключ - значение
-    private ResponseEntity<?> getErrorResponce(String... messages) {
-        ResultResponse resultResponse = new ResultResponse();
-        resultResponse.setResult(false);
-        HashMap<String, Object> errors = new HashMap<>();
-        if (messages.length > 0) {
-            for (int x = 0; x < messages.length; x++) {
-                if (x % 2 != 0) continue;
-                errors.put(messages[x], messages[x + 1]);
-            }
-        }
-        resultResponse.setErrors(errors);
-        return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
-
-    }
-
-    //исправить чтобы возращал объект ResultResponse или только ошибки в мапе
-    public HashMap<String, Object> checkPostInput(PostPostDto postPostDto) {
-        HashMap<String, Object> response = new HashMap<>();
-        HashMap<String, Object> errors = new HashMap<>();
+    public ResultResponse checkPostInput(PostPostDto postPostDto) {
+        ResultResponse resultResponse = new ResultResponse(true,new HashMap<>());
         if (postPostDto.getText() == null || postPostDto.getText().length() < 50) {
-            errors.put("text", "Текст публикации слишком короткий");
+            resultResponse.addErrors("text", "Текст публикации слишком короткий");
         }
         if (postPostDto.getTitle() == null || postPostDto.getTitle().length() < 3) {
-            errors.put("title", "Заголовок слишком короткий");
+            resultResponse.addErrors("title", "Заголовок слишком короткий");
         }
-        if (!errors.isEmpty()) {
-            response.put("result", false);
-            response.put("errors", errors);
-            return response;
-        }
-        response.put("result", true);
-        return response;
+        return resultResponse;
     }
 
     public ResponseEntity<CalendarResponseDto> getCalend(String year) {

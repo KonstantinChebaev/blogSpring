@@ -31,9 +31,6 @@ public class ApiAuthController {
         return userServise.registerUser(ur);
     }
 
-
-    //сделать еще так чтобы, при авторизации в течении одной сессии нескольких разных
-    //пользователей одного за другим, предыдущий разлогинивался а авторизованным оставался последний
     @PostMapping(value = "login")
     public UserAuthResponceDto apiAuthLogin(@RequestBody UserLoginDto ul
                                             , HttpServletRequest request) {
@@ -41,36 +38,29 @@ public class ApiAuthController {
     }
 
     @GetMapping(value = "check")
-    public HashMap<String, Object> apiAuthCheck(HttpServletRequest request) {
-        HashMap<String, Object> responce = new HashMap<>();
+    public ResponseEntity<UserAuthResponceDto> apiAuthCheck(HttpServletRequest request) {
         User user = userServise.getCurrentUser(request);
         if (user == null) {
-            responce.put("result", "false");
+            return new ResponseEntity<>(new UserAuthResponceDto(false,null),HttpStatus.BAD_REQUEST);
         } else {
-            responce.put("result", "true");
-            responce.put("user", userServise.getLoggedInUser(user));
+            return new ResponseEntity<>(new UserAuthResponceDto(true, userServise.getLoggedInUser(user)), HttpStatus.OK);
         }
-        return responce;
     }
 
     @GetMapping("logout")
-    public HashMap<String, Object> logout(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        HashMap<String, Object> responseMap = new HashMap<>();
-        responseMap.put("result", "true");
+    public Boolean logout(HttpServletRequest request, HttpServletResponse response){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return responseMap;
+        return true;
     }
 
     // https://mailtrap.io/inboxes
     @PostMapping("/restore")
-    public ResponseEntity<HashMap<String, Boolean>> restore(@RequestParam String email) {
+    public ResponseEntity<Boolean> restore(@RequestParam String email) {
         boolean result = userServise.restoreUserPassword(email);
-        HashMap<String,Boolean> response = new HashMap<>();
-        response.put("result", result);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     //need tests
@@ -79,7 +69,6 @@ public class ApiAuthController {
         return new ResponseEntity<>(userServise.resetUserPassword(request), HttpStatus.OK);
     }
 
-    //need tests
     @GetMapping(value = "/captcha")
     public ResponseEntity<CaptchaResponseDto> apiAuthCaptcha() {
         return new ResponseEntity<>(captchaServise.getCaptchaResponse(), HttpStatus.OK);

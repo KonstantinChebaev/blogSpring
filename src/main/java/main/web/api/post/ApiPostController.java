@@ -23,7 +23,6 @@ public class ApiPostController {
     @Autowired
     PostServise puc;
 
-
     @GetMapping("/post")
     public AllPostsResponseDto getAllPosts(@RequestParam int offset,
                                            @RequestParam int limit,
@@ -44,7 +43,7 @@ public class ApiPostController {
     }
 
     @PostMapping("/post")
-    public HashMap<String, Object> postPost(@RequestBody PostPostDto ppDto, HttpServletRequest request) {
+    public ResponseEntity<ResultResponse> postPost(@RequestBody PostPostDto ppDto, HttpServletRequest request) {
         return puc.createPost(ppDto, request);
     }
 
@@ -63,7 +62,7 @@ public class ApiPostController {
     }
 
     @GetMapping("/post/byTag")
-    public ResponseEntity<?> getTagPosts(@RequestParam int offset,
+    public ResponseEntity<AllPostsResponseDto> getTagPosts(@RequestParam int offset,
                                          @RequestParam int limit,
                                          @RequestParam String tag) {
         return puc.getTagPosts(offset, limit, tag);
@@ -84,7 +83,6 @@ public class ApiPostController {
         return puc.getModerationPosts(offset, limit, ms, request);
     }
 
-    //need tests
     @PostMapping("/moderation")
     public boolean postModeration(@RequestBody ModerationRequestDto moderationRequestDto,
                                             HttpServletRequest request) {
@@ -99,7 +97,6 @@ public class ApiPostController {
         return puc.getUserPosts(offset, limit, status, request);
     }
 
-    //need tests
     @PostMapping("/post/{vote}")
     public ResponseEntity<ResultResponse> votePost(@PathVariable String vote, @RequestBody Map<String, Integer> body, HttpServletRequest request) {
         return puc.votePost(vote, body.getOrDefault("post_id", 0), request);

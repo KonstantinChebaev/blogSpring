@@ -30,26 +30,22 @@ public class CommentUseCase {
 
     public ResponseEntity<?> createComment (NewCommentRequestDto newCommentRequestDto,
                                                          HttpServletRequest request){
-        ResultResponse response = new ResultResponse();
+
         User user = userAuthUseCase.getCurrentUser(request);
         Optional<Post> optionalPost = postRepositoryPort.findById(newCommentRequestDto.getPostId());
         if(optionalPost.isEmpty()){
-            response.setResult(false);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ResultResponse.getBadResultResponse("not_found", "Пост не найден"), HttpStatus.BAD_REQUEST);
         }
+        if (newCommentRequestDto.getText().length()<6){
+            return new ResponseEntity<>(ResultResponse.getBadResultResponse("text", "Текст комментария не задан или слишком короткий"), HttpStatus.BAD_REQUEST);
+        }
+
         PostComment parentComment = null;
         if(newCommentRequestDto.getParentId()!=null){
             Optional<PostComment> optionalPostComment = commentsRepository.findById(newCommentRequestDto.getParentId());
             if(optionalPostComment.isPresent()){
                 parentComment = optionalPostComment.get();
             }
-        }
-        if (newCommentRequestDto.getText().length()<6){
-            response.setResult(false);
-            HashMap<String, Object> errors = new HashMap<>();
-            errors.put("text", "Текст комментария не задан или слишком короткий");
-            response.setErrors(errors);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         PostComment newPostComment = PostComment.builder()
                 .parentPostComment(parentComment)

@@ -177,10 +177,12 @@ public class UserServise {
                 user.setEmail(email);
             }
         }
-
+        System.out.println(profile.isRemovePhoto());
         if(profile.isRemovePhoto()){
             if(user.getPhoto() != null){
-                storageService.delete(user.getPhoto());
+                System.out.println(user.getPhoto());
+                boolean result = storageService.delete(user.getPhoto());
+                System.out.println(result);
                 user.setPhoto(null);
             }
         } else {

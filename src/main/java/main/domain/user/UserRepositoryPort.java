@@ -6,10 +6,5 @@ public interface UserRepositoryPort {
     User findByCode(String code);
     User findById(int userId);
 
-
-
-    void addUser(User user);
     void save(User user);
-
-    User findUserByEmail(String email);
 }

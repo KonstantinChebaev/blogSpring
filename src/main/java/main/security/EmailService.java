@@ -2,20 +2,20 @@ package main.security;
 
 
 import main.config.EmailCfg;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
-
-@Component
+@Service
 public class EmailService {
     private static final String EMAIL_FROM = "devPub@mail.com";
 
-    @Autowired
-    EmailCfg emailConfiguration;
+    private EmailCfg emailConfiguration;
+
+    public EmailService(EmailCfg emailConfiguration){
+        this.emailConfiguration = emailConfiguration;
+    }
 
     private JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSenderImpl = new JavaMailSenderImpl();

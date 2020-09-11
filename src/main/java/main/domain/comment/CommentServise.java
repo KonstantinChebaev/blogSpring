@@ -5,33 +5,31 @@ import main.domain.ResultResponse;
 import main.domain.post.Post;
 import main.domain.post.PostRepositoryPort;
 import main.domain.user.User;
-import main.domain.user.UserServise;
-import org.springframework.beans.factory.annotation.Autowired;
+import main.domain.user.UserRepositoryPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Optional;
 
 @Component
-public class CommentUseCase {
+public class CommentServise {
 
-    @Autowired
-    PostRepositoryPort postRepositoryPort;
-
-    @Autowired
-    UserServise userAuthUseCase;
-
-    @Autowired
+    private PostRepositoryPort postRepositoryPort;
     private CommentRepository commentsRepository;
+    private UserRepositoryPort userRepositoryPort;
 
-    public ResponseEntity<?> createComment (NewCommentRequestDto newCommentRequestDto,
-                                                         HttpServletRequest request){
+    public CommentServise (PostRepositoryPort postRepositoryPort,CommentRepository commentsRepository,
+                           UserRepositoryPort userRepositoryPort){
+        this.postRepositoryPort =  postRepositoryPort;
+        this.commentsRepository = commentsRepository;
+        this.userRepositoryPort = userRepositoryPort;
+    }
 
-        User user = userAuthUseCase.getCurrentUser(request);
+    public ResponseEntity<?> createComment (NewCommentRequestDto newCommentRequestDto, String userEmail){
+
+        User user = userRepositoryPort.findByEmail(userEmail);
         Optional<Post> optionalPost = postRepositoryPort.findById(newCommentRequestDto.getPostId());
         if(optionalPost.isEmpty()){
             return new ResponseEntity<>(ResultResponse.getBadResultResponse("not_found", "Пост не найден"), HttpStatus.BAD_REQUEST);

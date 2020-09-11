@@ -1,21 +1,35 @@
 package main.config;
 
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
-@Component
-@Data
+@ConfigurationProperties(prefix = "mail.credentials")
+@ConstructorBinding
 public class EmailCfg {
-    @Value("${spring.mail.host}")
-    private String host;
+    private final String host;
+    private final int port;
+    private final String username;
+    private final String password;
 
-    @Value("${spring.mail.port}")
-    private int port;
+    public EmailCfg(String host, int port, String username, String password){
+        this.host = host;
+        this.port = port;
+        this.username = username;
+        this.password = password;
+    }
+    public String getHost(){
+        return host;
+    }
+    public String getUsername(){
+        return username;
+    }
+    public String getPassword(){
+        return password;
+    }public int getPort(){
+        return port;
+    }
 
-    @Value("${spring.mail.username}")
-    private String username;
 
-    @Value("${spring.mail.password}")
-    private String password;
+
+
 }

@@ -1,7 +1,6 @@
 package main.domain.globallSettings;
 
 import main.dao.GlobalSettingsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -11,8 +10,11 @@ import java.util.List;
 @Service
 public class SettingsService {
 
-    @Autowired
     private GlobalSettingsRepository settingsRepository;
+
+    public SettingsService(GlobalSettingsRepository settingsRepository){
+        this.settingsRepository = settingsRepository;
+    }
 
     @PostConstruct
     private void cteateDefaultSettings (){

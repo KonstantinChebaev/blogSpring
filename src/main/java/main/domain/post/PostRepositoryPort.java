@@ -10,8 +10,8 @@ import java.util.Optional;
 public interface PostRepositoryPort {
     Optional <Post>  findById(int postId) ;
 
-    List<Post> findAll();
-    List<Post> findAllGood();
+    Iterable<Post> findAll();
+    List<Post> findAllVisibleToEveryone();
     List<Post> findByModerStat (ModerationStatus ms);
 
     List<Post> findByQuery (String query);

@@ -4,18 +4,15 @@ import main.domain.DtoConverter;
 import main.domain.CalendarResponseDto;
 import main.domain.ModerationRequestDto;
 import main.domain.ResultResponse;
-import main.domain.globallSettings.SettingsService;
 import main.domain.post.dto.*;
 import main.domain.tag.Tag;
 import main.domain.tag.TagServise;
 import main.domain.user.User;
-import main.domain.user.UserServise;
-import org.springframework.beans.factory.annotation.Autowired;
+import main.domain.user.UserRepositoryPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,26 +21,27 @@ import java.util.*;
 
 @Component
 public class PostServise {
-    @Autowired
-    PostRepositoryPort postRepositoryPort;
+    private PostRepositoryPort postRepositoryPort;
+    private TagServise tagServise;
+    private VotesService votesService;
+    private DtoConverter dtoConverter;
+    private UserRepositoryPort userRepositoryPort;
 
-    @Autowired
-    UserServise userServise;
+    public PostServise(PostRepositoryPort postRepositoryPort,
+                       TagServise tagServise,
+                       VotesService votesService,
+                       DtoConverter dtoConverter,
+                       UserRepositoryPort userRepositoryPort){
+        this.postRepositoryPort = postRepositoryPort;
+        this.tagServise = tagServise;
+        this.votesService = votesService;
+        this.dtoConverter = dtoConverter;
+        this.userRepositoryPort = userRepositoryPort;
 
-    @Autowired
-    TagServise tagServise;
-
-    @Autowired
-    VotesService votesService;
-
-    @Autowired
-    DtoConverter dtoConverter;
-
-    @Autowired
-    SettingsService settingsService;
+    }
 
     public AllPostsResponseDto getAll(int offset, int limit, String mode) {
-        List<Post> posts = postRepositoryPort.findAllGood();
+        List<Post> posts = postRepositoryPort.findAllVisibleToEveryone();
         if (posts.isEmpty()) {
             return null;
         }
@@ -75,16 +73,16 @@ public class PostServise {
         return list;
     }
 
-    public ResponseEntity<PostWithCommentsDto> findById(int id, HttpServletRequest request) {
+    public ResponseEntity<PostWithCommentsDto> findById(int id, String userEmail) {
         Optional<Post> optionalPost = postRepositoryPort.findById(id);
         if (optionalPost.isEmpty()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         Post post = optionalPost.get();
 
-        User currentUser = userServise.getCurrentUser(request);
+        User currentUser = userRepositoryPort.findByEmail(userEmail);
 
-        if (!currentUser.isModerator() && currentUser.getId() != post.getUser().getId()) {
+        if (!(currentUser.isModerator() || currentUser.getId() == post.getUser().getId())) {
             post.incrementViewCount();
             postRepositoryPort.savePost(post);
         }
@@ -140,8 +138,8 @@ public class PostServise {
         return new ResponseEntity<>(pdr, HttpStatus.OK);
     }
 
-    public AllPostsResponseDto getModerationPosts(int offset, int limit, ModerationStatus status, HttpServletRequest request) {
-        int moderId = userServise.getCurrentUser(request).getId();
+    public AllPostsResponseDto getModerationPosts(int offset, int limit, ModerationStatus status, String userEmail) {
+        int moderId = userRepositoryPort.findByEmail(userEmail).getId();
         List<Post> posts = postRepositoryPort.findByModerStat(status);
         if (!status.equals(ModerationStatus.NEW)){
             posts.removeIf(post -> post.getModeratorId() != moderId );
@@ -154,8 +152,8 @@ public class PostServise {
         return new AllPostsResponseDto(count, dtoConverter.listPostToDtoList(posts));
     }
 
-    public AllPostsResponseDto getUserPosts(int offset, int limit, String status, HttpServletRequest request) {
-        User user = userServise.getCurrentUser(request);
+    public AllPostsResponseDto getUserPosts(int offset, int limit, String status, String userEmail) {
+        User user = userRepositoryPort.findByEmail(userEmail);
         List<Post> posts = user.getPosts();
         List<Post> finalPosts = new ArrayList<>();
         if (status.equals("inactive")) {
@@ -193,8 +191,8 @@ public class PostServise {
 
     //Методы для создания или редактирования постов
 
-    public ResponseEntity<ResultResponse> createPost(PostPostDto postPostDto, HttpServletRequest request) {
-        User user = userServise.getCurrentUser(request);
+    public ResponseEntity<ResultResponse> createPost(PostPostDto postPostDto, String userEmail) {
+        User user = userRepositoryPort.findByEmail(userEmail);
         ResultResponse response = checkPostInput(postPostDto);
         if (!response.isResult()) {
             return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
@@ -208,8 +206,8 @@ public class PostServise {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    public ResponseEntity<ResultResponse> editPost(int id, HttpServletRequest request, PostPostDto postPostDto) {
-        User user = userServise.getCurrentUser(request);
+    public ResponseEntity<ResultResponse> editPost(int id, String userEmail, PostPostDto postPostDto) {
+        User user = userRepositoryPort.findByEmail(userEmail);
         Optional<Post> optionalPost = postRepositoryPort.findById(id);
         if (optionalPost.isEmpty()) {
             return new ResponseEntity<>(ResultResponse.getBadResultResponse("errors", "Пост с id " + id + " не найден"), HttpStatus.BAD_REQUEST);
@@ -256,14 +254,14 @@ public class PostServise {
     }
 
     // модерационные методы
-
-    public boolean moderate(ModerationRequestDto moderationRequestDto, HttpServletRequest request) {
+    //может быть стоит написать методы со сложными запросами id по email у пользоваелей
+    public boolean moderate(ModerationRequestDto moderationRequestDto, String userEmail) {
         Optional<Post> optpost = postRepositoryPort.findById(moderationRequestDto.getPostId());
         if (optpost.isEmpty()) {
             return false;
         }
         Post post = optpost.get();
-        int userId = userServise.getCurrentUser(request).getId();
+        int userId = userRepositoryPort.findByEmail(userEmail).getId();
         if (moderationRequestDto.getDecision().equals("decline")) {
             post.setModerStat(ModerationStatus.DECLINED);
         } else if (moderationRequestDto.getDecision().equals("accept")) {
@@ -272,7 +270,6 @@ public class PostServise {
         post.setModeratorId(userId);
         postRepositoryPort.savePost(post);
         return true;
-
     }
 
     public ResultResponse checkPostInput(PostPostDto postPostDto) {
@@ -317,8 +314,8 @@ public class PostServise {
         return new ResponseEntity<>(new CalendarResponseDto(allYears, posts), HttpStatus.OK);
     }
 
-    public ResponseEntity<ResultResponse> votePost(String vote, Integer postId, HttpServletRequest request) {
-        User user = userServise.getCurrentUser(request);
+    public ResponseEntity<ResultResponse> votePost(String vote, Integer postId, String userEmail) {
+        User user = userRepositoryPort.findByEmail(userEmail);
         if (postId <= 0) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

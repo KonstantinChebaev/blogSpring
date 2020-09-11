@@ -31,7 +31,7 @@ public class ApiImageController {
             produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> postImage(@RequestParam("image") MultipartFile image) {
         String response = storageService.store(image);
-        if (!response.contains("/img/upload/")){
+        if (!response.contains("/upload/")){
             String finalResponce = "{  \"result\": false, \"errors\": { \"image\": \""+response+"\" } }";
             return new ResponseEntity<>(finalResponce, HttpStatus.BAD_REQUEST);
         }

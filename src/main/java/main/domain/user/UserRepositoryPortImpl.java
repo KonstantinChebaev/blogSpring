@@ -41,22 +41,8 @@ public class UserRepositoryPortImpl implements UserRepositoryPort {
     }
 
     @Override
-    public void addUser(User user) {
-        userRepository.save(user);
-    }
-
-    @Override
     public void save(User user) {
         userRepository.save(user);
-    }
-
-    @Override
-    public User findUserByEmail(String email) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
-        if (optionalUser.isEmpty()) {
-            return null;
-        }
-        return optionalUser.get();
     }
 
 }

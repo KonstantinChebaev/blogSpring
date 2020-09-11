@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -21,85 +20,130 @@ import java.util.Map;
 public class ApiPostController {
 
     @Autowired
-    PostServise puc;
+    PostServise postServise;
 
     @GetMapping("/post")
     public AllPostsResponseDto getAllPosts(@RequestParam int offset,
                                            @RequestParam int limit,
                                            @RequestParam String mode) {
-        return puc.getAll(offset, limit, mode);
+        return postServise.getAll(offset, limit, mode);
     }
 
     @GetMapping("/post/{id}")
-    public ResponseEntity <PostWithCommentsDto> getPost(@PathVariable int id, HttpServletRequest request) {
-        return puc.findById(id, request);
+    public ResponseEntity<PostWithCommentsDto> getPost(@PathVariable int id, HttpServletRequest request) {
+        if (request.isRequestedSessionIdValid() && request.getUserPrincipal() != null) {
+            String emailUser = request.getUserPrincipal().getName();
+            return postServise.findById(id, emailUser);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
     }
 
     @PutMapping("/post/{id}")
     public ResponseEntity<ResultResponse> putPost(@PathVariable int id,
                                                   HttpServletRequest request,
                                                   @RequestBody PostPostDto postPostDto) {
-        return puc.editPost(id, request, postPostDto);
+        if (request.isRequestedSessionIdValid() && request.getUserPrincipal() != null) {
+            String emailUser = request.getUserPrincipal().getName();
+            return postServise.editPost(id, emailUser, postPostDto);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @PostMapping("/post")
     public ResponseEntity<ResultResponse> postPost(@RequestBody PostPostDto ppDto, HttpServletRequest request) {
-        return puc.createPost(ppDto, request);
+        if (request.isRequestedSessionIdValid() && request.getUserPrincipal() != null) {
+            String emailUser = request.getUserPrincipal().getName();
+            return postServise.createPost(ppDto, emailUser);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @GetMapping("/post/search")
     public AllPostsResponseDto searchPost(@RequestParam int offset,
                                           @RequestParam int limit,
                                           @RequestParam String query) {
-        return puc.searchPost(offset, limit, query);
+        return postServise.searchPost(offset, limit, query);
     }
 
     @GetMapping("/post/byDate")
     public AllPostsResponseDto getDatePosts(@RequestParam int offset,
                                             @RequestParam int limit,
                                             @RequestParam String date) {
-        return puc.getDatePosts(offset, limit, date);
+        return postServise.getDatePosts(offset, limit, date);
     }
 
     @GetMapping("/post/byTag")
     public ResponseEntity<AllPostsResponseDto> getTagPosts(@RequestParam int offset,
-                                         @RequestParam int limit,
-                                         @RequestParam String tag) {
-        return puc.getTagPosts(offset, limit, tag);
+                                                           @RequestParam int limit,
+                                                           @RequestParam String tag) {
+        return postServise.getTagPosts(offset, limit, tag);
     }
 
     @GetMapping("/post/moderation")
-    public AllPostsResponseDto getModerationPosts(@RequestParam int offset,
-                                                  @RequestParam int limit,
-                                                  @RequestParam String status,
-                                                  HttpServletRequest request) {
-        ModerationStatus ms;
-        switch (status){
-            case "new": ms = ModerationStatus.NEW; break;
-            case "accepted": ms = ModerationStatus.ACCEPTED; break;
-            case "declined": ms = ModerationStatus.DECLINED; break;
-            default: return new AllPostsResponseDto();
+    public ResponseEntity<AllPostsResponseDto> getModerationPosts(@RequestParam int offset,
+                                                                  @RequestParam int limit,
+                                                                  @RequestParam String status,
+                                                                  HttpServletRequest request) {
+        if (request.isRequestedSessionIdValid() && request.getUserPrincipal() != null) {
+            String emailUser = request.getUserPrincipal().getName();
+            ModerationStatus ms;
+            switch (status) {
+                case "new":
+                    ms = ModerationStatus.NEW;
+                    break;
+                case "accepted":
+                    ms = ModerationStatus.ACCEPTED;
+                    break;
+                case "declined":
+                    ms = ModerationStatus.DECLINED;
+                    break;
+                default:
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(postServise.getModerationPosts(offset, limit, ms, emailUser), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        return puc.getModerationPosts(offset, limit, ms, request);
+
     }
 
     @PostMapping("/moderation")
     public boolean postModeration(@RequestBody ModerationRequestDto moderationRequestDto,
-                                            HttpServletRequest request) {
-         return puc.moderate(moderationRequestDto, request);
+                                  HttpServletRequest request) {
+        if (request.isRequestedSessionIdValid() && request.getUserPrincipal() != null) {
+            String emailUser = request.getUserPrincipal().getName();
+            return postServise.moderate(moderationRequestDto, emailUser);
+        } else {
+            return false;
+        }
+
     }
 
     @GetMapping("/post/my")
-    public AllPostsResponseDto getMyPosts(@RequestParam int offset,
+    public ResponseEntity<AllPostsResponseDto> getMyPosts(@RequestParam int offset,
                                           @RequestParam int limit,
                                           @RequestParam String status,
                                           HttpServletRequest request) {
-        return puc.getUserPosts(offset, limit, status, request);
+        if (request.isRequestedSessionIdValid() && request.getUserPrincipal() != null) {
+            String emailUser = request.getUserPrincipal().getName();
+            return new ResponseEntity<>(postServise.getUserPosts(offset, limit, status, emailUser), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @PostMapping("/post/{vote}")
     public ResponseEntity<ResultResponse> votePost(@PathVariable String vote, @RequestBody Map<String, Integer> body, HttpServletRequest request) {
-        return puc.votePost(vote, body.getOrDefault("post_id", 0), request);
-    }
+        if (request.isRequestedSessionIdValid() && request.getUserPrincipal() != null) {
+            String emailUser = request.getUserPrincipal().getName();
+            return postServise.votePost(vote, body.getOrDefault("post_id", 0), emailUser);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
 
+    }
 }

@@ -23,8 +23,4 @@ public class ResultResponse {
         result = false;
         errors.put(key,value);
     }
-    public void addErrors(HashMap <String, Object>errors){
-        result = false;
-        errors.putAll(errors);
-    }
 }

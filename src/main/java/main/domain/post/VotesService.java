@@ -3,15 +3,17 @@ package main.domain.post;
 
 import main.dao.PostVoteRepository;
 import main.domain.user.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
 public class VotesService {
-    @Autowired
     private PostVoteRepository votesRepository;
+
+    public VotesService(PostVoteRepository votesRepository){
+        this.votesRepository = votesRepository;
+    }
 
     public Boolean vote(String voteType, User user, Post post) {
         int voteRequested = voteType.equals("like") ? 1 : -1;

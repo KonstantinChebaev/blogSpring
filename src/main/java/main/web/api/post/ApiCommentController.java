@@ -1,9 +1,9 @@
 package main.web.api.post;
 
-import main.domain.ResultResponse;
-import main.domain.comment.CommentUseCase;
+import main.domain.comment.CommentServise;
 import main.domain.comment.NewCommentRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,12 +14,18 @@ import javax.servlet.http.HttpServletRequest;
 public class ApiCommentController {
 
     @Autowired
-    CommentUseCase commentUseCase;
+    CommentServise commentServise;
 
     @PostMapping ("")
-    public ResponseEntity<?> getAllPosts(@RequestBody NewCommentRequestDto newCommentRequestDto,
+    public ResponseEntity<?> createNewComment(@RequestBody NewCommentRequestDto newCommentRequestDto,
                                                       HttpServletRequest request) {
-        return commentUseCase.createComment(newCommentRequestDto, request);
+        if (request.isRequestedSessionIdValid() && request.getUserPrincipal() != null) {
+            String emailUser = request.getUserPrincipal().getName();
+            return commentServise.createComment(newCommentRequestDto, emailUser);
+        } else {
+            return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+        }
+
 
     }
 }

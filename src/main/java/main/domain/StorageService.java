@@ -1,8 +1,11 @@
 package main.domain;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,51 +15,56 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.SecureRandom;
 import java.util.Random;
 
 @Service
 public class StorageService {
-
     private final String rootPath = new File("").getAbsolutePath()
-            .concat("/src/main/resources");
-    private Random random = new Random();
+            .concat("/src/main/resources/static/");
+    private static final String ABC = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private static SecureRandom randomGenerator = new SecureRandom();
 
-    public String store(MultipartFile file){
-        if(!file.getOriginalFilename().contains(".jpg") || !file.getOriginalFilename().contains(".png")){
+    private String createRelativePath(String filename) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("/upload/");
+        for(int j =0;j<3;j++) {
+            for (int i = 0; i < 5; i++) {
+                sb.append(ABC.charAt(randomGenerator.nextInt(ABC.length())));
+            }
+            sb.append("/");
+        }
+        sb.append(filename);
+        return sb.toString();
+    }
+
+    public String store(MultipartFile multipartFile){
+        if(!(multipartFile.getOriginalFilename().contains(".jpg") ||
+                multipartFile.getOriginalFilename().contains(".png")||
+                multipartFile.getOriginalFilename().contains(".jpeg"))){
             return "Недопустимый тип файла";
-        } if(file.getSize()/(1024*1024) > 5024){
+        } if(multipartFile.getSize()/(1024*1024) > 5024){
             return "Размер файла превышает допустимый размер";
         }
-        String prefix = "/static";
-
-        String absolutePathToFolder =
-                "/img/upload/" + generatePathPart() + "/" + generatePathPart() + "/";
-        new File(rootPath + prefix + absolutePathToFolder).mkdirs();
-        String path = absolutePathToFolder + file.getOriginalFilename();
+        String relativePath = createRelativePath(multipartFile.getOriginalFilename());
+        Path absolutePath = Paths.get(rootPath,relativePath);
         try {
-            Files.copy(file.getInputStream(), Paths.get(rootPath  + prefix + path));
+            Files.createDirectories(absolutePath);
+            multipartFile.transferTo(new File(absolutePath.toString()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return path;
+        return relativePath;
     }
 
-
-    private String generatePathPart(){
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
-        return random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-    }
-
+    //что делать с пустыми папками?
     public boolean delete(String filename) {
         boolean result = false;
+        if(!filename.startsWith("/upload/")){
+            return result;
+        }
         try {
-            result = Files.deleteIfExists(Path.of(filename));
+            result = Files.deleteIfExists(Paths.get(rootPath, filename));
         } catch (NoSuchFileException e) {
             throw new RuntimeException("No such file exists: " + filename, e);
         } catch (IOException e) {
@@ -75,31 +83,29 @@ public class StorageService {
 
 
     public String storePhoto(MultipartFile photo) {
-        if(!photo.getOriginalFilename().contains(".jpg") && !photo.getOriginalFilename().contains(".png")){
+        if(!(photo.getOriginalFilename().contains(".jpg") || photo.getOriginalFilename().contains(".png") ||
+                photo.getOriginalFilename().contains(".jpeg"))){
             return "Недопустимый тип файла";
         }
         if(photo.getSize()/(1024*1024) > 5024){
             return "Размер файла превышает допустимый размер";
         }
-        String prefix = "/static";
-        String absolutePathToFolder =
-                "/img/upload/" + generatePathPart() + "/" + generatePathPart() + "/";
-        new File(rootPath + prefix + absolutePathToFolder).mkdirs();
-        String path = absolutePathToFolder + photo.getOriginalFilename();
-
+        String relativePath = createRelativePath(photo.getOriginalFilename());
+        System.out.println(relativePath);
         try {
+            Files.createDirectories(Paths.get(rootPath,relativePath));
             BufferedImage originalImage = ImageIO.read(photo.getInputStream());
             BufferedImage scaledBI = new BufferedImage(36, 36, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = scaledBI.createGraphics();
             g.drawImage(originalImage, 0, 0, 36, 36, null);
             g.dispose();
 
-            ImageIO.write(scaledBI, "jpeg", new File(rootPath  + prefix + path));
+            ImageIO.write(scaledBI, "jpeg", new File(rootPath + relativePath));
 
         } catch (IOException e) {
              e.printStackTrace();
         }
-        return path;
+        return relativePath;
 
     }
 

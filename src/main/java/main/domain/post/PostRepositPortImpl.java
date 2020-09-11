@@ -25,17 +25,12 @@ public class PostRepositPortImpl implements PostRepositoryPort {
     }
 
     @Override
-    public List<Post> findAll() {
-        Iterable<Post> postIterable = pr.findAll();
-        ArrayList<Post> posts = new ArrayList<>();
-        for (Post post : postIterable) {
-            posts.add(post);
-        }
-        return posts;
+    public Iterable<Post> findAll() {
+        return pr.findAll();
     }
 
     @Override
-    public List<Post> findAllGood() {
+    public List<Post> findAllVisibleToEveryone() {
         List<Post> posts = findAll();
         ArrayList<Post> goodPosts = new ArrayList<>();
         posts.stream()
@@ -59,7 +54,7 @@ public class PostRepositPortImpl implements PostRepositoryPort {
 
     @Override
     public List<Post> findByQuery(String query) {
-        List<Post> posts = findAllGood();
+        List<Post> posts = findAllVisibleToEveryone();
         if(query == null){
             return posts;
         }
@@ -69,7 +64,7 @@ public class PostRepositPortImpl implements PostRepositoryPort {
 
     @Override
     public List<Post> findByDate(LocalDate date) {
-        List<Post> posts = findAllGood();
+        List<Post> posts = findAllVisibleToEveryone();
         List<Post> finalPosts = new ArrayList<>();
         for (Post post : posts) {
             LocalDate localDate = post.getTime().toLocalDate();

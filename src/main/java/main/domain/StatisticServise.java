@@ -3,6 +3,7 @@ package main.domain;
 import main.domain.post.PostRepositoryPort;
 import main.domain.post.VotesService;
 import main.domain.user.User;
+import main.domain.user.UserRepositoryPort;
 import main.domain.user.UserServise;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,20 +13,22 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class StatisticServise {
 
-    @Autowired
-    PostRepositoryPort postRepositoryPort;
+    private PostRepositoryPort postRepositoryPort;
+    private VotesService votesService;
+    private UserRepositoryPort userRepositoryPort;
 
-    @Autowired
-    VotesService votesService;
+    public StatisticServise( PostRepositoryPort postRepositoryPort,
+                             VotesService votesService,
+                             UserRepositoryPort userRepositoryPort){
+        this.postRepositoryPort = postRepositoryPort;
+        this.votesService = votesService;
+        this.userRepositoryPort = userRepositoryPort;
+    }
 
-    @Autowired
-    UserServise userServise;
-
-
-    public StatisticsDto getStatistics(String statType, HttpServletRequest request) {
+    public StatisticsDto getStatistics(String statType, String userEmail) {
         User user = null;
         if(statType.equals("my")){
-            user = userServise.getCurrentUser(request);
+            user = userRepositoryPort.findByEmail(userEmail);
         }
         StatisticsDto statisticsDto = new StatisticsDto();
         statisticsDto.setPostsCount(postRepositoryPort.countByUser(user));

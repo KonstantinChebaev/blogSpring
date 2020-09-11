@@ -6,7 +6,6 @@ import main.domain.ResultResponse;
 import main.domain.StorageService;
 import main.domain.user.dto.*;
 import main.security.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,33 +29,38 @@ import static org.springframework.security.web.context.HttpSessionSecurityContex
 public class UserServise {
     private static final int HASH_LENGHT = 16;
 
-    @Autowired
-    UserRepositoryPort userRepositoryPort;
-
-    @Autowired
-    BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    EmailService emailService;
-
-    @Autowired
-    CaptchaServise captchaServise;
-
-    @Autowired
+    private UserRepositoryPort userRepositoryPort;
+    private BCryptPasswordEncoder passwordEncoder;
+    private EmailService emailService;
+    private CaptchaServise captchaServise;
     private DtoConverter dtoConverter;
+    private Environment environment;
+    private StorageService storageService;
+    private AuthenticationManager authenticationManager;
 
-    @Autowired
-    Environment environment;
+    public UserServise(UserRepositoryPort userRepositoryPort,
+                       BCryptPasswordEncoder passwordEncoder,
+                       EmailService emailService,
+                       CaptchaServise captchaServise,
+                       DtoConverter dtoConverter,
+                       Environment environment,
+                       StorageService storageService,
+                       AuthenticationManager authenticationManager){
+        this.userRepositoryPort = userRepositoryPort;
+        this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
+        this.captchaServise = captchaServise;
+        this.dtoConverter = dtoConverter;
+        this.environment = environment;
+        this.storageService = storageService;
+        this.authenticationManager = authenticationManager;
+    }
 
-    @Autowired
-    StorageService storageService;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
 
     public ResponseEntity<?> registerUser(UserRegisterDto urd){
         HashMap <String, Object> errors = new HashMap<>();
-        User userFromDB = userRepositoryPort.findUserByEmail(urd.getEmail());
+        User userFromDB = userRepositoryPort.findByEmail(urd.getEmail());
         if (userFromDB != null) {
             errors.put("email", "Этот адрес уже зарегистрирован.");
         }
@@ -126,21 +130,7 @@ public class UserServise {
         return new UserAuthResponceDto(true,loggedInUserDto);
     }
 
-
-    public User getCurrentUser(HttpServletRequest request){
-        if(request.isRequestedSessionIdValid() && request.getUserPrincipal()!=null){
-            String email = request.getUserPrincipal().getName();
-            if (email != null){
-                return userRepositoryPort.findByEmail(email);
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-
-    public Boolean restoreUserPassword(String email) {
+    public boolean restoreUserPassword(String email) {
         User userFromDB = userRepositoryPort.findByEmail(email);
         if (userFromDB == null) {
             return false;
@@ -164,13 +154,13 @@ public class UserServise {
         return true;
     }
 
-    public ResponseEntity<ResultResponse> updateProfile(ProfileDto profile, HttpServletRequest request) {
+    public ResponseEntity<ResultResponse> updateProfile(ProfileDto profile, String userEmail) {
         HashMap<String, Object> errors = new HashMap<>();
-        User user = getCurrentUser(request);
+        User user = userRepositoryPort.findByEmail(userEmail);
 
         String email = profile.getEmail();
         if(!user.getEmail().equals(email) && email!=null){
-            User userFromDB = userRepositoryPort.findUserByEmail(email);
+            User userFromDB = userRepositoryPort.findByEmail(email);
             if (userFromDB != null) {
                 errors.put("email", "Этот адрес уже зарегистрирован.");
             } else {
@@ -188,7 +178,7 @@ public class UserServise {
         } else {
             String photo = profile.getPhoto();
             if (photo != null) {
-                if (!photo.contains("/img/upload/")) {
+                if (!photo.contains("/upload/")) {
                     errors.put("photo", photo);
                 } else if (!photo.isBlank() && !photo.equals(user.getPhoto())) {
                     user.setPhoto(photo);

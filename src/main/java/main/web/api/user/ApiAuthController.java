@@ -24,6 +24,9 @@ public class ApiAuthController {
     UserServise userServise;
 
     @Autowired
+    UserRepositoryPort userRepositoryPort;
+
+    @Autowired
     CaptchaServise captchaServise;
 
     @PostMapping(value = "register")
@@ -39,11 +42,12 @@ public class ApiAuthController {
 
     @GetMapping(value = "check")
     public ResponseEntity<UserAuthResponceDto> apiAuthCheck(HttpServletRequest request) {
-        User user = userServise.getCurrentUser(request);
-        if (user == null) {
-            return new ResponseEntity<>(new UserAuthResponceDto(false,null),HttpStatus.BAD_REQUEST);
-        } else {
+        if (request.isRequestedSessionIdValid() && request.getUserPrincipal() != null) {
+            String emailUser = request.getUserPrincipal().getName();
+            User user = userRepositoryPort.findByEmail(emailUser);
             return new ResponseEntity<>(new UserAuthResponceDto(true, userServise.getLoggedInUser(user)), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new UserAuthResponceDto(false,null),HttpStatus.BAD_REQUEST);
         }
     }
 

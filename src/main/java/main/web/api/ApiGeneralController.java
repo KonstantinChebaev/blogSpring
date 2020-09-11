@@ -69,7 +69,12 @@ public class ApiGeneralController {
 
     @GetMapping("/statistics/{statisticsType}")
     public ResponseEntity<StatisticsDto> getStatistics(@PathVariable String statisticsType, HttpServletRequest request) {
-        return new ResponseEntity<>(statisticsServise.getStatistics(statisticsType,request), HttpStatus.OK);
+        if (request.isRequestedSessionIdValid() && request.getUserPrincipal() != null) {
+            String emailUser = request.getUserPrincipal().getName();
+            return new ResponseEntity<>(statisticsServise.getStatistics(statisticsType,emailUser), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+        }
     }
 
 

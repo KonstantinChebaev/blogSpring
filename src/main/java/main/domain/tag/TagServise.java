@@ -3,7 +3,6 @@ package main.domain.tag;
 import main.dao.TagRepository;
 import main.domain.post.Post;
 import main.domain.post.PostRepositoryPort;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.RoundingMode;
@@ -14,11 +13,14 @@ import java.util.List;
 
 @Component
 public class TagServise {
-    @Autowired
-    TagRepository tagRepository;
 
-    @Autowired
-    PostRepositoryPort postRepositoryPort;
+    private TagRepository tagRepository;
+    private PostRepositoryPort postRepositoryPort;
+
+    public TagServise(TagRepository tagRepository, PostRepositoryPort postRepositoryPort){
+        this.postRepositoryPort = postRepositoryPort;
+        this.tagRepository = tagRepository;
+    }
 
 
 
@@ -61,7 +63,7 @@ public class TagServise {
                 return result;
             }
         }
-        double postsTotalCount = postRepositoryPort.findAllGood().size();
+        double postsTotalCount = postRepositoryPort.findAllVisibleToEveryone().size();
         double weight = 0;
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.CEILING);

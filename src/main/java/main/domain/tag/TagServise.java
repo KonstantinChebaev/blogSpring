@@ -1,8 +1,8 @@
 package main.domain.tag;
 
+import main.dao.PostRepository;
 import main.dao.TagRepository;
 import main.domain.post.Post;
-import main.domain.post.PostRepositoryPort;
 import org.springframework.stereotype.Component;
 
 import java.math.RoundingMode;
@@ -15,14 +15,12 @@ import java.util.List;
 public class TagServise {
 
     private TagRepository tagRepository;
-    private PostRepositoryPort postRepositoryPort;
+    private PostRepository postRepository;
 
-    public TagServise(TagRepository tagRepository, PostRepositoryPort postRepositoryPort){
-        this.postRepositoryPort = postRepositoryPort;
+    public TagServise(TagRepository tagRepository, PostRepository postRepository){
+        this.postRepository = postRepository;
         this.tagRepository = tagRepository;
     }
-
-
 
     public Tag saveTag(String tagName) {
         Tag tag = tagRepository.findByNameIgnoreCase(tagName);
@@ -63,7 +61,7 @@ public class TagServise {
                 return result;
             }
         }
-        double postsTotalCount = postRepositoryPort.findAllVisibleToEveryone().size();
+        double postsTotalCount = postRepository.findAllVisibleCount();
         double weight = 0;
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.CEILING);

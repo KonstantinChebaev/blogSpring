@@ -1,5 +1,4 @@
 package main.domain.globallSettings;
-//страница 98 (123 из 626) spring in action
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

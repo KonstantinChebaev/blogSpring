@@ -1,5 +1,6 @@
 package main.web.api.user;
 
+import main.domain.globallSettings.SettingsService;
 import main.security.CaptchaServise;
 import main.domain.ResultResponse;
 import main.domain.user.*;
@@ -20,17 +21,26 @@ import java.util.HashMap;
 @RestController
 @RequestMapping(value = "/api/auth/")
 public class ApiAuthController {
-    @Autowired
-    UserServise userServise;
 
-    @Autowired
-    UserRepositoryPort userRepositoryPort;
+    private UserServise userServise;
+    private UserRepositoryPort userRepositoryPort;
+    private CaptchaServise captchaServise;
+    private SettingsService settingsService;
 
-    @Autowired
-    CaptchaServise captchaServise;
+    public ApiAuthController(UserServise userServise, UserRepositoryPort userRepositoryPort,
+                             CaptchaServise captchaServise, SettingsService settingsService){
+        this.userServise = userServise;
+        this.userRepositoryPort = userRepositoryPort;
+        this.captchaServise = captchaServise;
+        this.settingsService = settingsService;
+    }
+
 
     @PostMapping(value = "register")
     public ResponseEntity<?> apiAuthRegister(@RequestBody UserRegisterDto ur) {
+        if(!settingsService.getSettings().getMultiuserMode()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return userServise.registerUser(ur);
     }
 

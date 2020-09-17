@@ -18,20 +18,24 @@ import java.util.HashMap;
 @RequestMapping("/api")
 public class ApiGeneralController {
 
-    @Autowired
-    TagServise tuc;
+    private TagServise tagServise;
+    private PostServise postServise;
+    private SettingsService settingsService;
+    private StatisticServise statisticsServise;
 
-    @Autowired
-    PostServise puc;
+    public ApiGeneralController(TagServise tagServise,
+                                PostServise postServise,
+                                SettingsService settingsService,
+                                StatisticServise statisticsServise) {
+        this.tagServise = tagServise;
+        this.postServise = postServise;
+        this.settingsService = settingsService;
+        this.statisticsServise = statisticsServise;
+    }
 
-    @Autowired
-    SettingsService settingsService;
-
-    @Autowired
-    StatisticServise statisticsServise;
 
     @GetMapping("/init")
-    public GeneralInfo getGeneral (){
+    public GeneralInfo getGeneral() {
         GeneralInfo gi = GeneralInfo.builder()
                 .title("DevPub")
                 .subtitle("200-10-10")
@@ -45,14 +49,14 @@ public class ApiGeneralController {
 
 
     @GetMapping("/tag")
-    public HashMap<String, Object> getTags (@RequestParam(value = "query", required = false)String query){
-        return tuc.getTagsWeights(query);
+    public HashMap<String, Object> getTags(@RequestParam(value = "query", required = false) String query) {
+        return tagServise.getTagsWeights(query);
     }
 
     @GetMapping("/calendar")
     public ResponseEntity<CalendarResponseDto> getCalendar(
             @RequestParam(required = false) String year) {
-        return puc.getCalend(year);
+        return postServise.getCalend(year);
     }
 
     @GetMapping("/settings")
@@ -66,16 +70,14 @@ public class ApiGeneralController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-
     @GetMapping("/statistics/{statisticsType}")
     public ResponseEntity<StatisticsDto> getStatistics(@PathVariable String statisticsType, HttpServletRequest request) {
         if (request.isRequestedSessionIdValid() && request.getUserPrincipal() != null) {
             String emailUser = request.getUserPrincipal().getName();
-            return new ResponseEntity<>(statisticsServise.getStatistics(statisticsType,emailUser), HttpStatus.OK);
+            GSettingsDto settings = settingsService.getSettings();
+            return statisticsServise.getStatistics(statisticsType, emailUser, settings.getStatisticsIsPublic());
         } else {
-            return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
         }
     }
-
-
 }

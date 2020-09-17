@@ -7,6 +7,7 @@ import main.domain.tag.Tag;
 import main.domain.user.User;
 import main.domain.user.dto.LoggedInUserDto;
 import org.jsoup.Jsoup;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneOffset;
@@ -34,7 +35,7 @@ public class DtoConverter {
         return ppd;
     }
 
-    public List<PostPlainDto> listPostToDtoList(List <Post> posts){
+    public List<PostPlainDto> listPostToDtoList(Iterable<Post> posts){
         List<PostPlainDto> postPlainDtos = new ArrayList<>();
         for (Post p: posts) {
             PostPlainDto ppd = postToDto(p);
@@ -42,6 +43,7 @@ public class DtoConverter {
         }
         return postPlainDtos;
     }
+
 
     public PostWithCommentsDto postToPostWithComments (Post p){
         return PostWithCommentsDto.builder()

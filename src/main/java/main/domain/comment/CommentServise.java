@@ -1,9 +1,9 @@
 package main.domain.comment;
 
 import main.dao.CommentRepository;
+import main.dao.PostRepository;
 import main.domain.ResultResponse;
 import main.domain.post.Post;
-import main.domain.post.PostRepositoryPort;
 import main.domain.user.User;
 import main.domain.user.UserRepositoryPort;
 import org.springframework.http.HttpStatus;
@@ -16,13 +16,13 @@ import java.util.Optional;
 @Component
 public class CommentServise {
 
-    private PostRepositoryPort postRepositoryPort;
+    private PostRepository postRepository;
     private CommentRepository commentsRepository;
     private UserRepositoryPort userRepositoryPort;
 
-    public CommentServise (PostRepositoryPort postRepositoryPort,CommentRepository commentsRepository,
+    public CommentServise (PostRepository postRepository,CommentRepository commentsRepository,
                            UserRepositoryPort userRepositoryPort){
-        this.postRepositoryPort =  postRepositoryPort;
+        this.postRepository =  postRepository;
         this.commentsRepository = commentsRepository;
         this.userRepositoryPort = userRepositoryPort;
     }
@@ -30,7 +30,7 @@ public class CommentServise {
     public ResponseEntity<?> createComment (NewCommentRequestDto newCommentRequestDto, String userEmail){
 
         User user = userRepositoryPort.findByEmail(userEmail);
-        Optional<Post> optionalPost = postRepositoryPort.findById(newCommentRequestDto.getPostId());
+        Optional<Post> optionalPost = postRepository.findById(newCommentRequestDto.getPostId());
         if(optionalPost.isEmpty()){
             return new ResponseEntity<>(ResultResponse.getBadResultResponse("not_found", "Пост не найден"), HttpStatus.BAD_REQUEST);
         }

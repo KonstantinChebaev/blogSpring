@@ -90,21 +90,7 @@ public class ApiPostController {
                                                                   HttpServletRequest request) {
         if (request.isRequestedSessionIdValid() && request.getUserPrincipal() != null) {
             String emailUser = request.getUserPrincipal().getName();
-            ModerationStatus ms;
-            switch (status) {
-                case "new":
-                    ms = ModerationStatus.NEW;
-                    break;
-                case "accepted":
-                    ms = ModerationStatus.ACCEPTED;
-                    break;
-                case "declined":
-                    ms = ModerationStatus.DECLINED;
-                    break;
-                default:
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(postServise.getModerationPosts(offset, limit, ms, emailUser), HttpStatus.OK);
+            return new ResponseEntity<>(postServise.getModerationPosts(offset, limit, status, emailUser), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

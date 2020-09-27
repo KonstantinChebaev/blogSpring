@@ -1,5 +1,6 @@
 package main.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class ResultResponse {
     private boolean result;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String, Object> errors;
 
     public static ResultResponse getBadResultResponse(String key, String value){

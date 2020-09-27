@@ -3,7 +3,6 @@ package main.web.api.user;
 
 import main.domain.ResultResponse;
 import main.domain.StorageService;
-import main.domain.user.User;
 import main.domain.user.UserServise;
 import main.domain.user.dto.ProfileDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/profile/my")
@@ -32,7 +30,7 @@ public class ApiProfileController {
             String emailUser = request.getUserPrincipal().getName();
             return userServise.updateProfile(profile, emailUser);
         } else {
-            return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
         }
 
     }
@@ -42,8 +40,8 @@ public class ApiProfileController {
                                                                  @RequestParam("removePhoto") boolean removePhoto,
                                                                  @RequestParam("name") String name,
                                                                  @RequestParam("email") String email,
-                                                                 @RequestParam("password") String password,
-                                                                    HttpServletRequest request) {
+                                                                 @RequestParam(value = "password", required = false) String password,
+                                                                 HttpServletRequest request) {
         if (request.isRequestedSessionIdValid() && request.getUserPrincipal() != null) {
             String emailUser = request.getUserPrincipal().getName();
             String pathToSavedFile = storageService.storePhoto(photo);
@@ -56,14 +54,7 @@ public class ApiProfileController {
                     .build();
             return userServise.updateProfile(profile, emailUser);
         } else {
-            return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
         }
-
     }
-
-
-
-
-
-
 }

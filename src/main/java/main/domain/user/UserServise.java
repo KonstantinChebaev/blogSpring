@@ -1,5 +1,6 @@
 package main.domain.user;
 
+import main.dao.UserRepository;
 import main.security.CaptchaServise;
 import main.domain.DtoConverter;
 import main.domain.ResultResponse;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Optional;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
@@ -29,7 +31,7 @@ import static org.springframework.security.web.context.HttpSessionSecurityContex
 public class UserServise {
     private static final int HASH_LENGHT = 16;
 
-    private UserRepositoryPort userRepositoryPort;
+    private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private EmailService emailService;
     private CaptchaServise captchaServise;
@@ -38,7 +40,7 @@ public class UserServise {
     private StorageService storageService;
     private AuthenticationManager authenticationManager;
 
-    public UserServise(UserRepositoryPort userRepositoryPort,
+    public UserServise(UserRepository userRepository,
                        BCryptPasswordEncoder passwordEncoder,
                        EmailService emailService,
                        CaptchaServise captchaServise,
@@ -46,7 +48,7 @@ public class UserServise {
                        Environment environment,
                        StorageService storageService,
                        AuthenticationManager authenticationManager){
-        this.userRepositoryPort = userRepositoryPort;
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
         this.captchaServise = captchaServise;
@@ -60,8 +62,7 @@ public class UserServise {
 
     public ResponseEntity<?> registerUser(UserRegisterDto urd){
         HashMap <String, Object> errors = new HashMap<>();
-        User userFromDB = userRepositoryPort.findByEmail(urd.getEmail());
-        if (userFromDB != null) {
+        if (userRepository.findByEmail(urd.getEmail()).isPresent()) {
             errors.put("email", "Этот адрес уже зарегистрирован.");
         }
         if(urd.getName().length()<4){
@@ -78,24 +79,25 @@ public class UserServise {
                 .isModerator(false)
                 .regTime(LocalDateTime.now())
                 .build();
-        userRepositoryPort.save(newUser);
+        userRepository.save(newUser);
         LoggedInUserDto loggedInUserDto = dtoConverter.userToLoggedInUser(newUser);
         return new ResponseEntity<>(new UserAuthResponceDto(true, loggedInUserDto), HttpStatus.OK);
     }
 
     public ResultResponse resetUserPassword(PasswordResetRequestDto request) {
         HashMap <String, Object> errors = new HashMap<>();
-        User userFromDB = userRepositoryPort.findByCode(request.getCode());
-        if (userFromDB == null) {
+        Optional<User> optionalUser = userRepository.findByCode(request.getCode());
+        if (optionalUser.isEmpty()) {
             errors.put("code", "Ссылка для восстановления пароля устарела.\n <a href=/auth/restore>Запросить ссылку снова</a>");
         }
         errors.putAll(validateUserInputAndGetErrors(request.getPassword(),request.getCaptcha(),request.getCaptchaSecret()));
         if(!errors.isEmpty()){
             return new ResultResponse(false, errors);
         }
+        User userFromDB = optionalUser.get();
         userFromDB.setCode(null);
         userFromDB.setPassword(passwordEncoder.encode(request.getPassword()));
-        userRepositoryPort.save(userFromDB);
+        userRepository.save(userFromDB);
         return new ResultResponse(true, null);
     }
 
@@ -111,10 +113,11 @@ public class UserServise {
     }
 
     public UserAuthResponceDto loginUser(String email, String password, HttpServletRequest request) {
-        User user = userRepositoryPort.findByEmail(email);
-        if (user == null){
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()){
             return new UserAuthResponceDto(false,null);
         }
+        User user = optionalUser.get();
         if(!passwordEncoder.matches(password, user.getPassword())){
             return new UserAuthResponceDto(false,null);
         }
@@ -131,13 +134,14 @@ public class UserServise {
     }
 
     public boolean restoreUserPassword(String email) {
-        User userFromDB = userRepositoryPort.findByEmail(email);
-        if (userFromDB == null) {
+        Optional<User> optionalUser= userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
             return false;
         }
+        User userFromDB = optionalUser.get();
         String hash = CaptchaServise.getRandomString(HASH_LENGHT);
         userFromDB.setCode(hash);
-        userRepositoryPort.save(userFromDB);
+        userRepository.save(userFromDB);
 
         final String port = environment.getProperty("local.server.port");
         final String hostName = InetAddress.getLoopbackAddress().getHostName();
@@ -156,12 +160,11 @@ public class UserServise {
 
     public ResponseEntity<ResultResponse> updateProfile(ProfileDto profile, String userEmail) {
         HashMap<String, Object> errors = new HashMap<>();
-        User user = userRepositoryPort.findByEmail(userEmail);
+        User user = userRepository.findByEmail(userEmail).get();
 
         String email = profile.getEmail();
         if(!user.getEmail().equals(email) && email!=null){
-            User userFromDB = userRepositoryPort.findByEmail(email);
-            if (userFromDB != null) {
+            if (userRepository.findByEmail(email).isPresent()) {
                 errors.put("email", "Этот адрес уже зарегистрирован.");
             } else {
                 user.setEmail(email);
@@ -204,7 +207,7 @@ public class UserServise {
             }
         }
 
-        userRepositoryPort.save(user);
+        userRepository.save(user);
 
         if(!errors.isEmpty()){
             return  new ResponseEntity<>(new ResultResponse(false,errors), HttpStatus.BAD_REQUEST);

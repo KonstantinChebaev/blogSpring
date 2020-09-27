@@ -1,6 +1,7 @@
 package main.domain.post;
 
 import main.dao.PostRepository;
+import main.dao.UserRepository;
 import main.domain.DtoConverter;
 import main.domain.CalendarResponseDto;
 import main.domain.ModerationRequestDto;
@@ -11,7 +12,6 @@ import main.domain.post.dto.*;
 import main.domain.tag.Tag;
 import main.domain.tag.TagServise;
 import main.domain.user.User;
-import main.domain.user.UserRepositoryPort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,47 +33,47 @@ public class PostServise {
     private TagServise tagServise;
     private VotesService votesService;
     private DtoConverter dtoConverter;
-    private UserRepositoryPort userRepositoryPort;
+    private UserRepository userRepository;
     private SettingsService settingsService;
 
     public PostServise(TagServise tagServise,
                        VotesService votesService,
                        DtoConverter dtoConverter,
-                       UserRepositoryPort userRepositoryPort,
+                       UserRepository userRepository,
                        PostRepository postRepository,
                        SettingsService settingsService) {
         this.tagServise = tagServise;
         this.votesService = votesService;
         this.dtoConverter = dtoConverter;
-        this.userRepositoryPort = userRepositoryPort;
+        this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.settingsService = settingsService;
 
     }
 
     public AllPostsResponseDto getAll(int offset, int limit, String mode) {
-        Pageable sortedByMode;
+        Pageable pagedByMode;
         Page<Post> postPage;
         switch (mode) {
             case "early":
-                sortedByMode = PageRequest.of(offset / limit, limit, Sort.by("time"));
-                postPage = postRepository.findAllVisible(sortedByMode);
+                pagedByMode = PageRequest.of(offset / limit, limit, Sort.by("time"));
+                postPage = postRepository.findAllVisible(pagedByMode);
                 break;
             case "recent":
-                sortedByMode = PageRequest.of(offset / limit, limit, Sort.by("time").descending());
-                postPage = postRepository.findAllVisible(sortedByMode);
+                pagedByMode = PageRequest.of(offset / limit, limit, Sort.by("time").descending());
+                postPage = postRepository.findAllVisible(pagedByMode);
                 break;
             case "best":
-                sortedByMode = PageRequest.of(offset / limit, limit);
-                postPage = postRepository.findAllPostsByBest(sortedByMode);
+                pagedByMode = PageRequest.of(offset / limit, limit);
+                postPage = postRepository.findAllPostsByBest(pagedByMode);
                 break;
             case "popular":
-                sortedByMode = PageRequest.of(offset / limit, limit);
-                postPage = postRepository.findAllPostsByPopular(sortedByMode);
+                pagedByMode = PageRequest.of(offset / limit, limit);
+                postPage = postRepository.findAllPostsByPopular(pagedByMode);
                 break;
             default:
-                sortedByMode = PageRequest.of(offset / limit, limit);
-                postPage = postRepository.findAllVisible(sortedByMode);
+                pagedByMode = PageRequest.of(offset / limit, limit);
+                postPage = postRepository.findAllVisible(pagedByMode);
                 break;
         }
         int count = (int) postPage.getTotalElements();
@@ -91,7 +91,7 @@ public class PostServise {
         }
         Post post = optionalPost.get();
 
-        User currentUser = userRepositoryPort.findByEmail(userEmail);
+        User currentUser = userRepository.findByEmail(userEmail).get();
 
         if (!(currentUser.isModerator() || currentUser.getId() == post.getUser().getId())) {
             post.incrementViewCount();
@@ -145,13 +145,13 @@ public class PostServise {
     }
 
     public AllPostsResponseDto getModerationPosts(int offset, int limit, String status, String userEmail) {
-        int moderId = userRepositoryPort.findByEmail(userEmail).getId();
+        int moderId = userRepository.findByEmail(userEmail).get().getId();
         Page <Post> postPage = postRepository.findAllPostsByModerStat(status.toUpperCase(),moderId, PageRequest.of(offset / limit, limit));
         return new AllPostsResponseDto(postPage.getTotalPages()*limit, dtoConverter.listPostToDtoList(postPage));
     }
 
     public AllPostsResponseDto getUserPosts(int offset, int limit, String status, String userEmail) {
-        User user = userRepositoryPort.findByEmail(userEmail);
+        User user = userRepository.findByEmail(userEmail).get();
         List<Post> posts = user.getPosts();
         List<Post> finalPosts = new ArrayList<>();
         if (status.equals("inactive")) {
@@ -190,7 +190,7 @@ public class PostServise {
     //Методы для создания или редактирования постов
 
     public ResponseEntity<ResultResponse> createPost(PostPostDto postPostDto, String userEmail) {
-        User user = userRepositoryPort.findByEmail(userEmail);
+        User user = userRepository.findByEmail(userEmail).get();
         ResultResponse response = checkPostInput(postPostDto);
         if (!response.isResult()) {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -205,7 +205,7 @@ public class PostServise {
     }
 
     public ResponseEntity<ResultResponse> editPost(int id, String userEmail, PostPostDto postPostDto) {
-        User user = userRepositoryPort.findByEmail(userEmail);
+        User user = userRepository.findByEmail(userEmail).get();
         Optional<Post> optionalPost = postRepository.findById(id);
         if (optionalPost.isEmpty()) {
             return new ResponseEntity<>(ResultResponse.getBadResultResponse("errors", "Пост с id " + id + " не найден"), HttpStatus.BAD_REQUEST);
@@ -267,7 +267,7 @@ public class PostServise {
             return false;
         }
         Post post = optpost.get();
-        int userId = userRepositoryPort.findByEmail(userEmail).getId();
+        int userId = userRepository.findByEmail(userEmail).get().getId();
         if (moderationRequestDto.getDecision().equals("decline")) {
             post.setModerStat(ModerationStatus.DECLINED);
         } else if (moderationRequestDto.getDecision().equals("accept")) {
@@ -321,7 +321,7 @@ public class PostServise {
     }
 
     public ResponseEntity<ResultResponse> votePost(String vote, Integer postId, String userEmail) {
-        User user = userRepositoryPort.findByEmail(userEmail);
+        User user = userRepository.findByEmail(userEmail).get();
         if (postId <= 0) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

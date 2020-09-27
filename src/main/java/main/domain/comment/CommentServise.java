@@ -2,10 +2,10 @@ package main.domain.comment;
 
 import main.dao.CommentRepository;
 import main.dao.PostRepository;
+import main.dao.UserRepository;
 import main.domain.ResultResponse;
 import main.domain.post.Post;
 import main.domain.user.User;
-import main.domain.user.UserRepositoryPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -18,18 +18,17 @@ public class CommentServise {
 
     private PostRepository postRepository;
     private CommentRepository commentsRepository;
-    private UserRepositoryPort userRepositoryPort;
+    private UserRepository userRepository;
 
     public CommentServise (PostRepository postRepository,CommentRepository commentsRepository,
-                           UserRepositoryPort userRepositoryPort){
+                           UserRepository userRepository){
         this.postRepository =  postRepository;
         this.commentsRepository = commentsRepository;
-        this.userRepositoryPort = userRepositoryPort;
+        this.userRepository = userRepository;
     }
 
     public ResponseEntity<?> createComment (NewCommentRequestDto newCommentRequestDto, String userEmail){
-
-        User user = userRepositoryPort.findByEmail(userEmail);
+        User user = userRepository.findByEmail(userEmail).get();
         Optional<Post> optionalPost = postRepository.findById(newCommentRequestDto.getPostId());
         if(optionalPost.isEmpty()){
             return new ResponseEntity<>(ResultResponse.getBadResultResponse("not_found", "Пост не найден"), HttpStatus.BAD_REQUEST);
@@ -53,8 +52,6 @@ public class CommentServise {
                 .text(newCommentRequestDto.getText())
                 .build();
         newPostComment = commentsRepository.save(newPostComment);
-        return new ResponseEntity<>(newPostComment.getId(), HttpStatus.OK);
+        return new ResponseEntity<>(new CommentIdDto(newPostComment.getId()), HttpStatus.OK);
     }
-
-
 }

@@ -128,7 +128,7 @@ public class ApiPostController {
             String emailUser = request.getUserPrincipal().getName();
             return postServise.votePost(vote, body.getOrDefault("post_id", 0), emailUser);
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new ResultResponse(), HttpStatus.OK);
         }
 
     }

@@ -45,23 +45,13 @@ public interface PostRepository extends JpaRepository<Post, Integer>,
             "AND moderator_id != :moderid")
     Page<Post> findAllPostsByModerStat(String status, int moderid, Pageable pageable);
 
-    //java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax;
-    // check the manual that corresponds to your MySQL server version for the
-    // right syntax to use near
-    // ') FROM post_votes LEFT JOIN posts p ON post_votes.post_id = p.id GROUP BY p.id' at line 1
-    @Query(nativeQuery = true, value = "SELECT p.id, p.is_active, p.moderation_status, p.text, "
-            + "p.time, p.title, p.view_count, p.moderator_id, p.user_id FROM post_votes "
-            + "LEFT JOIN posts p ON post_votes.post_id = p.id GROUP BY p.id ORDER BY count(p.id) DESC")
+    @Query(nativeQuery = true, value = "SELECT * FROM posts p\n" +
+            "WHERE p.moderation_status = 'ACCEPTED' AND p.time <= NOW() AND p.is_active = 1 "+
+            "ORDER BY (SELECT Count(*) FROM post_votes pv WHERE pv.post_id = p.id AND pv.value = 1) DESC, p.`time` DESC")
     Page<Post> findAllPostsByBest(Pageable pageable);
 
-    //java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax;
-    // check the manual that corresponds to your MySQL server version for the
-    // right syntax to use near
-    // ') FROM post_comments LEFT JOIN posts p ON post_comments.post_id = p.id GROUP BY p.id' at line 1
-    @Query(nativeQuery = true, value = "SELECT p.id, p.is_active, p.moderation_status, p.text, p.time, p.title, p.view_count, p.moderator_id, p.user_id " +
-            "FROM post_comments " +
-            "LEFT JOIN posts p " +
-            "ON post_comments.post_id = p.id " +
-            "GROUP BY p.id ORDER BY count(p.id) DESC")
+    @Query(nativeQuery = true, value = "SELECT * FROM posts p " +
+                        "WHERE p.moderation_status = 'ACCEPTED' AND p.time <= NOW() AND p.is_active = 1 " +
+                        "ORDER BY (SELECT Count(*) FROM post_comments pc WHERE pc.post_id = p.id) DESC, p.`time` DESC")
     Page<Post> findAllPostsByPopular(Pageable pageable);
 }

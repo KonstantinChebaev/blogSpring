@@ -1,5 +1,6 @@
 package main.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CalendarResponseDto {
+    @JsonProperty("years")
     private Set<Integer> allYears;
     private Map<String, Long> posts;
 }

@@ -47,10 +47,23 @@ public class ApiGeneralController {
         return gi;
     }
 
+    class TagResponse {
+        HashMap<String, Object> tags;
+        public TagResponse(HashMap<String, Object> tags){
+            this.tags = tags;
+        }
+        public HashMap<String, Object> getTags(){
+            return tags;
+        }
+        public void setTags(HashMap<String, Object> tags){
+            this.tags = tags;
+        }
+    }
+
 
     @GetMapping("/tag")
-    public HashMap<String, Object> getTags(@RequestParam(value = "query", required = false) String query) {
-        return tagServise.getTagsWeights(query);
+    public TagResponse getTags(@RequestParam(value = "query", required = false) String query) {
+        return new TagResponse(tagServise.getTagsWeights(query));
     }
 
     @GetMapping("/calendar")

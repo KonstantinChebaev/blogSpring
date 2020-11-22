@@ -78,7 +78,7 @@ public class PostServise {
         }
         int count = (int) postPage.getTotalElements();
         if (count == 0) {
-            return null;
+            return new AllPostsResponseDto(count, new ArrayList<>());
         }
         List<PostPlainDto> plainPosts = dtoConverter.listPostToDtoList(postPage);
         return new AllPostsResponseDto(count, plainPosts);

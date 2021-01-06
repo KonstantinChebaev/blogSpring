@@ -85,18 +85,20 @@ public class PostServise {
     }
 
     public ResponseEntity<PostWithCommentsDto> findById(int id, String userEmail) {
-        Optional<Post> optionalPost = postRepository.findById(id);
-        if (optionalPost.isEmpty()) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        Post post = optionalPost.get();
+        Post post = postRepository.findById(id).orElseThrow();
 
-        User currentUser = userRepository.findByEmail(userEmail).get();
-
-        if (!(currentUser.isModerator() || currentUser.getId() == post.getUser().getId())) {
+        if(userEmail!=null) {
+            userRepository.findByEmail(userEmail).ifPresent((user) -> {
+                if (!(user.isModerator() || user.getId() == post.getUser().getId())) {
+                    post.incrementViewCount();
+                    postRepository.save(post);
+                }
+            });
+        } else {
             post.incrementViewCount();
             postRepository.save(post);
         }
+
         var postWithCommentsDto = dtoConverter.postToPostWithComments(post);
         return new ResponseEntity(postWithCommentsDto, HttpStatus.OK);
     }

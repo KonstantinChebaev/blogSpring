@@ -48,14 +48,14 @@ public class ApiGeneralController {
     }
 
     class TagResponse {
-        HashMap<String, Object> tags;
-        public TagResponse(HashMap<String, Object> tags){
+        HashMap<String, Double> tags;
+        public TagResponse(HashMap<String, Double> tags){
             this.tags = tags;
         }
-        public HashMap<String, Object> getTags(){
+        public HashMap<String, Double> getTags(){
             return tags;
         }
-        public void setTags(HashMap<String, Object> tags){
+        public void setTags(HashMap<String, Double> tags){
             this.tags = tags;
         }
     }

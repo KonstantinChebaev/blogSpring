@@ -2,6 +2,7 @@ package main.domain.tag;
 
 import main.dao.PostRepository;
 import main.dao.TagRepository;
+import main.domain.TagNotFoundException;
 import main.domain.post.Post;
 import org.springframework.stereotype.Component;
 
@@ -46,31 +47,62 @@ public class TagServise {
     }
 
 
-    public HashMap <String, Object> getTagsWeights(String query) {
-        List <Tag> tags;
-        HashMap <String, Object> result = new HashMap<>();
-        if(query == null){
-            tags = new ArrayList<>();
-           for (Tag tag : tagRepository.findAll()){
-               tags.add(tag);
-           }
-        } else {
-            tags = getQueryTag(query);
-            if (tags == null){
-                result.put("errors", "Tag with "+query+" not found");
-                return result;
-            }
+    public HashMap <String, Double> getTagsWeights(String query) {
+        return query == null ? getAllTagsWeights() :
+                getSingleTagWeights(query);
+    }
+
+    private HashMap<String, Double> getSingleTagWeights(String query) throws TagNotFoundException {
+        List <Tag> tags = getQueryTag(query);
+        if (tags == null){
+            throw new TagNotFoundException("Tag with " + query + " not found");
         }
+        HashMap <String, Double> result = new HashMap<>();
         double postsTotalCount = postRepository.findAllVisibleCount();
         double weight = 0;
-        DecimalFormat df = new DecimalFormat("#.##");
-        df.setRoundingMode(RoundingMode.CEILING);
         for (Tag tag : tags){
             weight = tag.getGoodPostsAmount()/postsTotalCount;
-            result.put(tag.getName(), df.format(weight));
+            result.put(tag.getName(), weight);
         }
         return result;
     }
+
+    private HashMap<String, Double> getAllTagsWeights() {
+        List <Tag> tags = (ArrayList<Tag>) tagRepository.findAll();
+        HashMap <String, Double> result = new HashMap<>();
+        double postsTotalCount = postRepository.findAllVisibleCount();
+        double weight = 0;
+        for (Tag tag : tags){
+            weight = tag.getGoodPostsAmount()/postsTotalCount;
+            result.put(tag.getName(), weight);
+        }
+        return result;
+    }
+
+//    List <Tag> tags;
+//        HashMap <String, Object> result = new HashMap<>();
+//        if(query == null){
+//            tags = new ArrayList<>();
+//           for (Tag tag : tagRepository.findAll()){
+//               tags.add(tag);
+//           }
+//        } else {
+//            tags = getQueryTag(query);
+//            if (tags == null){
+//                result.put("errors", "Tag with "+query+" not found");
+//                return result;
+//            }
+//        }
+//        double postsTotalCount = postRepository.findAllVisibleCount();
+//        double weight = 0;
+//        DecimalFormat df = new DecimalFormat("#.##");
+//        df.setRoundingMode(RoundingMode.CEILING);
+//        for (Tag tag : tags){
+//            weight = tag.getGoodPostsAmount()/postsTotalCount;
+//            result.put(tag.getName(), df.format(weight));
+//        }
+//        return result;
+//    }
 
 
     private List<Tag> getQueryTag (String query){

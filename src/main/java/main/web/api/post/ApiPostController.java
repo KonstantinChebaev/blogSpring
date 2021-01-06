@@ -35,7 +35,7 @@ public class ApiPostController {
             String emailUser = request.getUserPrincipal().getName();
             return postServise.findById(id, emailUser);
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return postServise.findById(id, null);
         }
 
     }

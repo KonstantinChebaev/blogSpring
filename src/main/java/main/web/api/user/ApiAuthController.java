@@ -55,7 +55,7 @@ public class ApiAuthController {
             User user = userRepository.findByEmail(emailUser).get();
             return new ResponseEntity<>(new UserAuthResponceDto(true, userServise.getLoggedInUser(user)), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new UserAuthResponceDto(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new UserAuthResponceDto(false, null), HttpStatus.OK);
         }
     }
 

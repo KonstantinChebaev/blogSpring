@@ -5,14 +5,13 @@ import main.domain.*;
 import main.domain.globallSettings.GSettingsDto;
 import main.domain.globallSettings.SettingsService;
 import main.domain.post.PostServise;
+import main.domain.tag.TagResponseDto;
 import main.domain.tag.TagServise;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api")
@@ -48,22 +47,13 @@ public class ApiGeneralController {
     }
 
     class TagResponse {
-        HashMap<String, Double> tags;
-        public TagResponse(HashMap<String, Double> tags){
-            this.tags = tags;
-        }
-        public HashMap<String, Double> getTags(){
-            return tags;
-        }
-        public void setTags(HashMap<String, Double> tags){
-            this.tags = tags;
-        }
+
     }
 
 
     @GetMapping("/tag")
-    public TagResponse getTags(@RequestParam(value = "query", required = false) String query) {
-        return new TagResponse(tagServise.getTagsWeights(query));
+    public TagResponseDto getTags(@RequestParam(value = "query", required = false) String query) {
+        return tagServise.getTagsWeights(query);
     }
 
     @GetMapping("/calendar")

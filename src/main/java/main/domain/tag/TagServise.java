@@ -6,10 +6,7 @@ import main.domain.TagNotFoundException;
 import main.domain.post.Post;
 import org.springframework.stereotype.Component;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -24,17 +21,17 @@ public class TagServise {
     }
 
     public Tag saveTag(String tagName) {
-        Tag tag = tagRepository.findByNameIgnoreCase(tagName);
+        Tag tag = tagRepository.findByName(tagName).orElse(null);
         return (tag != null) ? tag : tagRepository.save(new Tag(tagName.toLowerCase()));
     }
 
     public Tag findTag(String tagName) {
-        return tagRepository.findByNameIgnoreCase(tagName);
+        return tagRepository.findByName(tagName).orElse(null);
     }
 
     public Tag saveTag(String tagName, Post post) {
         List<Post> tagPosts;
-        Tag tag = tagRepository.findByNameIgnoreCase(tagName);
+        Tag tag = tagRepository.findByName(tagName).orElse(null);
         if (tag == null){
             tag = new Tag(tagName.toLowerCase());
             tagPosts = new ArrayList<>();
@@ -47,63 +44,37 @@ public class TagServise {
     }
 
 
-    public HashMap <String, Double> getTagsWeights(String query) {
+    public TagResponseDto getTagsWeights(String query) {
         return query == null ? getAllTagsWeights() :
                 getSingleTagWeights(query);
     }
 
-    private HashMap<String, Double> getSingleTagWeights(String query) throws TagNotFoundException {
+    private TagResponseDto getSingleTagWeights(String query) throws TagNotFoundException {
         List <Tag> tags = getQueryTag(query);
         if (tags == null){
             throw new TagNotFoundException("Tag with " + query + " not found");
         }
-        HashMap <String, Double> result = new HashMap<>();
+        TagResponseDto result = new TagResponseDto();
         double postsTotalCount = postRepository.findAllVisibleCount();
         double weight = 0;
         for (Tag tag : tags){
             weight = tag.getGoodPostsAmount()/postsTotalCount;
-            result.put(tag.getName(), weight);
+            result.addTagToList(tag.getName(), weight);
         }
         return result;
     }
 
-    private HashMap<String, Double> getAllTagsWeights() {
+    private TagResponseDto getAllTagsWeights() {
         List <Tag> tags = (ArrayList<Tag>) tagRepository.findAll();
-        HashMap <String, Double> result = new HashMap<>();
+        TagResponseDto result = new TagResponseDto();
         double postsTotalCount = postRepository.findAllVisibleCount();
         double weight = 0;
         for (Tag tag : tags){
             weight = tag.getGoodPostsAmount()/postsTotalCount;
-            result.put(tag.getName(), weight);
+            result.addTagToList(tag.getName(), weight);
         }
         return result;
     }
-
-//    List <Tag> tags;
-//        HashMap <String, Object> result = new HashMap<>();
-//        if(query == null){
-//            tags = new ArrayList<>();
-//           for (Tag tag : tagRepository.findAll()){
-//               tags.add(tag);
-//           }
-//        } else {
-//            tags = getQueryTag(query);
-//            if (tags == null){
-//                result.put("errors", "Tag with "+query+" not found");
-//                return result;
-//            }
-//        }
-//        double postsTotalCount = postRepository.findAllVisibleCount();
-//        double weight = 0;
-//        DecimalFormat df = new DecimalFormat("#.##");
-//        df.setRoundingMode(RoundingMode.CEILING);
-//        for (Tag tag : tags){
-//            weight = tag.getGoodPostsAmount()/postsTotalCount;
-//            result.put(tag.getName(), df.format(weight));
-//        }
-//        return result;
-//    }
-
 
     private List<Tag> getQueryTag (String query){
         if(query == null){

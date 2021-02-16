@@ -19,11 +19,7 @@ public class VotesService {
         int voteRequested = voteType.equals("like") ? 1 : -1;
         PostVote postVote = votesRepository.findByUserAndPost(user, post);
         if (postVote == null) {
-            PostVote newVote = new PostVote();
-            newVote.setPost(post);
-            newVote.setUser(user);
-            newVote.setValue(voteRequested);
-            newVote.setTime(LocalDateTime.now());
+            PostVote newVote = new PostVote(voteRequested, user, post);
             votesRepository.save(newVote);
             return true;
         }
@@ -31,11 +27,7 @@ public class VotesService {
             return false;
         }
         votesRepository.delete(postVote);
-        PostVote newVote = new PostVote();
-        newVote.setPost(post);
-        newVote.setUser(user);
-        newVote.setValue(voteRequested);
-        newVote.setTime(LocalDateTime.now());
+        PostVote newVote = new PostVote(voteRequested, user, post);
         votesRepository.save(newVote);
         return true;
     }

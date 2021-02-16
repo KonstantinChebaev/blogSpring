@@ -9,5 +9,4 @@ import java.util.Optional;
 @Repository
 public interface TagRepository extends CrudRepository<Tag, Integer> {
     Optional<Tag> findByName (String name);
-    Tag findByNameIgnoreCase(String name);
 }

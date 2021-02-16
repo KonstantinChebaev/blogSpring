@@ -32,6 +32,13 @@ public class PostVote {
     @Column(nullable = false, columnDefinition = "DATETIME")
     private LocalDateTime time;
 
+    public PostVote(int value, User user, Post post){
+        this.value = value;
+        this.user = user;
+        this.post = post;
+        time = LocalDateTime.now();
+    }
+
 
 
 

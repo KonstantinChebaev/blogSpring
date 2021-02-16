@@ -54,4 +54,27 @@ public interface PostRepository extends JpaRepository<Post, Integer>,
                         "WHERE p.moderation_status = 'ACCEPTED' AND p.time <= NOW() AND p.is_active = 1 " +
                         "ORDER BY (SELECT Count(*) FROM post_comments pc WHERE pc.post_id = p.id) DESC, p.`time` DESC")
     Page<Post> findAllPostsByPopular(Pageable pageable);
+
+
+    //Methods for taking user posts
+
+    @Query(nativeQuery = true, value = "SELECT * FROM posts p " +
+                                         "WHERE p.user_id = :userId AND p.is_active = 0 " +
+                                         "ORDER BY p.time")
+    Page<Post> getUserPostsInactive(Pageable pagedByMode, Integer userId);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM posts p " +
+            "WHERE p.user_id = :userId AND p.is_active = 1 AND p.moderation_status = 'NEW' " +
+            "ORDER BY p.time")
+    Page<Post> getUserPostsPending(Pageable pagedByMode, Integer userId);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM posts p " +
+            "WHERE p.user_id = :userId AND p.is_active = 1 AND p.moderation_status = 'DECLINED' " +
+            "ORDER BY p.time")
+    Page<Post> getUserPostsDeclined(Pageable pagedByMode, Integer userId);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM posts p " +
+            "WHERE p.user_id = :userId AND p.is_active = 1 AND p.moderation_status = 'ACCEPTED' " +
+            "ORDER BY p.time")
+    Page<Post> getUserPostsPublished(Pageable pagedByMode, Integer userId);
 }

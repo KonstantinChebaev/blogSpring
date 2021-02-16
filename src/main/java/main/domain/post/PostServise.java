@@ -91,14 +91,13 @@ public class PostServise {
             userRepository.findByEmail(userEmail).ifPresent((user) -> {
                 if (!(user.isModerator() || user.getId() == post.getUser().getId())) {
                     post.incrementViewCount();
-                    postRepository.save(post);
                 }
             });
         } else {
             post.incrementViewCount();
-            postRepository.save(post);
-        }
 
+        }
+        postRepository.save(post);
         var postWithCommentsDto = dtoConverter.postToPostWithComments(post);
         return new ResponseEntity(postWithCommentsDto, HttpStatus.OK);
     }
@@ -122,6 +121,7 @@ public class PostServise {
 
     public ResponseEntity<AllPostsResponseDto> getTagPosts(int offset, int limit, String tagName) {
         Tag tag = tagServise.findTag(tagName);
+        System.out.println(tag);
         if (tag == null) {
             return new ResponseEntity<>(new AllPostsResponseDto(0, null), HttpStatus.OK);
         }
@@ -153,41 +153,20 @@ public class PostServise {
     }
 
     public AllPostsResponseDto getUserPosts(int offset, int limit, String status, String userEmail) {
-        User user = userRepository.findByEmail(userEmail).get();
-        List<Post> posts = user.getPosts();
-        List<Post> finalPosts = new ArrayList<>();
-        if (status.equals("inactive")) {
-            posts.removeIf(Post::isActive);
-            finalPosts = posts;
-        } else if (status.equals("pending")) {
-            for (Post post : posts) {
-                if (post.isActive() && post.getModerStat().equals(ModerationStatus.NEW)) {
-                    finalPosts.add(post);
-                }
-            }
-        } else if (status.equals("declined")) {
-            for (Post post : posts) {
-                if (post.isActive() && post.getModerStat().equals(ModerationStatus.DECLINED)) {
-                    finalPosts.add(post);
-                }
-            }
-        } else if (status.equals("published")) {
-            for (Post post : posts) {
-                if (post.isActive() && post.getModerStat().equals(ModerationStatus.ACCEPTED)) {
-                    finalPosts.add(post);
-                }
-            }
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        int userId = user.getId();
+        Page<Post> finalPosts = null;
+        Pageable pagedByMode = PageRequest.of(offset / limit, limit);
+        switch(status){
+            case ("inactive"): finalPosts = postRepository.getUserPostsInactive(pagedByMode, userId); break;
+            case ("pending"): finalPosts = postRepository.getUserPostsPending(pagedByMode, userId); break;
+            case ("declined"): finalPosts = postRepository.getUserPostsDeclined(pagedByMode, userId); break;
+            case ("published"): finalPosts = postRepository.getUserPostsPublished(pagedByMode, userId); break;
         }
-        int count = finalPosts.size();
-        if (count == 0) {
-            return new AllPostsResponseDto(count, new ArrayList<PostPlainDto>());
-        }
-        if (count < limit) {
-            limit = count;
-        }
-        finalPosts = finalPosts.subList(offset, limit);
-        return new AllPostsResponseDto(count, dtoConverter.listPostToDtoList(finalPosts));
+        return new AllPostsResponseDto(finalPosts.getTotalPages(), dtoConverter.listPostToDtoList(finalPosts));
+
     }
+
 
     //Методы для создания или редактирования постов
 

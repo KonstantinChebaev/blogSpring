@@ -6,7 +6,7 @@ import main.domain.globallSettings.GSettingsDto;
 import main.domain.globallSettings.SettingsService;
 import main.domain.post.PostServise;
 import main.domain.tag.TagResponseDto;
-import main.domain.tag.TagServise;
+import main.domain.tag.TagService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +17,16 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/api")
 public class ApiGeneralController {
 
-    private TagServise tagServise;
+    private TagService tagService;
     private PostServise postServise;
     private SettingsService settingsService;
     private StatisticServise statisticsServise;
 
-    public ApiGeneralController(TagServise tagServise,
+    public ApiGeneralController(TagService tagService,
                                 PostServise postServise,
                                 SettingsService settingsService,
                                 StatisticServise statisticsServise) {
-        this.tagServise = tagServise;
+        this.tagService = tagService;
         this.postServise = postServise;
         this.settingsService = settingsService;
         this.statisticsServise = statisticsServise;
@@ -53,7 +53,7 @@ public class ApiGeneralController {
 
     @GetMapping("/tag")
     public TagResponseDto getTags(@RequestParam(value = "query", required = false) String query) {
-        return tagServise.getTagsWeights(query);
+        return tagService.getTagsWeights(query);
     }
 
     @GetMapping("/calendar")

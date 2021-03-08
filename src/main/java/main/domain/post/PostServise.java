@@ -10,7 +10,7 @@ import main.domain.globallSettings.GSettingsDto;
 import main.domain.globallSettings.SettingsService;
 import main.domain.post.dto.*;
 import main.domain.tag.Tag;
-import main.domain.tag.TagServise;
+import main.domain.tag.TagService;
 import main.domain.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +19,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,19 +32,19 @@ import java.util.stream.Collectors;
 @Component
 public class PostServise {
     private PostRepository postRepository;
-    private TagServise tagServise;
+    private TagService tagService;
     private VotesService votesService;
     private DtoConverter dtoConverter;
     private UserRepository userRepository;
     private SettingsService settingsService;
 
-    public PostServise(TagServise tagServise,
+    public PostServise(TagService tagService,
                        VotesService votesService,
                        DtoConverter dtoConverter,
                        UserRepository userRepository,
                        PostRepository postRepository,
                        SettingsService settingsService) {
-        this.tagServise = tagServise;
+        this.tagService = tagService;
         this.votesService = votesService;
         this.dtoConverter = dtoConverter;
         this.userRepository = userRepository;
@@ -120,7 +122,7 @@ public class PostServise {
 
 
     public ResponseEntity<AllPostsResponseDto> getTagPosts(int offset, int limit, String tagName) {
-        Tag tag = tagServise.findTag(tagName);
+        Tag tag = tagService.findTag(tagName);
         System.out.println(tag);
         if (tag == null) {
             return new ResponseEntity<>(new AllPostsResponseDto(0, null), HttpStatus.OK);
@@ -204,7 +206,7 @@ public class PostServise {
         return new ResponseEntity<>(resultResponse, HttpStatus.OK);
     }
 
-
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void savePost(PostPostDto postPostDto, Post post, boolean isModer) {
         post.setActive(postPostDto.getActive());
         post.setText(postPostDto.getText());
@@ -231,9 +233,10 @@ public class PostServise {
             if (postTags == null) {
                 postTags = new ArrayList<>();
             }
+            //HERE
             for (String tagName : postPostDto.getTags()) {
-                Tag tag = tagServise.saveTag(tagName, post);
-                postTags.add(tag);
+                Tag tag = tagService.saveTag(tagName, post);
+           //     postTags.add(tag);
             }
             post.setTags(postTags);
         }

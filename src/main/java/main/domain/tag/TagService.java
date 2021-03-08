@@ -4,25 +4,28 @@ import main.dao.PostRepository;
 import main.dao.TagRepository;
 import main.domain.TagNotFoundException;
 import main.domain.post.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class TagServise {
+public class TagService {
 
     private TagRepository tagRepository;
     private PostRepository postRepository;
 
-    public TagServise(TagRepository tagRepository, PostRepository postRepository){
+    public TagService(TagRepository tagRepository, PostRepository postRepository){
         this.postRepository = postRepository;
         this.tagRepository = tagRepository;
     }
 
     public Tag saveTag(String tagName) {
-        Tag tag = tagRepository.findByName(tagName).orElse(null);
-        return (tag != null) ? tag : tagRepository.save(new Tag(tagName.toLowerCase()));
+        return tagRepository.findByName(tagName)
+                .orElseGet(() -> tagRepository.save(new Tag(tagName.toLowerCase())));
     }
 
     public Tag findTag(String tagName) {
@@ -65,7 +68,8 @@ public class TagServise {
     }
 
     private TagResponseDto getAllTagsWeights() {
-        List <Tag> tags = (ArrayList<Tag>) tagRepository.findAll();
+        Pageable paged = PageRequest.of(1,20);
+        Page<Tag> tags = tagRepository.findPopular20Tags(paged);
         TagResponseDto result = new TagResponseDto();
         double postsTotalCount = postRepository.findAllVisibleCount();
         double weight = 0;

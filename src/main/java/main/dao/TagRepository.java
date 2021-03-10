@@ -1,6 +1,5 @@
 package main.dao;
 
-import main.domain.post.Post;
 import main.domain.tag.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +16,7 @@ public interface TagRepository extends JpaRepository<Tag, Integer>, JpaSpecifica
 
     @Query(nativeQuery = true, value = "SELECT tags.id, tags.name FROM tags " +
             "LEFT JOIN tag2post ON tag2post.tag_id = tags.id " +
-            "GROUP BY tag2post.tag_id " +
+            "GROUP BY tags.id " +
             "ORDER BY COUNT(*) DESC ")
     Page<Tag> findPopular20Tags(Pageable paged);
 }

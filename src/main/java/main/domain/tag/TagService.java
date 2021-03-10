@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,13 +69,16 @@ public class TagService {
     }
 
     private TagResponseDto getAllTagsWeights() {
-        Pageable paged = PageRequest.of(1,20);
+        Pageable paged = PageRequest.of(0,20);
         Page<Tag> tags = tagRepository.findPopular20Tags(paged);
         TagResponseDto result = new TagResponseDto();
         double postsTotalCount = postRepository.findAllVisibleCount();
         double weight = 0;
         for (Tag tag : tags){
             weight = tag.getGoodPostsAmount()/postsTotalCount;
+            weight=weight*100;
+            int res = (int)Math.round(weight);
+            weight = (double) res / 100;
             result.addTagToList(tag.getName(), weight);
         }
         return result;

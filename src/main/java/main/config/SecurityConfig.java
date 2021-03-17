@@ -38,26 +38,9 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/moderation/**").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/profile/my/**").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/statistics/my/**").hasAnyRole("USER","ADMIN")
-//                .antMatchers(HttpMethod.POST, "/api/post/like/**").hasAnyRole("USER","ADMIN")
-//                .antMatchers(HttpMethod.POST, "/api/post/dislike/**").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/auth/logout/**").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.PUT, "/api/settings/**").hasRole("ADMIN")
                 .anyRequest().permitAll();
-        // .antMatchers(HttpMethod.GET, "/api/auth/check/**").hasAnyRole("USER","ADMIN")
-//          .antMatchers(HttpMethod.POST, "/api/post/**").hasAnyRole("USER","ADMIN")
-//                 .antMatchers(HttpMethod.GET, "/api/settings/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.GET, "/api/init/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/post/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/post/search/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/post/{ID}").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/post/byDate/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/post/byTag/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/tag/**").permitAll()
-//                .antMatchers(HttpMethod.POST, "/api/auth/login/**").permitAll()
-//                .antMatchers(HttpMethod.POST, "/api/auth/restore/**").permitAll()
-//                .antMatchers(HttpMethod.POST, "/api/auth/password/**").permitAll()
-//                .antMatchers(HttpMethod.POST, "/api/auth/register/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/statistics/all/**").permitAll()
     }
     @Override
     public void configure(AuthenticationManagerBuilder builder) throws Exception {

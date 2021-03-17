@@ -20,8 +20,8 @@ public class SettingsService {
     private void cteateDefaultSettings (){
         if(settingsRepository.count()==0) {
             List<GlobalSetting> gsList = new ArrayList<GlobalSetting>();
-            gsList.add(new GlobalSetting("MULTIUSER_MODE", "Многопользовательский режим", "NO"));
-            gsList.add(new GlobalSetting("POST_PREMODERATION", "Премодерация постов", "NO"));
+            gsList.add(new GlobalSetting("MULTIUSER_MODE", "Многопользовательский режим", "YES"));
+            gsList.add(new GlobalSetting("POST_PREMODERATION", "Премодерация постов", "YES"));
             gsList.add(new GlobalSetting("STATISTICS_IS_PUBLIC", "Показывать всем статистику блога", "NO"));
             settingsRepository.saveAll(gsList);
         }

@@ -199,7 +199,8 @@ public class PostServise {
             return new ResponseEntity<>(ResultResponse.getBadResultResponse("errors", "У вас нет прав редактировать пост"), HttpStatus.FORBIDDEN);
         }
         ResultResponse resultResponse = checkPostInput(postPostDto);
-        if (resultResponse.isResult()) {
+        if (!resultResponse.isResult()) {
+            System.out.println("о привет");
             return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
         }
         savePost(postPostDto, post, user.isModerator());

@@ -3,6 +3,7 @@ package main.domain.tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import main.domain.post.ModerationStatus;
 import main.domain.post.Post;
 
@@ -26,7 +27,7 @@ public class Tag {
     @JoinTable(name = "tag2post",
             joinColumns = {@JoinColumn(name = "tag_id")},
             inverseJoinColumns = {@JoinColumn(name = "post_id")})
-
+    @ToString.Exclude
     private List<Post> posts;
 
     public Tag(String tagName) {

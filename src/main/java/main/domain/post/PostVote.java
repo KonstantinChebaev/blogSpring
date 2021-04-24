@@ -3,6 +3,7 @@ package main.domain.post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import main.domain.user.User;
 
 import javax.persistence.*;

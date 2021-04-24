@@ -1,9 +1,6 @@
 package main.domain.post;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import main.domain.comment.PostComment;
 import main.domain.tag.Tag;
 import main.domain.user.User;
@@ -34,6 +31,7 @@ public class Post {
 
     @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName="id")
+    @ToString.Exclude
     private User user;
 
     @Column(nullable = false, columnDefinition = "DATETIME")
@@ -53,6 +51,7 @@ public class Post {
     @JoinTable(name = "tag2post",
             joinColumns = {@JoinColumn(name = "post_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id")})
+    @ToString.Exclude
     private List<Tag> tags;
 
     @OneToMany(mappedBy = "post")

@@ -1,9 +1,6 @@
 package main.domain.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import main.domain.post.Post;
 import main.domain.post.PostVote;
 import org.hibernate.annotations.Type;

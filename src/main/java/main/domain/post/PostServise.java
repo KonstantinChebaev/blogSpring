@@ -200,7 +200,6 @@ public class PostServise {
         }
         ResultResponse resultResponse = checkPostInput(postPostDto);
         if (!resultResponse.isResult()) {
-            System.out.println("о привет");
             return new ResponseEntity<>(resultResponse, HttpStatus.BAD_REQUEST);
         }
         savePost(postPostDto, post, user.isModerator());
@@ -230,6 +229,10 @@ public class PostServise {
         post.setTime(date);
 
         if (postPostDto.getTags() != null) {
+
+            Set<String> tags = postPostDto.getTags();
+            System.out.println(tags.size()); //TODO always prints zero
+
             List<Tag> postTags = post.getTags();
             if (postTags == null) {
                 postTags = new ArrayList<>();

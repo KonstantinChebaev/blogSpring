@@ -37,17 +37,13 @@ public class ApiGeneralController {
     public GeneralInfo getGeneral() {
         GeneralInfo gi = GeneralInfo.builder()
                 .title("DevPub")
-                .subtitle("200-10-10")
-                .phone("+7 903 666-44-55")
-                .email("mail@mail.ru")
-                .copyright("Дмитрий Сергеев")
-                .copyrightForm("2005")
+                .subtitle("01.05.2021")
+                .phone("+7 952 215-68-42")
+                .email("konstantin.chebaev@gmail.com")
+                .copyright("Константин Чебаев")
+                .copyrightForm("2020")
                 .build();
         return gi;
-    }
-
-    class TagResponse {
-
     }
 
 
